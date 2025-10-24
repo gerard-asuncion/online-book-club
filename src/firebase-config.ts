@@ -11,7 +11,7 @@ type firebaseConfigType = {
   storageBucket: string;
   messagingSenderId: string;
   appId: string;
-  measurementId?: string;
+  measurementId?: string
 }; 
 
 // Your web app's Firebase configuration
