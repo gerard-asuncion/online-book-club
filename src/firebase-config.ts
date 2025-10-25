@@ -1,9 +1,6 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp, type FirebaseApp } from "firebase/app";
 import { Firestore, getFirestore } from "firebase/firestore";
-import { getAuth, GoogleAuthProvider } from "firebase/auth";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getAuth, GoogleAuthProvider, type Auth } from "firebase/auth";
 
 type firebaseConfigType = {
   apiKey: string;
@@ -15,8 +12,6 @@ type firebaseConfigType = {
   measurementId?: string
 }; 
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig: firebaseConfigType = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
@@ -27,8 +22,7 @@ const firebaseConfig: firebaseConfigType = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
-// Initialize Firebase
 const app: FirebaseApp = initializeApp(firebaseConfig);
-const db: Firestore = getFirestore(app);
-export const auth = getAuth();
-export const provider = new GoogleAuthProvider();
+export const db: Firestore = getFirestore(app);
+export const auth: Auth = getAuth();
+export const provider: GoogleAuthProvider = new GoogleAuthProvider();
