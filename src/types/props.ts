@@ -1,11 +1,21 @@
+import Cookies from "universal-cookie"
+
 export interface WindowProps {
-    room: string
+    bookRoom: string
 }
 
 export interface ChatProps {
-    room: string
+    bookRoom: string
 }
 
 export interface SidebarProps {
     setBookRoom: React.Dispatch<React.SetStateAction<string>>
+}
+
+export interface AuthProps {
+    setIsAuth: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export interface UseChatProps {
+  bookRoom: string;
 }

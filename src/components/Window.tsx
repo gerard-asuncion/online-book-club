@@ -1,9 +1,14 @@
 import Chat from "./Chat"
 import type { WindowProps } from "../types/props"
 
-const Window = ({ room }: WindowProps) => {
+const Window = ({ bookRoom }: WindowProps) => {
+
+  if(bookRoom === "") return (
+    <div>Select a chat room to start...</div>
+  )
+
   return (
-        <Chat room={room} />
+        <Chat bookRoom={bookRoom} />
   )
 }
 
