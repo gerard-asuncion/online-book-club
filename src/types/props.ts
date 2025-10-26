@@ -1,5 +1,3 @@
-import Cookies from "universal-cookie"
-
 export interface WindowProps {
     bookRoom: string
 }
