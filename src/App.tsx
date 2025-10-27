@@ -1,33 +1,21 @@
-import { useState } from "react";
-import Header from "./components/Header";
-import Sidebar from "./components/Sidebar";
-import Window from "./components/Window";
-import Auth from "./components/Auth";
-import Cookies from "universal-cookie";
-
-const cookies = new Cookies();
+import { Routes, Route } from "react-router-dom";
+import AppPage from "./pages/AppPage";
+import AuthRouter from "./components/AuthRouter";
+import LoginPage from "./pages/LoginPage";
+import ErrorPage from "./pages/ErrorPage";
 
 function App() {
 
-  const [isAuth, setIsAuth] = useState<boolean>(cookies.get("auth-token"));
-  const [bookRoom, setBookRoom] = useState<string>("")
-
-  if(!isAuth){
-    return <Auth setIsAuth={setIsAuth} />
-  }
-
   return (
-    <main className="h-screen">
-      <Header />
-      <section className="sm:grid sm:grid-cols-3 h-full">
-        <div className="sm:col-span-2 bg-amber-500">
-          <Window bookRoom={bookRoom} />
-        </div>
-        <div className="hidden sm:block bg-green-600">
-          <Sidebar setBookRoom={setBookRoom} />
-        </div>
-      </section>
-    </main> 
+    <>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route element={<AuthRouter />}>
+          <Route path="/" element={<AppPage />} />
+        </Route>
+        <Route path="*" element={<ErrorPage />} />
+      </Routes>
+    </>
   )
 }
 
