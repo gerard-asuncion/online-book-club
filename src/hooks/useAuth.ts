@@ -12,6 +12,14 @@ const useAuth = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
+  const signUp = async () => {
+    console.log("Sign Up");
+  }
+
+  const signInWithEmailAndPassword = async () => {
+    console.log("Sign In With Email...");
+  }
+
   const signInWithGoogle = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
@@ -31,6 +39,8 @@ const useAuth = () => {
   }
 
   return {
+    signUp,
+    signInWithEmailAndPassword,
     signInWithGoogle,
     userSignOut
   };
