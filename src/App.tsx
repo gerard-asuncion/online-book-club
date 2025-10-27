@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
-import LoginPage from "./pages/LoginPage";
-import RequireAuth from "./components/RequireAuth";
 import AppPage from "./pages/AppPage";
+import AuthRouter from "./components/AuthRouter";
+import LoginPage from "./pages/LoginPage";
 import ErrorPage from "./pages/ErrorPage";
 
 function App() {
@@ -10,11 +10,9 @@ function App() {
     <>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
-
-        <Route element={<RequireAuth />}>
+        <Route element={<AuthRouter />}>
           <Route path="/" element={<AppPage />} />
         </Route>
-
         <Route path="*" element={<ErrorPage />} />
       </Routes>
     </>

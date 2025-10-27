@@ -1,16 +1,11 @@
-import { useState } from "react"
-import Auth from "../components/Auth"
-import Cookies from "universal-cookie"
-
-const cookies = new Cookies();
+import AuthRouter from "../components/AuthRouter";
 
 const LoginPage = () => {
 
-    const [isAuth, setIsAuth] = useState(cookies.get("auth-token"))
-
     return (
-        <Auth setIsAuth={setIsAuth} />
+        <AuthRouter />
     )
+
 }
 
 export default LoginPage

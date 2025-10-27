@@ -1,4 +1,6 @@
 import { useNavigate } from 'react-router-dom'; 
+import Screen from '../components/Screen';
+import Button from '../components/Button';
 
 const ErrorPage = () => {
   const navigate = useNavigate(); 
@@ -8,10 +10,15 @@ const ErrorPage = () => {
   };
 
   return (
-    <div>
-      <h2>There has been an error, please go back.</h2>
-      <button className='bg-gray-500' onClick={handleReturn}>Return</button>
-    </div>
+    <Screen page="center">
+        <div className="flex flex-col items-center justify-center p-8 bg-white rounded-lg shadow-md max-w-sm mx-auto space-y-6">
+            <h2>There has been an error, please go back.</h2>
+            <Button onClick={handleReturn}>
+                Return
+            </Button>
+        </div>
+
+    </Screen>
   );
 };
 

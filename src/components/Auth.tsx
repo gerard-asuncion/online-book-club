@@ -1,9 +1,10 @@
-import { auth, provider } from "../firebase-config.js";
+import { auth, provider } from "../firebase-config";
 import { signInWithPopup } from "firebase/auth";
 import Cookies from "universal-cookie";
-import type { AuthProps } from "../types/props.js";
+import type { AuthProps } from "../types/props";
 import { useNavigate } from "react-router-dom";
-import Screen from "./Screen.js";
+import Screen from "./Screen";
+import Button from "./Button";
 
 const cookies = new Cookies();
 
@@ -27,30 +28,10 @@ const Auth = ({ setIsAuth }: AuthProps) => {
             <div className="flex flex-col items-center justify-center p-8 bg-white rounded-lg shadow-md max-w-sm mx-auto space-y-6">
             <p className="text-gray-700 font-medium text-center">
                 Sign In To Continue
-            </p>            
-            <button 
-                onClick={signInWithGoogle} 
-                className="
-                w-full
-                flex items-center justify-center 
-                py-3 px-4 
-                bg-white 
-                border border-gray-300 
-                rounded-lg 
-                shadow-sm 
-                text-gray-800 
-                font-semibold 
-                hover:bg-gray-50 
-                transition-colors 
-                duration-200 
-                focus:outline-none 
-                focus:ring-2 
-                focus:ring-blue-500 
-                focus:ring-offset-2
-                "
-            >
+            </p>   
+            <Button onClick={signInWithGoogle}>
                 Sign In With Google
-            </button>
+            </Button>
             </div>
         </Screen>
     );

@@ -13,7 +13,7 @@ export interface SidebarProps {
 }
 
 export interface AuthProps {
-    setIsAuth: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsAuth: React.Dispatch<React.SetStateAction<string | undefined | boolean>>;
 }
 
 export interface UseChatProps {
@@ -22,5 +22,11 @@ export interface UseChatProps {
 
 export interface ScreenProps {
     children: ReactNode,
-    page: string
+    page: string;
 };
+
+export interface ButtonProps {
+    children: string,
+    onClick: React.MouseEventHandler<HTMLButtonElement>,
+    type?: 'button' | 'submit' | 'reset';
+}
