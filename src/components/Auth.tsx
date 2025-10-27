@@ -1,39 +1,25 @@
-import { auth, provider } from "../firebase-config";
-import { signInWithPopup } from "firebase/auth";
-import Cookies from "universal-cookie";
-import type { AuthProps } from "../types/props";
-import { useNavigate } from "react-router-dom";
-import Screen from "./Screen";
 import Button from "./Button";
+import useAuth from "../hooks/useAuth";
 
-const cookies = new Cookies();
+const Auth = () => {
 
-const Auth = ({ setIsAuth }: AuthProps) => {
-
-    const navigate = useNavigate();
-
-    const signInWithGoogle = async () => {
-        try {
-            const result = await signInWithPopup(auth, provider);
-            cookies.set("auth-token", result.user.refreshToken);
-            setIsAuth(true);
-            navigate("/", { replace: true });
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    const { signInWithGoogle, signInWithEmailAndPassword, signUp } = useAuth();
 
     return (
-        <Screen page="center">
-            <div className="flex flex-col items-center justify-center p-8 bg-white rounded-lg shadow-md max-w-sm mx-auto space-y-6">
+        <div className="flex flex-col items-center justify-center p-8 bg-white rounded-lg shadow-md max-w-sm mx-auto space-y-6">
             <p className="text-gray-700 font-medium text-center">
                 Sign In To Continue
-            </p>   
+            </p>
+            <Button onClick={signInWithEmailAndPassword}>
+                Sign In With Email & Password
+            </Button>   
             <Button onClick={signInWithGoogle}>
                 Sign In With Google
             </Button>
-            </div>
-        </Screen>
+            <Button onClick={signUp}>
+                Sign Up
+            </Button>
+        </div>
     );
 };
 

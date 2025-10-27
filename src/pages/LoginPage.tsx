@@ -1,11 +1,14 @@
-import AuthRouter from "../components/AuthRouter";
+import Auth from "../components/Auth";
+import Screen from "../components/Screen";
 
-const LoginPage = () => {
+const WelcomePage = () => {
 
     return (
-        <AuthRouter />
+        <Screen page="center">
+             <Auth />
+        </Screen>
     )
 
 }
 
-export default LoginPage
+export default WelcomePage;

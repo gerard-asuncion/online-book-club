@@ -1,7 +1,12 @@
-import type { SidebarProps } from "../types/props"
+import Button from "./Button";
+import useAuth from "../hooks/useAuth";
+import type { SidebarProps } from "../types/props";
 
-const Sidebar = ({setBookRoom}: SidebarProps) => {
-  return (
+const Sidebar = ({ setBookRoom }: SidebarProps) => {
+
+    const { userSignOut } = useAuth()
+  
+    return (
     <div>
         <ul>
             <li className="cursor-pointer">
@@ -19,7 +24,10 @@ const Sidebar = ({setBookRoom}: SidebarProps) => {
                     Book 3
                 </button>
             </li>
-        </ul>   
+        </ul>
+        <Button onClick={userSignOut}>
+            Sign Out
+        </Button>
     </div>
   )
 }
