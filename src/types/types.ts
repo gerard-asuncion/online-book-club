@@ -8,3 +8,7 @@ export interface Message {
     userId: string,
     room: string
 }
+
+export interface AuthSliceInitialState {
+    isAuth: boolean;
+}

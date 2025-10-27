@@ -9,11 +9,11 @@ export interface ChatProps {
 }
 
 export interface SidebarProps {
-    setBookRoom: React.Dispatch<React.SetStateAction<string>>;
+    setBookRoom: React.Dispatch<React.SetStateAction<string>>,
 }
 
-export interface AuthProps {
-    setIsAuth: React.Dispatch<React.SetStateAction<string | undefined | boolean>>;
+export interface UseAuthProps {
+  setIsAuth: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface UseChatProps {
@@ -27,6 +27,5 @@ export interface ScreenProps {
 
 export interface ButtonProps {
     children: string,
-    onClick: React.MouseEventHandler<HTMLButtonElement>,
-    type?: 'button' | 'submit' | 'reset';
+    onClick: React.MouseEventHandler<HTMLButtonElement>;
 }
