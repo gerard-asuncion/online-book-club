@@ -1,6 +1,6 @@
-import { useChat } from '../hooks/useChat'; // Ajusta el path
-import type { Message } from '../types/types'; // Necessari per al tipatge del map
-import type { ChatProps } from '../types/props';
+import { useChat } from '../../hooks/useChat'; // Ajusta el path
+import type { Message } from '../../types/types'; // Necessari per al tipatge del map
+import type { ChatProps } from '../../types/props';
 
 const Chat = ({ bookRoom }: ChatProps) => {
   // 1. Crida el hook i desestructura els valors retornats

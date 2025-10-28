@@ -1,13 +1,13 @@
-import Button from "./Button";
-import useAuth from "../hooks/useAuth";
-import type { SidebarProps } from "../types/props";
+import Button from "../ui/Button";
+import useAuth from "../../hooks/useAuth";
+import type { SidebarProps } from "../../types/props";
 
 const Sidebar = ({ setBookRoom }: SidebarProps) => {
 
     const { userSignOut } = useAuth()
   
     return (
-    <div>
+    <div className="">
         <ul>
             <li className="cursor-pointer">
                 <button onClick={() => {setBookRoom("book1")}}>

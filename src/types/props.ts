@@ -8,8 +8,13 @@ export interface ChatProps {
     bookRoom: string;
 }
 
+export interface HeaderProps {
+    openSidebar: boolean,
+    setOpenSidebar: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 export interface SidebarProps {
-    setBookRoom: React.Dispatch<React.SetStateAction<string>>,
+    setBookRoom: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export interface UseAuthProps {

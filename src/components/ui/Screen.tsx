@@ -1,4 +1,4 @@
-import type { ScreenProps } from "../types/props"
+import type { ScreenProps } from "../../types/props"
 
 const Screen = ({ children, page }: ScreenProps) => {
 
