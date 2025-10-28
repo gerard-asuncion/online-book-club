@@ -1,5 +1,5 @@
-import Chat from "./Chat"
-import type { WindowProps } from "../types/props"
+import Chat from "../form/Chat"
+import type { WindowProps } from "../../types/props"
 
 const Window = ({ bookRoom }: WindowProps) => {
 

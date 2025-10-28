@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import AppPage from "./pages/AppPage";
-import RequireAuth from "./components/RequireAuth";
+import RequireAuth from "./components/form/RequireAuth";
 import ErrorPage from "./pages/ErrorPage";
 
 function App() {

@@ -1,5 +1,5 @@
-import Auth from "../components/Auth";
-import Screen from "../components/Screen";
+import Auth from "../components/form/Auth";
+import Screen from "../components/ui/Screen";
 
 const WelcomePage = () => {
 
