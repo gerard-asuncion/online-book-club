@@ -11,9 +11,9 @@ const Sidebar = ({ setOpenSidebar, setBookRoom, mdBreakpoint }: SidebarProps) =>
             setOpenSidebar(false);
         }
     }
-  
+
     return (
-    <div className="h-full flex flex-col justify-center">
+    <div className="h-full flex flex-col justify-around">
         <ul>
             <li className="cursor-pointer">
                 <button onClick={() => {

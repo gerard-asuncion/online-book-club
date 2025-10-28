@@ -1,9 +1,10 @@
-import { useChat } from '../../hooks/useChat'; // Ajusta el path
-import type { Message } from '../../types/types'; // Necessari per al tipatge del map
+import { useChat } from '../../hooks/useChat';
+import { formatTimestamp } from '../../utils/dateUtils';
+import type { Message } from '../../types/types';
 import type { ChatProps } from '../../types/props';
 
 const Chat = ({ bookRoom }: ChatProps) => {
-  // 1. Crida el hook i desestructura els valors retornats
+ 
   const { 
     messages, 
     newMessage, 
@@ -12,24 +13,27 @@ const Chat = ({ bookRoom }: ChatProps) => {
   } = useChat({ bookRoom });
 
   return (
-    <div className="chat-app">
-      <div className="header">
-        <h1>Welcome to: {bookRoom.toUpperCase()}</h1>
+    <div className="flex flex-col justify-between p-5">
+      <div className="">
+        <h1>Book: {bookRoom.toUpperCase()}</h1>
       </div>
-      <div className="messages">
-        {/* El map utilitza l'array 'messages' del hook */}
+      <div className="py-1">
         {messages.map((message: Message) => (
-          <div key={message.id} className="message">
-            <span className="user">{message.user}:</span> 
-            {message.text}
-          </div>
+          <article key={message.id} className="flex justify-between">
+            <div className="">
+              <span className="font-bold">{message.user}:</span> 
+              {message.text}
+            </div>
+            <div>
+              {formatTimestamp(message.createdAt)}
+            </div>
+          </article>
         ))}
       </div>
       <form onSubmit={handleSubmit} className="new-message-form">
         <input 
           className="new-message-input" 
           placeholder="Type your message here..."
-          // Les funcions de gestió d'estat i l'estat venen del hook
           onChange={(e) => setNewMessage(e.target.value)}
           value={newMessage} 
         />

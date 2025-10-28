@@ -9,23 +9,48 @@ import {
 
 function AppPage() {
 
+  const sidebarKey: string = import.meta.env.VITE_LOCALSTORAGE_SIDEBAR_KEY;
+  const roomKey: string = import.meta.env.VITE_LOCALSTORAGE_CHAT_ROOM_KEY
+
   const mdBreakpoint: number = 768;
 
-  const [bookRoom, setBookRoom] = useState<string>("");
   const [openSidebar, setOpenSidebar] = useState<boolean>(() => {
-
-    const savedState = localStorage.getItem("sidebarOpen");
-
-    if (savedState !== null) {
-      return JSON.parse(savedState); 
+    const sidebarSavedState: string | null = localStorage.getItem(sidebarKey);
+    let initialSidebarState: boolean;
+    if(sidebarSavedState !== null) {
+      try {
+        initialSidebarState = JSON.parse(sidebarSavedState); 
+        return initialSidebarState; 
+      } catch (e) {
+        console.error("Dades de sidebar corruptes a localStorage. Netejant...");
+        localStorage.removeItem(sidebarKey); 
+      }
     }
-    
     return window.innerWidth > mdBreakpoint; 
   });
 
+  const [bookRoom, setBookRoom] = useState<string>(() => {
+    const savedRoom = localStorage.getItem(roomKey);  
+    if (savedRoom) {
+        try {
+          return savedRoom;
+        } catch (e) {
+          console.error("Dades de sala corruptes a localStorage. Netejant...");
+          localStorage.removeItem(roomKey); 
+        }
+    }  
+    return "";
+  });
+
   useEffect(() => {
-    localStorage.setItem("sidebarOpen", JSON.stringify(openSidebar));
+    localStorage.setItem(sidebarKey, JSON.stringify(openSidebar));
   }, [openSidebar]);
+
+  useEffect(() => {
+    if (bookRoom) {
+        localStorage.setItem(roomKey, bookRoom);
+    }
+  }, [bookRoom])
 
   return (
     <Screen page="full">
