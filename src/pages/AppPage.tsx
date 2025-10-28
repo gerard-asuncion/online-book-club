@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "../components/ui/Header";
 import Sidebar from "../components/form/Sidebar";
 import Window from "../components/ui/Window";
@@ -9,8 +9,23 @@ import {
 
 function AppPage() {
 
+  const mdBreakpoint: number = 768;
+
   const [bookRoom, setBookRoom] = useState<string>("");
-  const [openSidebar, setOpenSidebar] = useState<boolean>(false);
+  const [openSidebar, setOpenSidebar] = useState<boolean>(() => {
+
+    const savedState = localStorage.getItem("sidebarOpen");
+
+    if (savedState !== null) {
+      return JSON.parse(savedState); 
+    }
+    
+    return window.innerWidth > mdBreakpoint; 
+  });
+
+  useEffect(() => {
+    localStorage.setItem("sidebarOpen", JSON.stringify(openSidebar));
+  }, [openSidebar]);
 
   return (
     <Screen page="full">
@@ -24,7 +39,10 @@ function AppPage() {
             <div className={`
               ${changeSidebarLayout(openSidebar)}
             bg-green-600`}>
-                <Sidebar setBookRoom={setBookRoom} />
+                <Sidebar 
+                  setOpenSidebar={setOpenSidebar} 
+                  setBookRoom={setBookRoom}
+                  mdBreakpoint={mdBreakpoint} />
             </div>
         </section>
     </Screen>
