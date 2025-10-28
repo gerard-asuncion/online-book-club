@@ -58,10 +58,18 @@ export const useChat = ({ bookRoom }: UseChatProps) => {
     setNewMessage('');
   } ; 
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault(); 
+      handleSubmit(e); 
+    }
+  };
+
   return {
     messages,
     newMessage,
     setNewMessage,
-    handleSubmit
+    handleSubmit,
+    handleKeyDown
   };
 };

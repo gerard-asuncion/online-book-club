@@ -10,13 +10,14 @@ const Chat = ({ bookRoom }: ChatProps) => {
     messages, 
     newMessage, 
     setNewMessage, 
-    handleSubmit 
+    handleSubmit,
+    handleKeyDown 
   } = useChat({ bookRoom });
 
   return (
     <section className="flex flex-col h-full bg-amber-400">
-      <div className="shrink-0 px-4 sm:px-12 py-5">
-        <h1>Book: {bookRoom}</h1>
+      <div className="shrink-0 px-4 sm:px-12 py-5 font-bold">
+        <h1>Room: {bookRoom}</h1>
       </div>
       <div className="
             px-4 
@@ -38,12 +39,13 @@ const Chat = ({ bookRoom }: ChatProps) => {
       </div>
       <form onSubmit={handleSubmit} className="shrink-0 flex items-end space-x-2 px-4 sm:px-12 py-5 bg-blue-500">
         <TextareaAutosize
-          className="flex-1 p-2 border rounded-lg resize-none" 
+          className="flex-1 p-2 border rounded-lg resize-none bg-white" 
           placeholder="Type your message here..."
           onChange={(e) => setNewMessage(e.target.value)}
           value={newMessage} 
           minRows={2}
           maxRows={6}
+          onKeyDown={handleKeyDown}
         />
         <button type="submit" className="p-2 bg-blue-500 text-white rounded-lg">
           Send
