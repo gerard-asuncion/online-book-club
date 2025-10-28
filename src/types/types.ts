@@ -1,9 +1,9 @@
-import type { FieldValue } from "firebase/firestore"
+import type { Timestamp } from "firebase/firestore";
 
 export interface Message {
     id: string,
     text: string,
-    createdAt: FieldValue,
+    createdAt: Timestamp | Date,
     user: string,
     userId: string,
     room: string

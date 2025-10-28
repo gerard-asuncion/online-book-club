@@ -8,7 +8,10 @@ import { setIsAuth, clearAuth } from '../features/auth/authSlice';
 const cookies = new Cookies();
 
 const useAuth = () => {
-  
+
+  const sidebarKey: string = import.meta.env.VITE_LOCALSTORAGE_SIDEBAR_KEY;
+  const roomKey: string = import.meta.env.VITE_LOCALSTORAGE_CHAT_ROOM_KEY;
+
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -34,6 +37,8 @@ const useAuth = () => {
   const userSignOut = async () => {
     await signOut(auth);
     cookies.remove("auth-token");
+    localStorage.removeItem(roomKey);
+    localStorage.removeItem(sidebarKey);
     dispatch(clearAuth());
     navigate("/welcome", { replace: true });
   }
