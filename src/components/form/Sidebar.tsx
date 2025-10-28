@@ -1,6 +1,7 @@
 import Button from "../ui/Button";
 import useAuth from "../../hooks/useAuth";
 import SidebarBookCard from "../ui/SidebarBookCard";
+import { auth } from '../../firebase-config'; 
 import type { SidebarProps } from "../../types/props";
 
 interface FakeUser {
@@ -8,9 +9,11 @@ interface FakeUser {
     books: string[];
 }
 
+const displayUserName = (): string => auth.currentUser?.displayName ? auth.currentUser.displayName : "Unknown User"
+
 const fakeUsersData: FakeUser[] = [
     {
-        username: "gerard_muns",
+        username: displayUserName(),
         books: ["book1", "book2", "book3"]
     }
 ]
