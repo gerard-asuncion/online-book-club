@@ -2,15 +2,15 @@ import type { ScreenProps } from "../../types/props"
 
 const Screen = ({ children, page }: ScreenProps) => {
 
-  if(page == "center"){
+  if(page === "center"){
     return (
       <div className="flex items-center justify-center h-screen w-screen">
         {children}
       </div>
     )
-  } else if(page == "full"){
+  } else if(page === "full"){
     return (
-      <div className="h-screen">
+      <div className="h-screen flex flex-col overflow-hidden">
         {children}
       </div>
     )
@@ -21,7 +21,6 @@ const Screen = ({ children, page }: ScreenProps) => {
       </div>
     )
   }
-
 }
 
 export default Screen

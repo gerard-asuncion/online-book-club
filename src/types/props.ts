@@ -20,7 +20,7 @@ export interface SidebarProps {
 }
 
 export interface UseAuthProps {
-  setIsAuth: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsAuth: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface UseChatProps {
@@ -35,4 +35,10 @@ export interface ScreenProps {
 export interface ButtonProps {
     children: string,
     onClick: React.MouseEventHandler<HTMLButtonElement>;
+}
+
+export interface SidebarBookCardProps {
+    children: string,
+    setBookRoom: React.Dispatch<React.SetStateAction<string>>,
+    hideSidebar: () => void;
 }

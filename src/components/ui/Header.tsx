@@ -4,7 +4,7 @@ const Header = ({ openSidebar, setOpenSidebar }: HeaderProps) => {
 
   return (
     <header className="bg-white p-4 shadow-md sticky top-0 z-10">
-      <div className="flex justify-between items-center gap-10 sm:px-8">      
+      <div className="flex justify-between items-center sm:px-8">      
         <h1 className="text-2xl font-bold text-gray-800 tracking-wider">
           ONLINE BOOK CLUB
         </h1>

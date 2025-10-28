@@ -55,15 +55,17 @@ function AppPage() {
   return (
     <Screen page="full">
         <Header openSidebar={openSidebar} setOpenSidebar={setOpenSidebar} />
-        <section className="md:grid md:grid-cols-3 h-screen">
+        <section className="md:grid md:grid-cols-3 grow overflow-hidden">
             <div className={`
               ${changeWindowLayout(openSidebar)}
-              bg-amber-500`}>
+              overflow-hidden`}>
                 <Window bookRoom={bookRoom} />
             </div>
             <div className={`
               ${changeSidebarLayout(openSidebar)}
-            bg-green-600`}>
+              bg-green-600
+              overflow-hidden
+              px-4`}>
                 <Sidebar 
                   setOpenSidebar={setOpenSidebar} 
                   setBookRoom={setBookRoom}
