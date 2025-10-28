@@ -1,11 +1,5 @@
 import { Timestamp } from "firebase/firestore";
 
-/**
- * Converteix un Timestamp de Firestore a un string de data i hora.
- * @param timestamp El Timestamp de Firestore.
- * @returns String formatat com a "DD-MM-YYYY / HH:MMh"
- */
-
 export const formatTimestamp = (timestamp: Timestamp | Date | undefined): string => {
   if (!timestamp) return "Hora desconeguda";
 
