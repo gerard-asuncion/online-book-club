@@ -14,7 +14,9 @@ export interface HeaderProps {
 }
 
 export interface SidebarProps {
-    setBookRoom: React.Dispatch<React.SetStateAction<string>>;
+    setOpenSidebar: React.Dispatch<React.SetStateAction<boolean>>,
+    setBookRoom: React.Dispatch<React.SetStateAction<string>>,
+    mdBreakpoint: number;
 }
 
 export interface UseAuthProps {
