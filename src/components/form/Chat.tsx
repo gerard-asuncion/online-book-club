@@ -22,7 +22,8 @@ const Chat = ({ bookRoom }: ChatProps) => {
             px-4 
             sm:px-12 
             flex-1 
-            overflow-y-auto">
+            overflow-y-auto
+            scrollbar">
         {messages.map((message: Message) => (
           <article key={message.id} className="flex justify-between my-1 p-1 border">
             <div>
