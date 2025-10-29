@@ -1,6 +1,6 @@
-import type { ScreenProps } from "../../types/props"
+import type { ScreenFrameProps } from "../../types/props"
 
-const Screen = ({ children, page }: ScreenProps) => {
+const ScreenFrame = ({ children, page }: ScreenFrameProps) => {
 
   if(page === "center"){
     return (
@@ -23,4 +23,4 @@ const Screen = ({ children, page }: ScreenProps) => {
   }
 }
 
-export default Screen
+export default ScreenFrame;

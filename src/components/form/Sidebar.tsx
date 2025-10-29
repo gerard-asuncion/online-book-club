@@ -20,7 +20,7 @@ const fakeUsersData: FakeUser[] = [
 
 const gridCols = `grid-cols-${fakeUsersData[0].books.length}`;
 
-const Sidebar = ({ setOpenSidebar, setBookRoom, mdBreakpoint }: SidebarProps) => {
+const Sidebar = ({ setOpenSidebar, setBookRoom, setDisplayedWindow, mdBreakpoint }: SidebarProps) => {
 
     const { userSignOut } = useAuth()
 
@@ -31,28 +31,32 @@ const Sidebar = ({ setOpenSidebar, setBookRoom, mdBreakpoint }: SidebarProps) =>
     }
 
     return (
-        <div className="h-full flex flex-col justify-around p-2">
-            <section className="border-2 p-3 bg-white">
-                Username: 
+        <section className="h-full flex flex-col justify-around p-2">
+            <article className="border-2 p-3 bg-white">
+                Username:
                 <div className="font-bold">
                     {fakeUsersData[0].username}
                 </div>
-            </section>
+            </article>
             <ul className={`grid ${gridCols} gap-2`}>
                 {fakeUsersData[0].books.map((book: string, index: number) =>
                     <SidebarBookCard 
                         key={index}
                         setBookRoom={setBookRoom}
+                        setDisplayedWindow={setDisplayedWindow}
                         hideSidebar={hideSidebar}
                         >
                         {book}
                     </SidebarBookCard>
                 )}
             </ul>
+            <Button onClick={setDisplayedWindow("settings")}>
+                Settings
+            </Button>
             <Button onClick={userSignOut}>
                 Sign Out
             </Button>
-        </div>
+        </section>
     )
 }
 

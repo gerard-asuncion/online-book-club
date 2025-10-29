@@ -11,13 +11,13 @@ import {
 } from 'firebase/firestore';
 import { auth, db } from '../firebase-config'; 
 import type { Message } from '../types/types'; 
-import type { UseChatProps } from '../types/props'
+import type { OnlyBookRoomProps } from '../types/props'
 import type { DocumentData } from 'firebase/firestore'
 
 const MESSAGES_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION;
 const messagesRef: CollectionReference<DocumentData> = collection(db, MESSAGES_COLLECTION);
 
-export const useChat = ({ bookRoom }: UseChatProps) => {
+export const useChat = ({ bookRoom }: OnlyBookRoomProps) => {
   
   const [newMessage, setNewMessage] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);

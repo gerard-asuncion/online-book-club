@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'; 
-import Screen from '../components/ui/Screen';
+import Screen from '../components/ui/ScreenFrame';
 import Button from '../components/ui/Button';
 
 const ErrorPage = () => {

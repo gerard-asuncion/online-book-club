@@ -1,12 +1,12 @@
 import Auth from "../components/form/Auth";
-import Screen from "../components/ui/Screen";
+import ScreenFrame from "../components/ui/ScreenFrame";
 
 const WelcomePage = () => {
 
     return (
-        <Screen page="center">
+        <ScreenFrame page="center">
              <Auth />
-        </Screen>
+        </ScreenFrame>
     )
 
 }
