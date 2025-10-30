@@ -12,14 +12,13 @@ import {
 import { auth, db } from '../firebase-config';
 import type { DocumentData } from 'firebase/firestore';
 import type { Message } from '../types/types'; 
-import type { UseChatProps } from '../types/props';
 
 const MESSAGES_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION;
 const messagesRef: CollectionReference<DocumentData> = collection(db, MESSAGES_COLLECTION);
 
-export const useChat = ({ bookRoom }: UseChatProps) => {
+export const useChat = (bookRoom: string) => {
   
-  const [newMessage, setNewMessage] = useState('');
+  const [newMessage, setNewMessage] = useState<string>("");
   const [messages, setMessages] = useState<Message[]>([]);
 
   useEffect(() => {

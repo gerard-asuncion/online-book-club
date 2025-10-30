@@ -4,26 +4,25 @@ import { auth, provider } from '../firebase-config';
 import Cookies from 'universal-cookie';
 import { useAppDispatch } from '../app/hooks';
 import { setIsAuth, clearAuth } from '../features/auth/authSlice';
+import { clearBookRoom } from '../features/bookRoom/bookRoomSlice';
+import { setIsWelcome } from '../features/mainContentRoute/mainContentRouteSlice';
 
 const cookies = new Cookies();
 
 const useAuth = () => {
 
-  const sidebarKey: string = import.meta.env.VITE_LOCALSTORAGE_SIDEBAR_KEY;
-  const roomKey: string = import.meta.env.VITE_LOCALSTORAGE_CHAT_ROOM_KEY;
-
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const signUp = async () => {
-    console.log("Sign Up");
+  const register = async () => {
+    console.log("register");
   }
 
-  const signInWithEmailAndPassword = async () => {
-    console.log("Sign In With Email...");
+  const loginWithEmailAndPassword = async () => {
+    console.log("Login With Email...");
   }
 
-  const signInWithGoogle = async () => {
+  const loginWithGoogle = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
       cookies.set("auth-token", result.user.refreshToken);
@@ -34,20 +33,20 @@ const useAuth = () => {
     } 
   };
 
-  const userSignOut = async () => {
+  const logout = async () => {
     await signOut(auth);
     cookies.remove("auth-token");
-    localStorage.removeItem(roomKey);
-    localStorage.removeItem(sidebarKey);
     dispatch(clearAuth());
-    navigate("/welcome", { replace: true });
+    dispatch(clearBookRoom());
+    dispatch(setIsWelcome());
+    navigate("/sign-in", { replace: true });
   }
 
   return {
-    signUp,
-    signInWithEmailAndPassword,
-    signInWithGoogle,
-    userSignOut
+    register,
+    loginWithEmailAndPassword,
+    loginWithGoogle,
+    logout
   };
 
 };

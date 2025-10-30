@@ -14,7 +14,7 @@ const Chat = () => {
     setNewMessage, 
     handleSubmit,
     handleKeyDown 
-  } = useChat({bookRoom});
+  } = useChat(bookRoom);
 
   return (
     <MainContentFrame>

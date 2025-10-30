@@ -7,7 +7,7 @@ const RequireAuth = () => {
     const isAuth = useAppSelector(selectIsAuthenticated);
 
     if (!isAuth) {
-		return <Navigate to="/sign-in" replace />;
+		return <Navigate to="/login" replace />;
 	}
 
 	return <Outlet />;

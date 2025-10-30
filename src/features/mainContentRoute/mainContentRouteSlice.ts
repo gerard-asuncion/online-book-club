@@ -49,6 +49,7 @@ const mainContentRouteSlice = createSlice({
 export const { setIsWelcome,
   setIsChat,
   setIsSettings, 
-  setIsSearch, 
-  clearMainContentRoute } = mainContentRouteSlice.actions;
+  setIsSearch,
+  clearMainContentRoute
+  } = mainContentRouteSlice.actions;
 export default mainContentRouteSlice.reducer;

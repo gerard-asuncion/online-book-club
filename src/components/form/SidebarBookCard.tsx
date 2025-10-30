@@ -1,26 +1,34 @@
-import useBookRoom from "../../hooks/useBookRoom";
 import useSidebar from "../../hooks/useSidebar";
-import useMainContentRouter from "../../hooks/useMainContentRouter";
-import type { SidebarBookCardProps } from "../../types/props";
+import { showHideAnything } from "../../utils/classNameUtils";
+import type { OnlyStringChildrenProps } from "../../types/props";
 
-const SidebarBookCard = ({ children }: SidebarBookCardProps) => {
+const SidebarBookCard = ({ children }: OnlyStringChildrenProps) => {
 
-  const { handleSetBookRoom } = useBookRoom();
-  const { hideSidebarInMobile } = useSidebar();
-  const { switchContent } = useMainContentRouter();
+  const count = 3;
+  
+  const { handleBookCardClick } = useSidebar();
 
   return (
     <li className="flex justify-center items-center border-2 row-span-1 bg-white">
-        <button onClick={() => {
-          switchContent("chat");
-          handleSetBookRoom(children);
-          hideSidebarInMobile();}}
-            className="md:flex p-3 cursor-pointer">
+        <button 
+          onClick={() => {handleBookCardClick(children)}}
+          className="md:flex md:justify-between p-3 cursor-pointer">
             <div className="mr-2">
                 Chat room for: 
             </div>
-            <div className="font-bold">
+            <div className="font-bold mr-4">
                 {children}
+            </div>
+            <div className={`
+                    ${showHideAnything(count)}
+                    flex
+                    justify-center
+                    items-center
+                    rounded-full
+                    bg-red-500
+                    h-5
+                    w-5`}>
+              {count}
             </div>
         </button>
     </li>

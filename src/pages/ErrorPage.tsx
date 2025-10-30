@@ -3,6 +3,7 @@ import Screen from '../components/ui/ScreenFrame';
 import Button from '../components/ui/Button';
 
 const ErrorPage = () => {
+  
   const navigate = useNavigate(); 
 
   const handleReturn = () => {

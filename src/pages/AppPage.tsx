@@ -12,11 +12,13 @@ function AppPage() {
 
   const windowSize = window.innerWidth;
 
-  const { isOpenSidebar, changeStoredWindowWidth } = useSidebar();
+  const { isOpenSidebar, showSidebar, changeStoredWindowWidth } = useSidebar();
 
   useEffect(()  => {
-    changeStoredWindowWidth(windowSize)
-  }, [windowSize])
+    const mdBreakpoint: number = 768;
+    changeStoredWindowWidth(windowSize);
+    showSidebar(windowSize > mdBreakpoint);
+  }, [windowSize]);
 
   return (
     <ScreenFrame page="full">
