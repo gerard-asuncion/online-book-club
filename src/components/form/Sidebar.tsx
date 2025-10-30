@@ -1,6 +1,7 @@
 import Button from "../ui/Button";
 import useAuth from "../../hooks/useAuth";
 import useSidebar from "../../hooks/useSidebar";
+import useMainContentRouter from "../../hooks/useMainContentRouter";
 import SidebarBookCard from "./SidebarBookCard";
 import { auth } from '../../firebase-config'; 
 
@@ -24,6 +25,7 @@ const Sidebar = () => {
 
     const { userSignOut } = useAuth();
     const { hideSidebarInMobile } = useSidebar();
+    const { switchContent } = useMainContentRouter();
 
     return (
         <section className="h-full grid grid-cols-1 justify-around p-2 gap-2">
@@ -45,21 +47,24 @@ const Sidebar = () => {
             <div className="row-span-1">
                 <Button onClick={() => {
                     hideSidebarInMobile();
+                    switchContent("search");
                 }}>
                     Add books
                 </Button> 
             </div>
             <div className="row-span-1">
                 <Button onClick={() => {
-                     hideSidebarInMobile();
+                    hideSidebarInMobile();
+                    switchContent("settings");
                 }}>
                     Settings
                 </Button>
             </div>
             <div className="row-span-1">
                 <Button onClick={() => {
-                     hideSidebarInMobile();
-                     userSignOut();
+                    hideSidebarInMobile();
+                    switchContent("");
+                    userSignOut();
                 }}>
                     Sign Out
                 </Button> 
