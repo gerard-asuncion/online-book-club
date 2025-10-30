@@ -3,7 +3,7 @@ import MainContentFrame from "../ui/MainContentFrame";
 const Settings = () => {
   return (
     <MainContentFrame>
-        <div>Settings set</div>
+        Settings...
     </MainContentFrame>
   )
 }

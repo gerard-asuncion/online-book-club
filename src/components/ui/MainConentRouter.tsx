@@ -1,4 +1,7 @@
-import Chat from "../form/Chat"
+import Chat from "../form/Chat";
+import Settings from "../form/Settings";
+import Search from "../form/Search";
+import Welcome from "../form/Welcome";
 import MainContentFrame from "./MainContentFrame";
 import useMainContentRouter from "../../hooks/useMainContentRouter";
 
@@ -12,21 +15,15 @@ const MainContentRouter = () => {
     )
   } else if(isSettings){
     return (
-      <MainContentFrame>
-        <div>Settings</div>
-      </MainContentFrame>
+      <Settings />
     )
   } else if(isSearch){
     return (
-      <MainContentFrame>
-        <div>Search</div>
-      </MainContentFrame>
+      <Search />
     )
   } else if(isWelcome) {
     return (
-      <MainContentFrame>
-        <div>Welcome!</div>
-      </MainContentFrame>
+      <Welcome />
     )
   } else {
     return (

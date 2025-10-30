@@ -1,7 +1,7 @@
 import Auth from "../components/form/Auth";
 import ScreenFrame from "../components/ui/ScreenFrame";
 
-const WelcomePage = () => {
+const LoginPage = () => {
 
     return (
         <ScreenFrame page="center">
@@ -11,4 +11,4 @@ const WelcomePage = () => {
 
 }
 
-export default WelcomePage;
+export default LoginPage;

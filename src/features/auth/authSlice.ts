@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import Cookies from 'universal-cookie';
-import type { AuthSliceInitialState } from '../../types/types';
+import type { AuthSliceInitialState } from '../../types/redux';
 
 const cookies = new Cookies();
 
