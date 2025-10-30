@@ -1,11 +1,12 @@
 import { useChat } from '../../hooks/useChat';
 import { formatTimestamp } from '../../utils/dateUtils';
-import AppWindowFrame from '../ui/AppWindowFrame';
+import MainContentFrame from '../ui/MainContentFrame';
 import type { Message } from '../../types/types';
-import type { OnlyBookRoomProps } from '../../types/props';
 import TextareaAutosize from 'react-textarea-autosize';
+import useBookRoom from '../../hooks/useBookRoom';
+const Chat = () => {
 
-const Chat = ({ bookRoom }: OnlyBookRoomProps) => {
+  const { bookRoom } = useBookRoom();
  
   const { 
     messages, 
@@ -13,10 +14,10 @@ const Chat = ({ bookRoom }: OnlyBookRoomProps) => {
     setNewMessage, 
     handleSubmit,
     handleKeyDown 
-  } = useChat({ bookRoom });
+  } = useChat({bookRoom});
 
   return (
-    <AppWindowFrame>
+    <MainContentFrame>
       <div className="shrink-0 px-4 sm:px-12 py-5 text-lg">
         <h1>Room: {bookRoom}</h1>
       </div>
@@ -52,7 +53,7 @@ const Chat = ({ bookRoom }: OnlyBookRoomProps) => {
           Send
         </button>
       </form>
-    </AppWindowFrame>
+    </MainContentFrame>
   );
 };
 

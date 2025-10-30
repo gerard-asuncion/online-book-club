@@ -1,43 +1,31 @@
 import Header from "../components/ui/Header";
 import Sidebar from "../components/form/Sidebar";
-import AppWindow from "../components/ui/AppWindow";
+import MainContentRouter from "../components/ui/MainConentRouter";
 import ScreenFrame from "../components/ui/ScreenFrame";
-import useAppPageUIState from "../hooks/useAppPageUIState";
+import useSidebar from "../hooks/useSidebar";
 import { 
   changeWindowLayout, 
   changeSidebarLayout } from "../utils/classNameUtils";
 
 function AppPage() {
- 
-  const { openSidebar, 
-        setOpenSidebar,
-        bookRoom,
-        setBookRoom,
-        displayedWindow,
-        setDisplayedWindow,
-        mdBreakpoint } = useAppPageUIState();
+
+  const { isOpenSidebar } = useSidebar();
 
   return (
     <ScreenFrame page="full">
-        <Header openSidebar={openSidebar} setOpenSidebar={setOpenSidebar} />
+        <Header />
         <section className="md:grid md:grid-cols-3 grow overflow-hidden">
             <div className={`
-              ${changeWindowLayout(openSidebar)}
+              ${changeWindowLayout(isOpenSidebar)}
               overflow-hidden`}>
-                <AppWindow
-                  displayedWindow={displayedWindow}
-                  bookRoom={bookRoom} />
+                <MainContentRouter />
             </div>
             <div className={`
-              ${changeSidebarLayout(openSidebar)}
+              ${changeSidebarLayout(isOpenSidebar)}
               bg-green-600
               overflow-hidden
               px-4`}>
-                <Sidebar 
-                  setOpenSidebar={setOpenSidebar}
-                  setDisplayedWindow={setDisplayedWindow}
-                  setBookRoom={setBookRoom}
-                  mdBreakpoint={mdBreakpoint} />
+                <Sidebar />
             </div>
         </section>
     </ScreenFrame>

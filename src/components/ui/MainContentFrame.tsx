@@ -1,6 +1,6 @@
 import type { OnlyReactNodeChildrenProps } from '../../types/props'
 
-const AppWindowFrame = ({ children }: OnlyReactNodeChildrenProps) => {
+const MainContentFrame = ({ children }: OnlyReactNodeChildrenProps) => {
 
   return (
     <section className="flex flex-col h-full bg-amber-400">
@@ -9,4 +9,4 @@ const AppWindowFrame = ({ children }: OnlyReactNodeChildrenProps) => {
   )
 }
 
-export default AppWindowFrame;
+export default MainContentFrame;

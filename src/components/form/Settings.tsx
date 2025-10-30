@@ -1,10 +1,10 @@
-import AppWindowFrame from "../ui/AppWindowFrame";
+import MainContentFrame from "../ui/MainContentFrame";
 
 const Settings = () => {
   return (
-    <AppWindowFrame>
+    <MainContentFrame>
         <div>Settings set</div>
-    </AppWindowFrame>
+    </MainContentFrame>
   )
 }
 
