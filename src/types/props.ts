@@ -1,22 +1,16 @@
 import type { ReactNode } from "react";
 
-export interface WindowProps {
-    bookRoom: string;
+export interface OnlyStringChildrenProps {
+    children: string;
 }
 
-export interface ChatProps {
-    bookRoom: string;
+export interface OnlyReactNodeChildrenProps {
+    children: ReactNode;
 }
 
-export interface HeaderProps {
-    openSidebar: boolean,
-    setOpenSidebar: React.Dispatch<React.SetStateAction<boolean>>;
-}
+export interface SidebarBookCardProps {
+    children: string, 
 
-export interface SidebarProps {
-    setOpenSidebar: React.Dispatch<React.SetStateAction<boolean>>,
-    setBookRoom: React.Dispatch<React.SetStateAction<string>>,
-    mdBreakpoint: number;
 }
 
 export interface UseAuthProps {
@@ -24,21 +18,15 @@ export interface UseAuthProps {
 }
 
 export interface UseChatProps {
-    bookRoom: string;
+    bookRoom: string,
 }
 
-export interface ScreenProps {
+export interface ScreenFrameProps {
     children: ReactNode,
     page: string;
 };
 
 export interface ButtonProps {
     children: string,
-    onClick: React.MouseEventHandler<HTMLButtonElement>;
-}
-
-export interface SidebarBookCardProps {
-    children: string,
-    setBookRoom: React.Dispatch<React.SetStateAction<string>>,
-    hideSidebar: () => void;
+    onClick: React.MouseEventHandler<HTMLButtonElement> | void;
 }

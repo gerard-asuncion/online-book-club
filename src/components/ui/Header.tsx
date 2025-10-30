@@ -1,6 +1,8 @@
-import type { HeaderProps } from "../../types/props"
+import useSidebar from "../../hooks/useSidebar";
 
-const Header = ({ openSidebar, setOpenSidebar }: HeaderProps) => {
+const Header = () => {
+
+  const { isOpenSidebar, showSidebar } = useSidebar();
 
   return (
     <header className="bg-white p-4 shadow-md sticky top-0 z-10">
@@ -9,7 +11,7 @@ const Header = ({ openSidebar, setOpenSidebar }: HeaderProps) => {
           ONLINE BOOK CLUB
         </h1>
         <button      
-          onClick={() => setOpenSidebar(!openSidebar)}   
+          onClick={() => showSidebar(!isOpenSidebar)}   
           className="p-2 rounded-full text-gray-600 cursor-pointer">        
           <div className="flex flex-col space-y-1.5 w-6 h-5 justify-center items-center">
             <div className="w-5 h-2 bg-current rounded-full"></div> 

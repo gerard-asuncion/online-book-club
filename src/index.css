@@ -4,10 +4,4 @@
   .scrollbar::-webkit-scrollbar {
     display: none;
   }
-
-  .scrollbar::-webkit-scrollbar:hover {
-    display: block;
-    width: 18px;
-  }
- 
 }

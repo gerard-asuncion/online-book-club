@@ -6,9 +6,5 @@ export interface Message {
     createdAt: Timestamp | Date,
     user: string,
     userId: string,
-    room: string
-}
-
-export interface AuthSliceInitialState {
-    isAuth: boolean;
+    room: string;
 }

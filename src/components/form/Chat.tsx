@@ -1,10 +1,12 @@
 import { useChat } from '../../hooks/useChat';
 import { formatTimestamp } from '../../utils/dateUtils';
+import MainContentFrame from '../ui/MainContentFrame';
 import type { Message } from '../../types/types';
-import type { ChatProps } from '../../types/props';
 import TextareaAutosize from 'react-textarea-autosize';
+import useBookRoom from '../../hooks/useBookRoom';
+const Chat = () => {
 
-const Chat = ({ bookRoom }: ChatProps) => {
+  const { bookRoom } = useBookRoom();
  
   const { 
     messages, 
@@ -12,11 +14,11 @@ const Chat = ({ bookRoom }: ChatProps) => {
     setNewMessage, 
     handleSubmit,
     handleKeyDown 
-  } = useChat({ bookRoom });
+  } = useChat({bookRoom});
 
   return (
-    <section className="flex flex-col h-full bg-amber-400">
-      <div className="shrink-0 px-4 sm:px-12 py-5 font-bold">
+    <MainContentFrame>
+      <div className="shrink-0 px-4 sm:px-12 py-5 text-lg">
         <h1>Room: {bookRoom}</h1>
       </div>
       <div className="
@@ -28,7 +30,7 @@ const Chat = ({ bookRoom }: ChatProps) => {
         {messages.map((message: Message) => (
           <article key={message.id} className="flex justify-between my-1 p-1 border">
             <div>
-              <span className="font-bold">{message.user}:</span> 
+              <span className="font-bold">{message.user}: </span> 
               {message.text}
             </div>
             <div>
@@ -51,7 +53,7 @@ const Chat = ({ bookRoom }: ChatProps) => {
           Send
         </button>
       </form>
-    </section>
+    </MainContentFrame>
   );
 };
 

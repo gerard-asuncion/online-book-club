@@ -9,10 +9,10 @@ import {
   collection,
   CollectionReference,
 } from 'firebase/firestore';
-import { auth, db } from '../firebase-config'; 
+import { auth, db } from '../firebase-config';
+import type { DocumentData } from 'firebase/firestore';
 import type { Message } from '../types/types'; 
-import type { UseChatProps } from '../types/props'
-import type { DocumentData } from 'firebase/firestore'
+import type { UseChatProps } from '../types/props';
 
 const MESSAGES_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION;
 const messagesRef: CollectionReference<DocumentData> = collection(db, MESSAGES_COLLECTION);

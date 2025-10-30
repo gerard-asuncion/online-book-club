@@ -1,8 +1,9 @@
 import Button from "../ui/Button";
 import useAuth from "../../hooks/useAuth";
-import SidebarBookCard from "../ui/SidebarBookCard";
+import useSidebar from "../../hooks/useSidebar";
+import useMainContentRouter from "../../hooks/useMainContentRouter";
+import SidebarBookCard from "./SidebarBookCard";
 import { auth } from '../../firebase-config'; 
-import type { SidebarProps } from "../../types/props";
 
 interface FakeUser {
     username: string,
@@ -20,39 +21,55 @@ const fakeUsersData: FakeUser[] = [
 
 const gridCols = `grid-cols-${fakeUsersData[0].books.length}`;
 
-const Sidebar = ({ setOpenSidebar, setBookRoom, mdBreakpoint }: SidebarProps) => {
+const Sidebar = () => {
 
-    const { userSignOut } = useAuth()
-
-    const hideSidebar = (): void => {
-        if(window.innerWidth < mdBreakpoint){
-            setOpenSidebar(false);
-        }
-    }
+    const { userSignOut } = useAuth();
+    const { hideSidebarInMobile } = useSidebar();
+    const { switchContent } = useMainContentRouter();
 
     return (
-        <div className="h-full flex flex-col justify-around p-2">
-            <section className="border-2 p-3 bg-white">
-                Username: 
-                <div className="font-bold">
+        <section className="h-full grid grid-cols-1 justify-around p-2 gap-2">
+            <article className="border-2 p-2 bg-white row-span-1">
+                Username:
+                <h2 className="font-bold">
                     {fakeUsersData[0].username}
-                </div>
-            </section>
-            <ul className={`grid ${gridCols} gap-2`}>
+                </h2>
+            </article>
+            <ul className={`grid ${gridCols} p-2 gap-2 row-span-3`}>
                 {fakeUsersData[0].books.map((book: string, index: number) =>
                     <SidebarBookCard 
                         key={index}
-                        setBookRoom={setBookRoom}
-                        hideSidebar={hideSidebar}
                         >
                         {book}
                     </SidebarBookCard>
                 )}
             </ul>
-            <Button onClick={userSignOut}>
-                Sign Out
-            </Button>
-        </div>
+            <div className="row-span-1">
+                <Button onClick={() => {
+                    hideSidebarInMobile();
+                    switchContent("search");
+                }}>
+                    Add books
+                </Button> 
+            </div>
+            <div className="row-span-1">
+                <Button onClick={() => {
+                    hideSidebarInMobile();
+                    switchContent("settings");
+                }}>
+                    Settings
+                </Button>
+            </div>
+            <div className="row-span-1">
+                <Button onClick={() => {
+                    hideSidebarInMobile();
+                    switchContent("");
+                    userSignOut();
+                }}>
+                    Sign Out
+                </Button> 
+            </div>
+        </section>
     )
 }
 
