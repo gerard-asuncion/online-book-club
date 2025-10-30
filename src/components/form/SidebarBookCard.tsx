@@ -5,16 +5,14 @@ import type { SidebarBookCardProps } from "../../types/props";
 const SidebarBookCard = ({ children }: SidebarBookCardProps) => {
 
   const { handleSetBookRoom } = useBookRoom();
-  const { mobileHideSidebar } = useSidebar();
-
-  const mdBreakpoint: number = 768;
+  const { hideSidebarInMobile } = useSidebar();
 
   return (
-    <li className="flex justify-center items-center border-2 col-span-1 bg-white">
+    <li className="flex justify-center items-center border-2 row-span-1 bg-white">
         <button onClick={() => {
           handleSetBookRoom(children);
-          mobileHideSidebar(mdBreakpoint);}}
-            className="md:flex p-3">
+          hideSidebarInMobile();}}
+            className="md:flex p-3 cursor-pointer">
             <div className="mr-2">
                 Chat room for: 
             </div>

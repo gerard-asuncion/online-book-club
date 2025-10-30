@@ -1,8 +1,8 @@
 import Button from "../ui/Button";
 import useAuth from "../../hooks/useAuth";
+import useSidebar from "../../hooks/useSidebar";
 import SidebarBookCard from "./SidebarBookCard";
 import { auth } from '../../firebase-config'; 
-import useSidebar from "../../hooks/useSidebar";
 
 interface FakeUser {
     username: string,
@@ -22,17 +22,18 @@ const gridCols = `grid-cols-${fakeUsersData[0].books.length}`;
 
 const Sidebar = () => {
 
-    const { userSignOut } = useAuth()
+    const { userSignOut } = useAuth();
+    const { hideSidebarInMobile } = useSidebar();
 
     return (
-        <section className="h-full grid grid-col justify-around p-2">
-            <article className="border-2 p-3 bg-white">
+        <section className="h-full grid grid-cols-1 justify-around p-2 gap-2">
+            <article className="border-2 p-2 bg-white row-span-1">
                 Username:
-                <div className="font-bold">
+                <h2 className="font-bold">
                     {fakeUsersData[0].username}
-                </div>
+                </h2>
             </article>
-            <ul className={`grid ${gridCols} gap-2`}>
+            <ul className={`grid ${gridCols} p-2 gap-2 row-span-3`}>
                 {fakeUsersData[0].books.map((book: string, index: number) =>
                     <SidebarBookCard 
                         key={index}
@@ -41,12 +42,28 @@ const Sidebar = () => {
                     </SidebarBookCard>
                 )}
             </ul>
-            <Button onClick={() => {}}>
-                Settings
-            </Button>
-            <Button onClick={userSignOut}>
-                Sign Out
-            </Button>
+            <div className="row-span-1">
+                <Button onClick={() => {
+                    hideSidebarInMobile();
+                }}>
+                    Add books
+                </Button> 
+            </div>
+            <div className="row-span-1">
+                <Button onClick={() => {
+                     hideSidebarInMobile();
+                }}>
+                    Settings
+                </Button>
+            </div>
+            <div className="row-span-1">
+                <Button onClick={() => {
+                     hideSidebarInMobile();
+                     userSignOut();
+                }}>
+                    Sign Out
+                </Button> 
+            </div>
         </section>
     )
 }

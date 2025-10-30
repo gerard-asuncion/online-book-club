@@ -13,5 +13,6 @@ export interface BookRoomInitialState {
 }
 
 export interface SidebarInitialState {
+    windowWidth: number,
     openSidebar: boolean;
 }

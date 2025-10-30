@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import Header from "../components/ui/Header";
 import Sidebar from "../components/form/Sidebar";
 import MainContentRouter from "../components/ui/MainConentRouter";
@@ -9,7 +10,13 @@ import {
 
 function AppPage() {
 
-  const { isOpenSidebar } = useSidebar();
+  const windowSize = window.innerWidth;
+
+  const { isOpenSidebar, changeStoredWindowWidth } = useSidebar();
+
+  useEffect(()  => {
+    changeStoredWindowWidth(windowSize)
+  }, [windowSize])
 
   return (
     <ScreenFrame page="full">

@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import useBookRoom from './useBookRoom';
 import { 
   addDoc, 
   serverTimestamp, 
@@ -14,8 +13,6 @@ import { auth, db } from '../firebase-config';
 import type { DocumentData } from 'firebase/firestore';
 import type { Message } from '../types/types'; 
 import type { UseChatProps } from '../types/props';
-
-// import bookRoomSlice
 
 const MESSAGES_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION;
 const messagesRef: CollectionReference<DocumentData> = collection(db, MESSAGES_COLLECTION);
