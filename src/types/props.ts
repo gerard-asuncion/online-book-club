@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { Message } from "./types";
 
 export interface OnlyBookRoomProps {
     bookRoom: string;
