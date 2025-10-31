@@ -2,13 +2,15 @@ import MainContentFrame from "../ui/MainContentFrame";
 
 const Search = () => {
 
-    console.log("search");
-    
-    return (
+  console.log("search");
+
+  return (
     <MainContentFrame>
-        Search...
+      <div className="h-full text-white font-bold text-lg flex justify-center items-center">
+        <div>Search...</div>
+      </div>.
     </MainContentFrame>
-    )
-    }
+  )
+}
 
 export default Search;

@@ -28,7 +28,7 @@ const Sidebar = () => {
 
     return (
         <section className="h-full grid grid-cols-1 justify-around p-2 gap-2">
-            <article className="border-2 p-2 bg-white row-span-1">
+            <article className="p-2 border-2 border-white bg-gray-900 text-white row-span-1">
                 Username:
                 {isLoading && <p>Loading username...</p>}
                 {!isLoading && <p className="font-bold">{user?.displayName}</p>}

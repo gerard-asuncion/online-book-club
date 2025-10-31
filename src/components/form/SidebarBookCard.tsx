@@ -10,7 +10,7 @@ const SidebarBookCard = ({ children, user }: SidebarBookCardProps) => {
   const { handleBookCardClick } = useSidebar();
 
   return (
-    <li className="flex justify-center items-center border-2 row-span-1 bg-white">
+    <li className="flex justify-center items-center row-span-1 bg-white">
         <button 
           onClick={() => {
             handleBookCardClick(children);

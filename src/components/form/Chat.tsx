@@ -5,7 +5,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 import useBookRoom from '../../hooks/useBookRoom';
 import { formatTimestamp } from '../../utils/dateUtils';
 import type { Message } from "../../types/types";
-
+import { setMessageBackgroundColor } from '../../utils/classNameUtils';
 
 const Chat = () => {
 
@@ -30,7 +30,7 @@ const Chat = () => {
 
   return (
     <MainContentFrame>
-      <div className="shrink-0 px-4 sm:px-12 py-5 text-lg">
+      <div className="shrink-0 px-4 sm:px-12 py-4 text-white sm:text-xl">
         <h1>Room: {bookRoom}</h1>
       </div>
       <section
@@ -42,20 +42,29 @@ const Chat = () => {
           overflow-y-auto
           scrollbar">
         {messages.map((message: Message) => (
-          <article key={message.id} className="flex justify-between my-1 p-1 border">
-            <div>
-              <span className="font-bold">{message.user}: </span> 
-              {message.text}
+          <article 
+            key={message.id} 
+            className={`
+              ${setMessageBackgroundColor(null)}
+              flex 
+              flex-col 
+              justify-between 
+              my-1 p-2 sm:p-3
+              rounded-md
+            `}>
+            <div className='flex justify-between'>
+              <div className="font-bold sm:text-base text-sm">{message.user}</div> 
+              <div className='text-xs sm:text-sm text-gray-600'>{formatTimestamp(message.createdAt)}</div>
             </div>
-            <div>
-              {formatTimestamp(message.createdAt)}
+            <div className=''>
+              {message.text}
             </div>
           </article>
         ))}
       </section>
-      <form onSubmit={handleSubmitMessage} className="shrink-0 flex items-end space-x-2 px-4 sm:px-12 py-5 bg-blue-500">
+      <form onSubmit={handleSubmitMessage} className="shrink-0 flex items-stretch space-x-2 px-4 sm:px-12 py-5 bg-gray-900">
         <TextareaAutosize
-          className="flex-1 p-2 border rounded-lg resize-none bg-white" 
+          className="flex-1 p-2 rounded-lg resize-none bg-white" 
           placeholder="Type your message here..."
           onChange={(e) => setNewMessage(e.target.value)}
           value={newMessage} 
@@ -63,7 +72,7 @@ const Chat = () => {
           maxRows={6}
           onKeyDown={handleKeyDown}
         />
-        <button type="submit" className="p-2 bg-blue-500 text-white rounded-lg">
+        <button type="submit" className="font-bold p-2 ms:w-20 bg-white rounded-lg">
           Send
         </button>
       </form>
