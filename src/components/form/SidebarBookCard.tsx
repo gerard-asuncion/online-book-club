@@ -23,15 +23,13 @@ const SidebarBookCard = ({ children, user }: SidebarBookCardProps) => {
             md:flex 
             md:justify-start
             md:items-center
+            md:text-lg
             p-3 
             bg-white
             hover:bg-gray-900
             hover:text-white
             cursor-pointer">
-            <div className="mr-2">
-                Chat room for: 
-            </div>
-            <div className="font-bold mr-4">
+            <div className="font-bold">
                 {children}
             </div>
             <div className={`

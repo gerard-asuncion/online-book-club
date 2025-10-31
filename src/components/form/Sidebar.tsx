@@ -29,12 +29,15 @@ const Sidebar = () => {
     const { switchContent } = useMainContentRouter();
 
     return (
-        <section className="h-full grid grid-cols-1 grid-rows-[auto_1fr_auto] p-2 gap-2">
-            <article className="p-2 border-2 border-white text-white">
+        <section className="h-full grid grid-cols-1 grid-rows-[auto__auto_1fr_auto] p-2 gap-2">
+            <article className="p-2 border-2 border-white text-white md:text-lg">
                 Username:
                 {isLoading && <p>Loading username...</p>}
                 {!isLoading && <p className="font-bold">{user?.displayName}</p>}
             </article>
+            <div className="text-white px-1 py-3 md:text-lg">
+                Chat Rooms:
+            </div>
             <ul className={`grid grid-cols-1 grid-rows-4 gap-2`}>
                 {fakeUsersData[0].books.map((book: string, index: number) =>
                     <SidebarBookCard 
@@ -46,6 +49,7 @@ const Sidebar = () => {
                 {totalBooks < 4 && 
                     <div className="row-span-1 h-full">
                         <button className="
+                                    md:text-lg
                                     h-full
                                     w-full
                                     flex
