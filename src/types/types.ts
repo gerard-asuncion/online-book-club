@@ -6,5 +6,6 @@ export interface Message {
     createdAt: Timestamp | Date,
     user: string,
     userId: string,
-    room: string;
+    room: string,
+    seenBy: string[]
 }

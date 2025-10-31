@@ -1,3 +1,5 @@
+import type { Message } from "./types";
+
 export interface AuthSliceInitialState {
     isAuth: boolean;
 }
@@ -16,4 +18,8 @@ export interface BookRoomInitialState {
 export interface SidebarInitialState {
     windowWidth: number,
     openSidebar: boolean;
+}
+
+export interface MessagesInitialState {
+    messages: Message[];
 }

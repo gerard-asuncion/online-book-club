@@ -12,7 +12,7 @@ const Chat = () => {
   const { bookRoom } = useBookRoom();
  
   const { 
-    messages, 
+    messages,
     newMessage, 
     setNewMessage, 
     handleSubmitMessage,

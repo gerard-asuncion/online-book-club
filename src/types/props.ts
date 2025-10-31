@@ -1,20 +1,13 @@
 import type { ReactNode } from "react";
-import type { Message } from "./types";
-
-export interface OnlyBookRoomProps {
-    bookRoom: string;
-}
-
-export interface OnlyStringChildrenProps {
-    children: string;
-}
+import type { User } from 'firebase/auth';
 
 export interface OnlyReactNodeChildrenProps {
     children: ReactNode;
 }
 
 export interface SidebarBookCardProps {
-    children: string;
+    children: string,
+    user: User | null;
 }
 
 export interface UseAuthProps {

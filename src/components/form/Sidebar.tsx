@@ -1,5 +1,6 @@
 import Button from "../ui/Button";
 import useAuth from "../../hooks/useAuth";
+import useAuthUser from "../../hooks/useAuthUser";
 import useSidebar from "../../hooks/useSidebar";
 import useMainContentRouter from "../../hooks/useMainContentRouter";
 import SidebarBookCard from "./SidebarBookCard";
@@ -21,19 +22,22 @@ const gridCols = `grid-cols-${fakeUsersData[0].books.length}`;
 const Sidebar = () => {
 
     const { logout } = useAuth();
-    const { displayUsername, loadingUsername, hideSidebarInMobile } = useSidebar();
+    const { user, isLoading } = useAuthUser();
+    const { hideSidebarInMobile } = useSidebar();
     const { switchContent } = useMainContentRouter();
 
     return (
         <section className="h-full grid grid-cols-1 justify-around p-2 gap-2">
             <article className="border-2 p-2 bg-white row-span-1">
                 Username:
-                {loadingUsername && <p>Loading username...</p>}
-                {!loadingUsername && <p className="font-bold">{displayUsername}</p>}
+                {isLoading && <p>Loading username...</p>}
+                {!isLoading && <p className="font-bold">{user?.displayName}</p>}
             </article>
             <ul className={`grid ${gridCols} gap-2 row-span-3`}>
                 {fakeUsersData[0].books.map((book: string, index: number) =>
-                    <SidebarBookCard key={index}>
+                    <SidebarBookCard 
+                        key={index}
+                        user={user}>
                         {book}
                     </SidebarBookCard>
                 )}
