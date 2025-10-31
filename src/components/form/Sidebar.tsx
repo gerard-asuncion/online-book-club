@@ -13,7 +13,7 @@ interface FakeUser {
 const fakeUsersData: FakeUser[] = [
     {
         username: "name",
-        books: ["book1", "book2", "book3"]
+        books: ["Harry Potter", "Hamlet", "Ésser i temps"]
     }
 ]
 
