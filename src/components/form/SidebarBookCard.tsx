@@ -10,12 +10,24 @@ const SidebarBookCard = ({ children, user }: SidebarBookCardProps) => {
   const { handleBookCardClick } = useSidebar();
 
   return (
-    <li className="flex justify-center items-center row-span-1 bg-white">
+    <li className="
+          row-span-1
+          h-full">
         <button 
           onClick={() => {
             handleBookCardClick(children);
           }}
-          className="md:flex md:justify-between p-3 cursor-pointer">
+          className="
+            h-full
+            w-full
+            md:flex 
+            md:justify-start
+            md:items-center
+            p-3 
+            bg-white
+            hover:bg-gray-900
+            hover:text-white
+            cursor-pointer">
             <div className="mr-2">
                 Chat room for: 
             </div>
