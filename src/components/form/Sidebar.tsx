@@ -21,22 +21,19 @@ const gridCols = `grid-cols-${fakeUsersData[0].books.length}`;
 const Sidebar = () => {
 
     const { logout } = useAuth();
-    const { displayUserName, hideSidebarInMobile } = useSidebar();
+    const { displayUsername, loadingUsername, hideSidebarInMobile } = useSidebar();
     const { switchContent } = useMainContentRouter();
 
     return (
         <section className="h-full grid grid-cols-1 justify-around p-2 gap-2">
             <article className="border-2 p-2 bg-white row-span-1">
                 Username:
-                <h2 className="font-bold">
-                    {displayUserName}
-                </h2>
+                {loadingUsername && <p>Loading username...</p>}
+                {!loadingUsername && <p className="font-bold">{displayUsername}</p>}
             </article>
             <ul className={`grid ${gridCols} gap-2 row-span-3`}>
                 {fakeUsersData[0].books.map((book: string, index: number) =>
-                    <SidebarBookCard 
-                        key={index}
-                        >
+                    <SidebarBookCard key={index}>
                         {book}
                     </SidebarBookCard>
                 )}

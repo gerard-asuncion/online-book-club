@@ -4,6 +4,7 @@ import MainContentFrame from '../ui/MainContentFrame';
 import type { Message } from '../../types/types';
 import TextareaAutosize from 'react-textarea-autosize';
 import useBookRoom from '../../hooks/useBookRoom';
+
 const Chat = () => {
 
   const { bookRoom } = useBookRoom();
@@ -12,7 +13,7 @@ const Chat = () => {
     messages, 
     newMessage, 
     setNewMessage, 
-    handleSubmit,
+    handleSubmitMessage,
     handleKeyDown 
   } = useChat(bookRoom);
 
@@ -39,7 +40,7 @@ const Chat = () => {
           </article>
         ))}
       </div>
-      <form onSubmit={handleSubmit} className="shrink-0 flex items-end space-x-2 px-4 sm:px-12 py-5 bg-blue-500">
+      <form onSubmit={handleSubmitMessage} className="shrink-0 flex items-end space-x-2 px-4 sm:px-12 py-5 bg-blue-500">
         <TextareaAutosize
           className="flex-1 p-2 border rounded-lg resize-none bg-white" 
           placeholder="Type your message here..."

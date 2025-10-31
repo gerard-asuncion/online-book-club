@@ -4,19 +4,41 @@ import { selectOpenSidebar, selectWindowWidth } from "../features/sidebar/sideba
 import { setClose, setOpen, setWindowWidth } from "../features/sidebar/sidebarSlice";
 import useMainContentRouter from "./useMainContentRouter";
 import useBookRoom from "./useBookRoom";
-import { auth } from '../firebase-config';
+import type { User } from "firebase/auth";
+import { getCurrentUser } from "../utils/firebaseUtils";
 
 const useSidebar = () => {
 
     const { isChat, switchContent } = useMainContentRouter();
-      const { handleSetBookRoom } = useBookRoom();
+    const { handleSetBookRoom } = useBookRoom();
 
-    const [displayUserName, setDisplayUserName] = useState("unknown user");
+    const [displayUsername, setDisplayUsername] = useState<string>("unknown");
+    const [loadingUsername, setLoadingUsername] = useState<boolean>(true);
+
+    useEffect(() => {
+        fetchUserDisplayName();
+    }, []);
 
     const dispatch = useAppDispatch();
     const isOpenSidebar = useAppSelector(selectOpenSidebar);
     const appWindowWidth = useAppSelector(selectWindowWidth);
-    
+
+    const fetchUserDisplayName = async () => {
+        try {
+            const user: User | null = await getCurrentUser();
+            if (user && user.displayName) {
+                setDisplayUsername(user.displayName);
+            } else {
+                setDisplayUsername("Username not found");
+            }
+        } catch (error){
+            console.error("Error obtenint l'usuari:", error);
+            setDisplayUsername("Failed loading username");
+        } finally {
+            setLoadingUsername(false);         
+        }
+    }
+
     const showSidebar = (open: boolean) => {
         open ? dispatch(setOpen()) : dispatch(setClose());
     }
@@ -33,26 +55,16 @@ const useSidebar = () => {
     }
 
     const handleBookCardClick = (bookRoomName: string) => {
-
         if(!isChat){
             switchContent("chat");
         }
-
         handleSetBookRoom(bookRoomName);
         hideSidebarInMobile();
-  }
-
-    useEffect(() => {
-        if(auth.currentUser && auth.currentUser.displayName){
-            setDisplayUserName(auth.currentUser.displayName);
-        }else {
-            setDisplayUserName("user name not found");
-            console.log(auth.currentUser?.displayName);
-        }
-    }, []);
+    }
 
     return {
-        displayUserName,
+        displayUsername,
+        loadingUsername,
         isOpenSidebar,
         showSidebar,
         hideSidebarInMobile,
