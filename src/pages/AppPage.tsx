@@ -23,7 +23,7 @@ function AppPage() {
   return (
     <ScreenFrame page="full">
         <Header />
-        <section className="md:grid md:grid-cols-3 grow overflow-hidden">
+        <section className="md:grid md:grid-cols-4 grow overflow-hidden">
             <div className={`
               ${changeWindowLayout(isOpenSidebar)}
               overflow-hidden`}>
@@ -31,7 +31,9 @@ function AppPage() {
             </div>
             <div className={`
               ${changeSidebarLayout(isOpenSidebar)}
-              bg-green-600
+              bg-gray-900
+              border-l-10
+              border-white
               overflow-hidden
               px-4`}>
                 <Sidebar />

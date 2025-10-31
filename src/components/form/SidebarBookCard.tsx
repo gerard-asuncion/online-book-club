@@ -1,15 +1,16 @@
 import useSidebar from "../../hooks/useSidebar";
 import { showHideAnything } from "../../utils/classNameUtils";
-import type { OnlyStringChildrenProps } from "../../types/props";
+import type { SidebarBookCardProps } from "../../types/props";
+import useUnreadCounter from "../../hooks/useUnreadCounter";
 
-const SidebarBookCard = ({ children }: OnlyStringChildrenProps) => {
+const SidebarBookCard = ({ children, user }: SidebarBookCardProps) => {
 
-  const unreadMessagesCount = 1;
+  const { unreadCount } = useUnreadCounter(children, user);
  
   const { handleBookCardClick } = useSidebar();
 
   return (
-    <li className="flex justify-center items-center border-2 row-span-1 bg-white">
+    <li className="flex justify-center items-center row-span-1 bg-white">
         <button 
           onClick={() => {
             handleBookCardClick(children);
@@ -22,7 +23,7 @@ const SidebarBookCard = ({ children }: OnlyStringChildrenProps) => {
                 {children}
             </div>
             <div className={`
-                    ${showHideAnything(unreadMessagesCount)}
+                    ${showHideAnything(unreadCount)}
                     flex
                     justify-center
                     items-center
@@ -32,7 +33,7 @@ const SidebarBookCard = ({ children }: OnlyStringChildrenProps) => {
                     w-6
                     text-white
                     font-bold`}>
-              {unreadMessagesCount}
+              {unreadCount}
             </div>
         </button>
     </li>
