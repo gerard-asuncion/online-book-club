@@ -7,19 +7,17 @@ const Button = ({children, onClick}: ButtonProps) => {
             w-full
             flex items-center justify-center 
             py-3 px-4 
-            bg-white 
-            border border-gray-300 
+            border-2
+            border-white
             rounded-lg 
             shadow-sm 
-            text-gray-800 
+            text-white
             font-semibold 
-            hover:bg-gray-50 
+            hover:bg-white
+            hover:text-black 
             transition-colors 
             duration-200 
-            focus:outline-none 
-            focus:ring-2 
-            focus:ring-blue-500 
-            focus:ring-offset-2" 
+            cursor-pointer" 
         onClick={onClick}>
         {children}
     </button>

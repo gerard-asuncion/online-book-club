@@ -25,5 +25,5 @@ export interface ScreenFrameProps {
 
 export interface ButtonProps {
     children: string,
-    onClick: React.MouseEventHandler<HTMLButtonElement> | void;
+    onClick: React.MouseEventHandler<HTMLButtonElement>;
 }
