@@ -1,11 +1,11 @@
-import { useChat } from "../../hooks/useChat";
 import useSidebar from "../../hooks/useSidebar";
 import { showHideAnything } from "../../utils/classNameUtils";
 import type { OnlyStringChildrenProps } from "../../types/props";
 
 const SidebarBookCard = ({ children }: OnlyStringChildrenProps) => {
 
-  const { unreadMessagesCount } = useChat(children);  
+  const unreadMessagesCount = 1;
+ 
   const { handleBookCardClick } = useSidebar();
 
   return (

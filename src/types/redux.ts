@@ -1,5 +1,3 @@
-import type { Timestamp } from "firebase/firestore";
-
 export interface AuthSliceInitialState {
     isAuth: boolean;
 }
@@ -12,10 +10,7 @@ export interface MainContentRouteInitialState {
 }
 
 export interface BookRoomInitialState {
-    bookRoom: string,
-    lastViewedKey: string,
-    lastViewedDate: number,
-    unreadMessagesCount: number
+    bookRoom: string;
 }
 
 export interface SidebarInitialState {
