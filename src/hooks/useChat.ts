@@ -7,23 +7,23 @@ import {
   where,
   orderBy,
   collection,
-  CollectionReference,
+  CollectionReference
 } from 'firebase/firestore';
 import { auth, db } from '../firebase-config';
 import type { DocumentData } from 'firebase/firestore';
 import type { Message } from '../types/types'; 
-import type { UseChatProps } from '../types/props';
 
 const MESSAGES_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION;
 const messagesRef: CollectionReference<DocumentData> = collection(db, MESSAGES_COLLECTION);
 
-export const useChat = ({ bookRoom }: UseChatProps) => {
+export const useChat = (bookRoom: string) => {
   
-  const [newMessage, setNewMessage] = useState('');
+  const [newMessage, setNewMessage] = useState<string>("");
   const [messages, setMessages] = useState<Message[]>([]);
 
   useEffect(() => {
-    if (!bookRoom) return; 
+
+    if (!bookRoom) return;
 
     const queryMessages = query(
       messagesRef,
@@ -40,9 +40,10 @@ export const useChat = ({ bookRoom }: UseChatProps) => {
     });
 
     return () => unsubscribe();
-  }, [bookRoom]); 
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  }, [bookRoom]);
+
+  const handleSubmitMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if(newMessage.trim() === '' || !auth.currentUser) return;
@@ -52,7 +53,7 @@ export const useChat = ({ bookRoom }: UseChatProps) => {
       createdAt: serverTimestamp(),
       user: auth.currentUser.displayName,
       userId: auth.currentUser.uid,
-      room: bookRoom 
+      room: bookRoom,
     });
 
     setNewMessage('');
@@ -61,7 +62,7 @@ export const useChat = ({ bookRoom }: UseChatProps) => {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault(); 
-      handleSubmit(e); 
+      handleSubmitMessage(e); 
     }
   };
 
@@ -69,7 +70,7 @@ export const useChat = ({ bookRoom }: UseChatProps) => {
     messages,
     newMessage,
     setNewMessage,
-    handleSubmit,
+    handleSubmitMessage,
     handleKeyDown
   };
 };

@@ -1,3 +1,6 @@
+export const showHideAnything = (show: boolean | number): string =>
+    show ? "" : "hidden";
+
 export const changeWindowLayout = (openSidebar: boolean): string =>
     openSidebar ?
     "hidden md:block md:col-span-2" :

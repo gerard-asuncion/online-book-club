@@ -1,5 +1,9 @@
 import type { ReactNode } from "react";
 
+export interface OnlyBookRoomProps {
+    bookRoom: string;
+}
+
 export interface OnlyStringChildrenProps {
     children: string;
 }
@@ -9,16 +13,15 @@ export interface OnlyReactNodeChildrenProps {
 }
 
 export interface SidebarBookCardProps {
-    children: string, 
-
+    children: string;
 }
 
 export interface UseAuthProps {
     setIsAuth: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export interface UseChatProps {
-    bookRoom: string,
+export interface UseNewMessageCountProps {
+    bookRoomName: string;
 }
 
 export interface ScreenFrameProps {

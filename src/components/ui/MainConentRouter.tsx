@@ -21,7 +21,7 @@ const MainContentRouter = () => {
     return (
       <Search />
     )
-  } else if(isWelcome) {
+  } else if(isWelcome){
     return (
       <Welcome />
     )

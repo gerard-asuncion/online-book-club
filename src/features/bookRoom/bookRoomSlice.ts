@@ -3,7 +3,7 @@ import type { BookRoomInitialState } from "../../types/redux";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: BookRoomInitialState = {
-    bookRoom: "",
+    bookRoom: ""
 }
 
 const bookRoomSlice = createSlice({

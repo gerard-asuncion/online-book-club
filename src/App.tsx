@@ -9,7 +9,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/sign-in" element={<LoginPage />}/>
+        <Route path="/login" element={<LoginPage />}/>
         <Route element={<RequireAuth />}>
           <Route path="/" element={<AppPage />} />
         </Route>
@@ -19,4 +19,4 @@ function App() {
   )
 }
 
-export default App
+export default App;

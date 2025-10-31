@@ -3,18 +3,15 @@ import useAuth from "../../hooks/useAuth";
 import useSidebar from "../../hooks/useSidebar";
 import useMainContentRouter from "../../hooks/useMainContentRouter";
 import SidebarBookCard from "./SidebarBookCard";
-import { auth } from '../../firebase-config'; 
 
 interface FakeUser {
     username: string,
     books: string[];
 }
 
-const displayUserName = (): string => auth.currentUser?.displayName ? auth.currentUser.displayName : "Unknown User"
-
 const fakeUsersData: FakeUser[] = [
     {
-        username: displayUserName(),
+        username: "name",
         books: ["book1", "book2", "book3"]
     }
 ]
@@ -23,52 +20,52 @@ const gridCols = `grid-cols-${fakeUsersData[0].books.length}`;
 
 const Sidebar = () => {
 
-    const { userSignOut } = useAuth();
-    const { hideSidebarInMobile } = useSidebar();
+    const { logout } = useAuth();
+    const { displayUsername, loadingUsername, hideSidebarInMobile } = useSidebar();
     const { switchContent } = useMainContentRouter();
 
     return (
         <section className="h-full grid grid-cols-1 justify-around p-2 gap-2">
             <article className="border-2 p-2 bg-white row-span-1">
                 Username:
-                <h2 className="font-bold">
-                    {fakeUsersData[0].username}
-                </h2>
+                {loadingUsername && <p>Loading username...</p>}
+                {!loadingUsername && <p className="font-bold">{displayUsername}</p>}
             </article>
-            <ul className={`grid ${gridCols} p-2 gap-2 row-span-3`}>
+            <ul className={`grid ${gridCols} gap-2 row-span-3`}>
                 {fakeUsersData[0].books.map((book: string, index: number) =>
-                    <SidebarBookCard 
-                        key={index}
-                        >
+                    <SidebarBookCard key={index}>
                         {book}
                     </SidebarBookCard>
                 )}
             </ul>
-            <div className="row-span-1">
-                <Button onClick={() => {
-                    hideSidebarInMobile();
-                    switchContent("search");
-                }}>
-                    Add books
-                </Button> 
-            </div>
-            <div className="row-span-1">
-                <Button onClick={() => {
-                    hideSidebarInMobile();
-                    switchContent("settings");
-                }}>
-                    Settings
-                </Button>
-            </div>
-            <div className="row-span-1">
-                <Button onClick={() => {
-                    hideSidebarInMobile();
-                    switchContent("");
-                    userSignOut();
-                }}>
-                    Sign Out
-                </Button> 
-            </div>
+            <article className="row-span-1 grid grid-cols-1">
+                <div className="row-span-1">
+                    <Button onClick={() => {
+                        hideSidebarInMobile();
+                        switchContent("search");
+                    }}>
+                        Add books
+                    </Button> 
+                </div>
+                <div className="row-span-1">
+                    <Button onClick={() => {
+                        hideSidebarInMobile();
+                        switchContent("settings");
+                    }}>
+                        Settings
+                    </Button>
+                </div>
+                <div className="row-span-1">
+                    <Button onClick={() => {
+                        hideSidebarInMobile();
+                        switchContent("");
+                        logout();
+                    }}>
+                        Sign Out
+                    </Button> 
+                </div>
+            </article>
+            
         </section>
     )
 }
