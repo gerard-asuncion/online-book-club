@@ -5,7 +5,6 @@ import TextareaAutosize from 'react-textarea-autosize';
 import useBookRoom from '../../hooks/useBookRoom';
 import { formatTimestamp } from '../../utils/dateUtils';
 import type { Message } from "../../types/types";
-import { setMessageBackgroundColor } from '../../utils/classNameUtils';
 
 const Chat = () => {
 
@@ -31,7 +30,7 @@ const Chat = () => {
   return (
     <MainContentFrame>
       <article className="shrink-0 md:flex md:justify-center sm:text-lg w-full">
-        <div className='flex justify-between items-center md:w-95/100 px-4 sm:px-12 py-5'>
+        <div className='flex justify-between items-center md:w-95/100 px-4 sm:px-12 py-1 lg:py-5'>
           <h1 className='
             text-white
             text-sm
@@ -43,8 +42,8 @@ const Chat = () => {
               md:text-sm 
               p-2 border-3
               border-gray-900
-              hover:border-green-800 
-              rounded-md c
+              hover:border-green-800
+              rounded-md
               cursor-pointer"
             onClick={() => {}}
           >
@@ -66,26 +65,26 @@ const Chat = () => {
         {messages.map((message: Message) => (
           <article 
             key={message.id} 
-            className={`
-              ${setMessageBackgroundColor(null)}
+            className="
+              bg-gray-800
               flex 
               flex-col 
               md:w-95/100
               justify-between 
               my-1 p-2 sm:p-3
-              rounded-md
-            `}>
+              rounded-md"
+            >
             <div className='flex justify-between'>
-              <div className="font-bold sm:text-base text-sm">{message.user}</div> 
-              <div className='text-xs sm:text-sm text-gray-600'>{formatTimestamp(message.createdAt)}</div>
+              <div className="font-bold sm:text-base text-sm text-green-800">{message.user}</div> 
+              <div className="text-xs sm:text-sm text-white">{formatTimestamp(message.createdAt)}</div>
             </div>
-            <div className=''>
+            <div className="text-white">
               {message.text}
             </div>
           </article>
         ))}
       </section>
-      <div className='md:flex md:justify-center'>
+      <div className="md:flex md:justify-center">
         <form 
           onSubmit={handleSubmitMessage} 
           className="

@@ -12,8 +12,6 @@ const SidebarBookCard = ({ children, user }: SidebarBookCardProps) => {
   const { unreadCount, setUnreadCount } = useUnreadCounter(bookRoomName, user);
   const { handleBookCardClick } = useSidebar();
 
-  const openBookRoom = bookRoom;
-
   return (
     <li className="
           row-span-1
@@ -24,7 +22,7 @@ const SidebarBookCard = ({ children, user }: SidebarBookCardProps) => {
             setUnreadCount(0);
           }}
           className={`
-            ${highlightBookRoomCard(openBookRoom, bookRoomName)}
+            ${highlightBookRoomCard(bookRoom, bookRoomName)}
             h-full
             w-full
             flex 
@@ -35,7 +33,7 @@ const SidebarBookCard = ({ children, user }: SidebarBookCardProps) => {
             rounded-lg
             cursor-pointer
           `}>
-            <section className="flex flex-col items-start justify-center">
+            <section className="flex flex-col items-start justify-center text-left">
               <div className="font-bold">
                 {children.title}
               </div>
@@ -51,9 +49,10 @@ const SidebarBookCard = ({ children, user }: SidebarBookCardProps) => {
                     rounded-full
                     h-6
                     w-6
-                    bg-gray-900
+                    bg-green-800
                     text-white
-                    font-bold`}>
+                    font-bold
+                    `}>
               {unreadCount}
             </div>
         </button>
