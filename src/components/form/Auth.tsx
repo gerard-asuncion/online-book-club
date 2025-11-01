@@ -12,7 +12,7 @@ const Auth = () => {
             </p>
             <div className="hidden">
                 <Button onClick={loginWithEmailAndPassword} >
-                    Login With Email & Password
+                    Log In With Email & Password
                 </Button>
                 <Button onClick={register}>
                     Register

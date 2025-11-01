@@ -102,7 +102,7 @@ const Sidebar = () => {
                         switchContent("");
                         logout();
                         }}>
-                        Logout
+                        Log Out
                     </Button> 
                 </div>
             </article>
