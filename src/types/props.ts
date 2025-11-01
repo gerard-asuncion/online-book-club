@@ -5,8 +5,14 @@ export interface OnlyReactNodeChildrenProps {
     children: ReactNode;
 }
 
+// Provisional Book interface:
+interface Book {
+    title: string,
+    author: string;
+}
+
 export interface SidebarBookCardProps {
-    children: string,
+    children: Book,
     user: User | null;
 }
 

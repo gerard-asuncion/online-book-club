@@ -7,7 +7,12 @@ import SidebarBookCard from "./SidebarBookCard";
 
 interface FakeUser {
     username: string,
-    books: string[];
+    books: Book[];
+}
+
+interface Book {
+    title: string,
+    author: string;
 }
 
 // "Antígona", "Història de Roma", "El petit príncep"
@@ -15,7 +20,16 @@ interface FakeUser {
 const fakeUsersData: FakeUser[] = [
     {
         username: "name",
-        books: ["Antígona", "Harry Potter", "Història de Roma"]
+        books: [{
+                title: "Harry Potter",
+                author: "JK Rowling"            
+            },{
+                title: "El petit príncep",
+                author: "Antoine de Saint-Exupéry"
+            },{
+                title: "La divina comèdia",
+                author: "Dante"
+            }]
     }
 ]
 
@@ -29,7 +43,7 @@ const Sidebar = () => {
     const { switchContent } = useMainContentRouter();
 
     return (
-        <section className="h-full grid grid-cols-1 grid-rows-[auto__auto_1fr_auto] p-2 gap-2">
+        <section className="h-full grid grid-cols-1 grid-rows-[auto__auto_1fr_auto] px-2 py-5 gap-2">
             <article className="p-2 border-2 border-white text-white md:text-lg">
                 Username:
                 {isLoading && <p>Loading username...</p>}
@@ -39,7 +53,7 @@ const Sidebar = () => {
                 Chat Rooms:
             </div>
             <ul className={`grid grid-cols-1 grid-rows-4 gap-2`}>
-                {fakeUsersData[0].books.map((book: string, index: number) =>
+                {fakeUsersData[0].books.map((book: Book, index: number) =>
                     <SidebarBookCard 
                         key={index}
                         user={user}>
@@ -86,7 +100,7 @@ const Sidebar = () => {
                         switchContent("");
                         logout();
                         }}>
-                        Logout
+                        Log Out
                     </Button> 
                 </div>
             </article>
