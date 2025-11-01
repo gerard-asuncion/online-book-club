@@ -13,25 +13,23 @@ const useSidebar = () => {
     const isOpenSidebar = useAppSelector(selectOpenSidebar);
     const appWindowWidth = useAppSelector(selectWindowWidth);
 
-    const showSidebar = (open: boolean) => {
+    const showSidebar = (open: boolean): void => {
         open ? dispatch(setOpen()) : dispatch(setClose());
     }
 
-    const hideSidebarInMobile = () => {
+    const hideSidebarInMobile = (): void => {
         const mdBreakpoint: number = 768
         if(appWindowWidth < mdBreakpoint){
             dispatch(setClose());
         }
     }
 
-    const changeStoredWindowWidth = (currentWidth: number) => {
+    const changeStoredWindowWidth = (currentWidth: number): void => {
         dispatch(setWindowWidth({windowWidth: currentWidth}));
     }
 
-    const handleBookCardClick = (bookRoomName: string) => {
-        if(!isChat){
-            switchContent("chat");
-        }
+    const handleBookCardClick = (bookRoomName: string): void => {
+        if(!isChat) return switchContent("chatRoom");
         handleSetBookRoom(bookRoomName);
         hideSidebarInMobile();
     }

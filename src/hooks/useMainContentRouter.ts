@@ -13,16 +13,16 @@ const useMainContentRouter = () => {
 
     const switchContent = (content: string) => {
         switch(content){
-            case "welcome":
+            case "welcomeContent":
                 dispatch(setIsWelcome());
                 break;
-            case "chat":
+            case "chatRoom":
                 dispatch(setIsChat());
                 break;
-            case "settings":
+            case "userSettings":
                 dispatch(setIsSettings());
                 break;
-            case "search":
+            case "bookSearch":
                 dispatch(setIsSearch());
                 break;
             default:

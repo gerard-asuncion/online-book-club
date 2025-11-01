@@ -1,5 +1,3 @@
-import type { User } from "firebase/auth";
-
 export const showHideAnything = (show: boolean | number): string =>
     show ? "" : "hidden";
 
@@ -13,7 +11,7 @@ export const changeSidebarLayout = (openSidebar: boolean): string =>
     ? "h-full md:col-span-1" 
     : "hidden";
 
-export const setMessageBackgroundColor = (isUser: User | null): string =>
-    isUser
-    ? "bg-green-200"
-    : "bg-white";
+export const highlightBookRoomCard = (openBookRoom: string, bookRoomName: string): string =>
+    openBookRoom === bookRoomName
+    ? "bg-gray-800 border-2 border-white text-white"
+    : "bg-gray-900 border-2 border-green-800 hover:bg-green-800 text-green-800 hover:text-white"

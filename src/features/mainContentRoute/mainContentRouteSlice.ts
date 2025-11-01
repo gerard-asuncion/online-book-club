@@ -46,7 +46,8 @@ const mainContentRouteSlice = createSlice({
   },
 });
 
-export const { setIsWelcome,
+export const { 
+  setIsWelcome,
   setIsChat,
   setIsSettings, 
   setIsSearch,
