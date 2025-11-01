@@ -29,8 +29,10 @@ const useSidebar = () => {
     }
 
     const handleBookCardClick = (bookRoomName: string): void => {
-        if(!isChat) return switchContent("chatRoom");
         handleSetBookRoom(bookRoomName);
+        if(!isChat){
+            switchContent("chatRoom");
+        }
         hideSidebarInMobile();
     }
 
