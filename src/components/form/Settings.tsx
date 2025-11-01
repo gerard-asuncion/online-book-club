@@ -2,8 +2,6 @@ import MainContentFrame from "../ui/MainContentFrame";
 
 const Settings = () => {
 
-  console.log("settings");
-
   return (
     <MainContentFrame>
       <div className="h-full text-white font-bold text-lg flex justify-center items-center">
