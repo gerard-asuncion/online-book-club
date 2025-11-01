@@ -13,7 +13,7 @@ const Chat = () => {
  
   const { 
     messages,
-    newMessage, 
+    newMessage,
     setNewMessage, 
     handleSubmitMessage,
     handleKeyDown 
@@ -30,7 +30,7 @@ const Chat = () => {
 
   return (
     <MainContentFrame>
-      <div className="shrink-0 flex justify-between px-4 sm:px-12 py-4 text-white sm:text-xl">
+      <div className="shrink-0 flex justify-between px-4 sm:px-12 py-4 text-white sm:text-lg">
         <h1>Room: {bookRoom}</h1>
         <button
           className="text-sm p-2 border-2 rounded-md hover:bg-white hover:text-black cursor-pointer"
@@ -76,7 +76,7 @@ const Chat = () => {
           maxRows={6}
           onKeyDown={handleKeyDown}
         />
-        <button type="submit" className="font-bold p-2 md:w-20 bg-white rounded-lg cursor-pointer">
+        <button type="submit" className="font-bold p-2 md:w-20 bg-green-800 text-white rounded-lg cursor-pointer">
           Send
         </button>
       </form>

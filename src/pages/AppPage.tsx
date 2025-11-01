@@ -32,7 +32,7 @@ function AppPage() {
             <div className={`
               ${changeSidebarLayout(isOpenSidebar)}
               md:border-l-10
-              border-white
+              border-green-800
               overflow-hidden
               px-4`}>
                 <Sidebar />

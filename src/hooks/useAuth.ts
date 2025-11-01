@@ -29,7 +29,7 @@ const useAuth = () => {
       dispatch(setIsAuth());
       navigate("/", { replace: true });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } 
   };
 
@@ -39,7 +39,6 @@ const useAuth = () => {
     dispatch(clearAuth());
     dispatch(clearBookRoom());
     dispatch(setIsWelcome());
-    navigate("/sign-in", { replace: true });
   }
 
   return {
