@@ -6,7 +6,7 @@ const Header = () => {
 
   return (
     <header className="bg-green-800 p-4 sticky top-0 z-10">
-      <div className="flex justify-between items-center sm:px-8">      
+      <div className="flex justify-between items-center sm:px-8 mx-1 md:ml-7 md:mr-0">      
         <h1 className="text-2xl font-bold text-white tracking-wider">
           ONLINE BOOK CLUB
         </h1>

@@ -45,7 +45,7 @@ const useUnreadCounter = (bookRoom: string, user: User | null) => {
 
     }, [bookRoom, user]); 
 
-    return { unreadCount };
+    return { unreadCount, setUnreadCount };
 };
 
 export default useUnreadCounter;

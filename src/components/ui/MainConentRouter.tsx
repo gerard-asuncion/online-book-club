@@ -1,7 +1,6 @@
 import Chat from "../form/Chat";
 import Settings from "../form/Settings";
-import Search from "../form/Search";
-import Welcome from "../form/Welcome";
+import BookSearch from "../form/BookSearch";
 import MainContentFrame from "./MainContentFrame";
 import useMainContentRouter from "../../hooks/useMainContentRouter";
 
@@ -19,16 +18,22 @@ const MainContentRouter = () => {
     )
   } else if(isSearch){
     return (
-      <Search />
+      <BookSearch />
     )
   } else if(isWelcome){
     return (
-      <Welcome />
+      <MainContentFrame>
+        <div className="h-full text-white font-bold text-lg flex justify-center items-center">
+          Welcome, please select a room...
+        </div>
+      </MainContentFrame>
     )
   } else {
     return (
       <MainContentFrame>
-        <div>Sorry, something went wrong loading this component, please try again.</div>
+        <div className="h-full text-white font-bold text-lg flex justify-center items-center">
+          Sorry, something went wrong loading this component, please try again.
+        </div>
       </MainContentFrame>
     )
   }

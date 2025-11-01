@@ -8,13 +8,14 @@ const Button = ({children, onClick}: ButtonProps) => {
             flex items-center justify-center 
             py-3 px-4 
             border-2
-            border-white
+            border-green-800
             rounded-lg 
             shadow-sm 
             text-white
             font-semibold 
             hover:bg-white
-            hover:text-black 
+            hover:text-black
+            hover:border-white
             transition-colors 
             duration-200 
             cursor-pointer" 

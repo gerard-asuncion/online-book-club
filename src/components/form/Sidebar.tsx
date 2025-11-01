@@ -30,8 +30,7 @@ const fakeUsersData: FakeUser[] = [
                 title: "La divina comèdia",
                 author: "Dante"
             }]
-    }
-]
+    }]
 
 const totalBooks: number = fakeUsersData[0].books.length
 
@@ -44,12 +43,12 @@ const Sidebar = () => {
 
     return (
         <section className="h-full grid grid-cols-1 grid-rows-[auto__auto_1fr_auto] px-2 py-5 gap-2">
-            <article className="p-2 border-2 border-white text-white">
-                Username:
-                {isLoading && <p>Loading username...</p>}
-                {!isLoading && <p className="font-bold">{user?.displayName}</p>}
+            <article className="p-2">
+                <p className="text-gray-400">Username:</p>
+                {isLoading && <p className="text-white">Loading username...</p>}
+                {!isLoading && <p className="text-white font-bold">{user?.displayName}</p>}
             </article>
-            <div className="text-white px-1 py-3">
+            <div className="text-gray-400 px-1 py-3">
                 Chat Rooms:
             </div>
             <ul className={`grid grid-cols-1 grid-rows-4 gap-2`}>
@@ -70,8 +69,8 @@ const Sidebar = () => {
                                     items-center
                                     rounded-2xl
                                     text-white
-                                    font-semibold
-                                    hover:border-2
+                                    hover:border-3
+                                    border-green-800
                                     cursor-pointer">
                             Add a book
                         </button>
