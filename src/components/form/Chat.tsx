@@ -84,7 +84,7 @@ const Chat = () => {
           </article>
         ))}
       </section>
-      <div className="md:flex md:justify-center">
+      <div className="shrink-0 md:flex md:justify-center">
         <form 
           onSubmit={handleSubmitMessage} 
           className="
