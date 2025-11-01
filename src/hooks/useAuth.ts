@@ -25,7 +25,13 @@ const useAuth = () => {
   const loginWithGoogle = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
-      cookies.set("auth-token", result.user.refreshToken);
+
+      const cookieOptions = {
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7
+      };
+      cookies.set("auth-token", result.user.refreshToken, cookieOptions);
+
       dispatch(setIsAuth());
       navigate("/", { replace: true });
     } catch (error) {
@@ -35,7 +41,7 @@ const useAuth = () => {
 
   const logout = async () => {
     await signOut(auth);
-    cookies.remove("auth-token");
+    cookies.remove("auth-token", { path: "/" });
     dispatch(clearAuth());
     dispatch(clearBookRoom());
     dispatch(setIsWelcome());
