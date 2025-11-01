@@ -3,7 +3,7 @@ import type { OnlyReactNodeChildrenProps } from '../../types/props'
 const MainContentFrame = ({ children }: OnlyReactNodeChildrenProps) => {
 
   return (
-    <section className="flex flex-col h-full bg-gray-900">
+    <section className="flex flex-col h-full">
         {children}
     </section>
   )

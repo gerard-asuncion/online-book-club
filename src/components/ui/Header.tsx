@@ -5,9 +5,9 @@ const Header = () => {
   const { isOpenSidebar, showSidebar } = useSidebar();
 
   return (
-    <header className="bg-white p-4 shadow-md sticky top-0 z-10">
+    <header className="bg-white p-4 sticky top-0 z-10">
       <div className="flex justify-between items-center sm:px-8">      
-        <h1 className="text-2xl font-bold text-gray-800 tracking-wider">
+        <h1 className="text-2xl font-bold text-gray-900 tracking-wider">
           ONLINE BOOK CLUB
         </h1>
         <button      

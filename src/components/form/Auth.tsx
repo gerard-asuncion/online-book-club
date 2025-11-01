@@ -6,18 +6,20 @@ const Auth = () => {
     const { loginWithGoogle, loginWithEmailAndPassword, register } = useAuth();
 
     return (
-        <section className="flex flex-col items-center justify-center p-8 bg-white rounded-lg shadow-md max-w-sm mx-auto space-y-6">
-            <p className="text-gray-700 font-medium text-center">
-                Sign In To Continue
+        <section className="flex flex-col items-center justify-center p-8 border-2 border-white rounded-lg max-w-sm mx-auto space-y-6">
+            <p className="font-medium text-center text-white">
+                Welcome to Online Book Club
             </p>
-            <Button onClick={loginWithEmailAndPassword}>
-                Login With Email & Password
-            </Button>   
+            <div className="hidden">
+                <Button onClick={loginWithEmailAndPassword} >
+                    Login With Email & Password
+                </Button>
+                <Button onClick={register}>
+                    Register
+                </Button>
+            </div>   
             <Button onClick={loginWithGoogle}>
-                Login With Google
-            </Button>
-            <Button onClick={register}>
-                Register
+                Continue With Google
             </Button>
         </section>
     );
