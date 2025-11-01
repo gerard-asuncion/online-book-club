@@ -44,12 +44,12 @@ const Sidebar = () => {
 
     return (
         <section className="h-full grid grid-cols-1 grid-rows-[auto__auto_1fr_auto] px-2 py-5 gap-2">
-            <article className="p-2 border-2 border-white text-white md:text-lg">
+            <article className="p-2 border-2 border-white text-white">
                 Username:
                 {isLoading && <p>Loading username...</p>}
                 {!isLoading && <p className="font-bold">{user?.displayName}</p>}
             </article>
-            <div className="text-white px-1 py-3 md:text-lg">
+            <div className="text-white px-1 py-3">
                 Chat Rooms:
             </div>
             <ul className={`grid grid-cols-1 grid-rows-4 gap-2`}>
@@ -63,7 +63,6 @@ const Sidebar = () => {
                 {totalBooks < 4 && 
                     <div className="row-span-1 h-full">
                         <button className="
-                                    md:text-lg
                                     h-full
                                     w-full
                                     flex
@@ -100,7 +99,7 @@ const Sidebar = () => {
                         switchContent("");
                         logout();
                         }}>
-                        Log Out
+                        Logout
                     </Button> 
                 </div>
             </article>

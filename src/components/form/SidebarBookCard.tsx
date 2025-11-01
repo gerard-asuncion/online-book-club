@@ -32,10 +32,10 @@ const SidebarBookCard = ({ children, user }: SidebarBookCardProps) => {
             hover:text-white
             cursor-pointer">
             <section className="flex flex-col items-start justify-center">
-              <div className="font-bold md:text-lg">
+              <div className="font-bold">
                 {children.title}
               </div>
-              <div className="text-sm md:text-base">
+              <div className="text-sm">
                 {children.author}
               </div>
             </section>

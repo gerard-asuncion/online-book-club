@@ -4,7 +4,6 @@ const Button = ({children, onClick}: ButtonProps) => {
   return (
    <button
         className="
-            md:text-lg
             w-full
             flex items-center justify-center 
             py-3 px-4 
