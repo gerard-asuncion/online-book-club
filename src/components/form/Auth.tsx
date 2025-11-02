@@ -1,4 +1,5 @@
 import useAuth from "../../hooks/useAuth";
+import { defaultButtonLayout } from "../../utils/classNameUtils";
 
 const Auth = () => {
 
@@ -17,7 +18,10 @@ const Auth = () => {
                     Register
                 </button>
             </div>   
-            <button onClick={loginWithGoogle}>
+            <button
+                className={`${defaultButtonLayout}`}
+                onClick={loginWithGoogle}
+            >
                 Continue With Google
             </button>
         </section>
