@@ -6,6 +6,7 @@ import { useAppDispatch } from '../app/hooks';
 import { setIsAuth, clearAuth } from '../features/auth/authSlice';
 import { clearBookRoom } from '../features/bookRoom/bookRoomSlice';
 import { setIsWelcome } from '../features/mainContentRoute/mainContentRouteSlice';
+import { setOpenSidebar } from '../features/responsive/responsiveSlice';
 
 const cookies = new Cookies();
 
@@ -45,6 +46,7 @@ const useAuth = () => {
     dispatch(clearAuth());
     dispatch(clearBookRoom());
     dispatch(setIsWelcome());
+    dispatch(setOpenSidebar());
   }
 
   return {

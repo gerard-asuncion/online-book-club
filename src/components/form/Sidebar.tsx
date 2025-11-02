@@ -1,9 +1,9 @@
-import Button from "../ui/Button";
 import useAuth from "../../hooks/useAuth";
 import useAuthUser from "../../hooks/useAuthUser";
 import useSidebar from "../../hooks/useSidebar";
 import useMainContentRouter from "../../hooks/useMainContentRouter";
 import SidebarBookCard from "./SidebarBookCard";
+import { defaultButtonLayout } from "../../utils/classNameUtils";
 
 interface FakeUser {
     username: string,
@@ -45,15 +45,12 @@ const Sidebar = () => {
     const { switchContent } = useMainContentRouter();
 
     return (
-        <section className="h-full grid grid-cols-1 grid-rows-[auto__auto_1fr_auto] px-2 py-5 gap-2">
-            <article className="p-2">
+        <section className="h-full grid grid-cols-1 grid-rows-[auto_1fr_auto] px-2 py-6 gap-2">
+            <article className="pb-5">
                 <p className="text-gray-400">Username:</p>
                 {isLoading && <p className="text-white">Loading username...</p>}
                 {!isLoading && <p className="text-white font-bold">{user?.displayName}</p>}
             </article>
-            <div className="px-1 py-3">
-                <p className="text-gray-400">Chat Rooms</p>
-            </div>
             <ul className={`grid grid-cols-1 grid-rows-4 gap-2`}>
                 {fakeUsersData[0].books.map((book: Book, index: number) =>
                     <SidebarBookCard 
@@ -85,25 +82,29 @@ const Sidebar = () => {
                         </button>
                     </div>}
             </ul>
-            <article className="row-span-1 grid grid-cols-1 gap-2">   
+            <article className="row-span-1 grid grid-cols-1 gap-2 pt-8">   
                 <div className="row-span-1 grid">
                     <div className="flex gap-2">
-                        <Button onClick={() => {
-                            hideSidebarInMobile();
-                            switchContent("userSettings");
+                        <button 
+                            className={`${defaultButtonLayout()}`}
+                            onClick={() => {
+                                hideSidebarInMobile();
+                                switchContent("userSettings");
                             }}>
                             Settings
-                        </Button>
+                        </button>
                     </div>
                 </div>
                 <div className="row-span-1">
-                    <Button onClick={() => {
-                        hideSidebarInMobile();
-                        switchContent("");
-                        logout();
+                    <button 
+                        className={`${defaultButtonLayout()}`}
+                        onClick={() => {
+                            hideSidebarInMobile();
+                            switchContent("");
+                            logout();
                         }}>
                         Log Out
-                    </Button> 
+                    </button> 
                 </div>
             </article>
         </section>

@@ -1,8 +1,9 @@
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { selectOpenSidebar, selectWindowWidth } from "../features/sidebar/sidebarSelectors";
-import { setClose, setOpen, setWindowWidth } from "../features/sidebar/sidebarSlice";
+import { selectIsMobile, selectOpenSidebar } from "../features/responsive/responsiveSelectors";
+import { setCloseSidebar, setOpenSidebar } from "../features/responsive/responsiveSlice";
 import useMainContentRouter from "./useMainContentRouter";
 import useBookRoom from "./useBookRoom";
+import { addTimeout } from "../utils/utils";
 
 const useSidebar = () => {
 
@@ -11,37 +12,33 @@ const useSidebar = () => {
 
     const dispatch = useAppDispatch();
     const isOpenSidebar = useAppSelector(selectOpenSidebar);
-    const appWindowWidth = useAppSelector(selectWindowWidth);
+    const isMobile = useAppSelector(selectIsMobile);
 
     const showSidebar = (open: boolean): void => {
-        open ? dispatch(setOpen()) : dispatch(setClose());
+        open ? dispatch(setOpenSidebar()) : dispatch(setCloseSidebar());
     }
 
     const hideSidebarInMobile = (): void => {
-        const mdBreakpoint: number = 768
-        if(appWindowWidth < mdBreakpoint){
-            dispatch(setClose());
+        if(isMobile){
+            const closeDispatch = () => dispatch(setCloseSidebar());
+            addTimeout(closeDispatch, 500);
         }
-    }
-
-    const changeStoredWindowWidth = (currentWidth: number): void => {
-        dispatch(setWindowWidth({windowWidth: currentWidth}));
     }
 
     const handleBookCardClick = (bookRoomName: string): void => {
         handleSetBookRoom(bookRoomName);
         if(!isChat){
             switchContent("chatRoom");
-        }
+        };
         hideSidebarInMobile();
     }
 
     return {
+        isMobile,
         isOpenSidebar,
         showSidebar,
         hideSidebarInMobile,
-        changeStoredWindowWidth,
-        handleBookCardClick
+        handleBookCardClick,
     }
 }
 

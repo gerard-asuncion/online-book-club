@@ -14,19 +14,19 @@ import storage from 'redux-persist/lib/storage';
 import authReducer from '../features/auth/authSlice';
 import mainContentRouteReducer from '../features/mainContentRoute/mainContentRouteSlice';
 import bookRoomReducer from '../features/bookRoom/bookRoomSlice';
-import sidebarReducer from '../features/sidebar/sidebarSlice';
+import responsiveReducer from '../features/responsive/responsiveSlice';
 
 const rootReducer = combineReducers({
     auth: authReducer, 
     mainContentRoute: mainContentRouteReducer,
     bookRoom: bookRoomReducer,
-    sidebar: sidebarReducer,
+    responsive: responsiveReducer,
 });
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['mainContentRoute', 'bookRoom', 'sidebar'] 
+  whitelist: ['mainContentRoute', 'bookRoom', 'responsive'] 
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -1,4 +1,3 @@
-import Button from "../ui/Button";
 import useAuth from "../../hooks/useAuth";
 
 const Auth = () => {
@@ -11,16 +10,16 @@ const Auth = () => {
                 Welcome to Online Book Club
             </p>
             <div className="hidden">
-                <Button onClick={loginWithEmailAndPassword} >
+                <button onClick={loginWithEmailAndPassword} >
                     Log In With Email & Password
-                </Button>
-                <Button onClick={register}>
+                </button>
+                <button onClick={register}>
                     Register
-                </Button>
+                </button>
             </div>   
-            <Button onClick={loginWithGoogle}>
+            <button onClick={loginWithGoogle}>
                 Continue With Google
-            </Button>
+            </button>
         </section>
     );
 };
