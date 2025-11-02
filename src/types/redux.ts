@@ -15,8 +15,9 @@ export interface BookRoomInitialState {
     bookRoom: string;
 }
 
-export interface SidebarInitialState {
+export interface ResponsiveInitialState {
     windowWidth: number,
+    isMobile: boolean,
     openSidebar: boolean;
 }
 

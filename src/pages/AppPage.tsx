@@ -4,20 +4,21 @@ import Sidebar from "../components/form/Sidebar";
 import MainContentRouter from "../components/ui/MainConentRouter";
 import ScreenFrame from "../components/ui/ScreenFrame";
 import useSidebar from "../hooks/useSidebar";
+import useResponsive from "../hooks/useResponsive";
 import { 
   changeWindowLayout, 
   changeSidebarLayout } from "../utils/classNameUtils";
 
 function AppPage() {
 
-  const windowSize = window.innerWidth;
+  const windowSize: number = window.innerWidth;
 
-  const { isOpenSidebar, showSidebar, changeStoredWindowWidth } = useSidebar();
+  const { isOpenSidebar } = useSidebar();
+  const { detectMobileScreen, changeStoredWindowWidth } = useResponsive();
 
   useEffect(()  => {
-    const mdBreakpoint: number = 768;
     changeStoredWindowWidth(windowSize);
-    showSidebar(windowSize > mdBreakpoint);
+    detectMobileScreen();
   }, [windowSize]);
 
   return (

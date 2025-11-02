@@ -28,8 +28,3 @@ export interface ScreenFrameProps {
     children: ReactNode,
     page: string;
 };
-
-export interface ButtonProps {
-    children: string,
-    onClick: React.MouseEventHandler<HTMLButtonElement>;
-}

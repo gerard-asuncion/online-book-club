@@ -42,8 +42,11 @@ const Chat = () => {
               md:text-sm 
               p-2 border-3
               border-gray-900
-              hover:border-green-800
+              md:hover:border-green-800
               rounded-md
+              transition-color
+              ease-in
+              active:border-green-800
               cursor-pointer"
             onClick={() => {}}
           >
@@ -71,12 +74,12 @@ const Chat = () => {
               flex-col 
               md:w-95/100
               justify-between 
-              my-1 p-2 sm:p-3
+              my-2 sm:my-1 p-2 sm:p-3
               rounded-md"
             >
             <div className='flex justify-between'>
               <div className="font-bold sm:text-base text-sm text-green-800">{message.user}</div> 
-              <div className="text-xs sm:text-sm text-white">{formatTimestamp(message.createdAt)}</div>
+              <div className="text-xs sm:text-sm text-gray-400">{formatTimestamp(message.createdAt)}</div>
             </div>
             <div className="text-white">
               {message.text}
