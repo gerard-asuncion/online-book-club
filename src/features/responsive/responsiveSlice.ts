@@ -2,9 +2,14 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { ResponsiveInitialState } from "../../types/redux";
 
+export const mdBreakpoint: number = 768;
+const getInitialMobileState = (): boolean => {
+  return window.innerWidth < mdBreakpoint;
+};
+
 const initialState: ResponsiveInitialState = {
     windowWidth: 0,
-    isMobile: true,
+    isMobile: getInitialMobileState(),
     openSidebar: false,
 }
 

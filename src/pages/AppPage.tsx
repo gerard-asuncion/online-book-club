@@ -1,25 +1,38 @@
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import Header from "../components/ui/Header";
 import Sidebar from "../components/form/Sidebar";
 import MainContentRouter from "../components/ui/MainConentRouter";
 import ScreenFrame from "../components/ui/ScreenFrame";
 import useSidebar from "../hooks/useSidebar";
-import useResponsive from "../hooks/useResponsive";
+import { useAppDispatch } from "../app/hooks";
+import { mdBreakpoint } from "../features/responsive/responsiveSlice";
+import { setIsMobile, setIsNotMobile } from "../features/responsive/responsiveSlice";
 import { 
   changeWindowLayout, 
   changeSidebarLayout } from "../utils/classNameUtils";
 
 function AppPage() {
 
-  const windowSize: number = window.innerWidth;
+  const dispatch = useAppDispatch();
 
   const { isOpenSidebar } = useSidebar();
-  const { detectMobileScreen, changeStoredWindowWidth } = useResponsive();
 
-  useEffect(()  => {
-    changeStoredWindowWidth(windowSize);
-    detectMobileScreen();
-  }, [windowSize]);
+  const handleResize = useCallback(() => {
+      const currentIsMobile = window.innerWidth < mdBreakpoint;  
+      if (currentIsMobile) {
+          dispatch(setIsMobile());
+      } else {
+          dispatch(setIsNotMobile());
+      }
+    }, [dispatch]);
+
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+    handleResize(); 
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [handleResize]); 
 
   return (
     <ScreenFrame page="full">
@@ -32,10 +45,10 @@ function AppPage() {
             </div>
             <div className={`
               ${changeSidebarLayout(isOpenSidebar)}
-              md:border-l-10
+              md:border-l-4
               border-green-800
               overflow-y-auto
-              px-4`}>
+              px-5`}>
                 <Sidebar />
             </div>
         </section>
