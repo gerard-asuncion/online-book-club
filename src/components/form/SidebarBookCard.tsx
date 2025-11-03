@@ -49,7 +49,7 @@ const SidebarBookCard = ({ children, user }: SidebarBookCardProps) => {
                     rounded-full
                     h-6
                     w-6
-                    bg-green-800
+                    bg-main-color
                     text-white
                     font-bold
                     `}>

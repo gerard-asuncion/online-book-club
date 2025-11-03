@@ -46,7 +46,7 @@ function AppPage() {
             <div className={`
               ${changeSidebarLayout(isOpenSidebar)}
               md:border-l-4
-              border-green-800
+              border-main-color
               overflow-y-auto
               px-5`}>
                 <Sidebar />

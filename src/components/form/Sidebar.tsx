@@ -15,8 +15,6 @@ interface Book {
     author: string;
 }
 
-// "Antígona", "Història de Roma", "El petit príncep"
-
 const fakeUsersData: FakeUser[] = [
     {
         username: "name",
@@ -74,12 +72,12 @@ const Sidebar = () => {
                                 text-white
                                 text-sm
                                 border-2
-                                border-gray-900
+                                border-default-bg
                                 transition-colors 
                                 ease-in-out
                                 duration-200
-                                active:border-green-800
-                                md:hover:border-green-800
+                                active:border-main-color
+                                md:hover:border-main-color
                                 cursor-pointer">
                             Add a book
                         </button>

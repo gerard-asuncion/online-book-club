@@ -37,18 +37,17 @@ const Chat = () => {
             md:text-base'>Room: {bookRoom}</h1>
           <button
             className="
-              text-green-800
+              text-main-color
               text-xs 
               md:text-sm 
               p-2 border-2
-              border-gray-900
-              md:hover:border-green-800
+              border-default-bg
+              md:hover:border-main-color
               md:hover:text-white
               rounded-md
               transition-color
               ease-in
               active:text-white
-              active:border-green-800
               cursor-pointer"
             onClick={() => {alert("room deleted")}}
           >
@@ -71,7 +70,7 @@ const Chat = () => {
           <article 
             key={message.id} 
             className="
-              bg-gray-800
+              bg-secondary-color
               flex 
               flex-col 
               md:w-95/100
@@ -80,7 +79,7 @@ const Chat = () => {
               rounded-md"
             >
             <div className='flex justify-between'>
-              <div className="font-bold sm:text-base text-sm text-green-800">{message.user}</div> 
+              <div className="font-bold sm:text-base text-sm text-main-color">{message.user}</div> 
               <div className="text-xs sm:text-sm text-gray-400">{formatTimestamp(message.createdAt)}</div>
             </div>
             <div className="text-white">
@@ -100,7 +99,7 @@ const Chat = () => {
             sm:px-12
             md:w-95/100
             py-5 
-            bg-gray-900">
+            bg-default-bg">
           <TextareaAutosize
             className="flex-1 p-2 rounded-lg resize-none bg-white" 
             placeholder="Type your message here..."
@@ -110,7 +109,7 @@ const Chat = () => {
             maxRows={6}
             onKeyDown={handleKeyDown}
           />
-          <button type="submit" className="font-semibold p-2 md:w-20 bg-green-800 text-white rounded-lg cursor-pointer">
+          <button type="submit" className="font-semibold p-2 md:w-20 bg-main-color text-white rounded-lg cursor-pointer">
             Send
           </button>
        </form>

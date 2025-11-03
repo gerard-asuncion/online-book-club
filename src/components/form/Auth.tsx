@@ -6,7 +6,7 @@ const Auth = () => {
     const { loginWithGoogle, loginWithEmailAndPassword, register } = useAuth();
 
     return (
-        <section className="flex flex-col items-center justify-center p-8 border-2 border-white rounded-lg max-w-sm mx-auto space-y-6">
+        <section className="flex flex-col items-center justify-center p-8 border-2 border-main-color rounded-lg max-w-sm mx-auto space-y-6">
             <p className="font-medium text-center text-white">
                 Welcome to Online Book Club
             </p>
