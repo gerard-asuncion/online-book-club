@@ -27,9 +27,6 @@ const fakeUsersData: FakeUser[] = [
                 title: "El petit príncep",
                 author: "Antoine de Saint-Exupéry"
             },{
-                title: "La divina comèdia",
-                author: "Dante"
-            },{
                 title: "Història de Roma",
                 author: "Polibi"
             }]
@@ -75,8 +72,14 @@ const Sidebar = () => {
                                 items-center
                                 rounded-2xl
                                 text-white
-                                hover:border-3
-                                border-green-800
+                                text-sm
+                                border-2
+                                border-gray-900
+                                transition-colors 
+                                ease-in-out
+                                duration-200
+                                active:border-green-800
+                                md:hover:border-green-800
                                 cursor-pointer">
                             Add a book
                         </button>
