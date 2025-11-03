@@ -1,10 +1,12 @@
 import MainContentFrame from "../ui/MainContentFrame";
-import { defaultButtonLayout, setGridLayoutBookSearch } from "../../utils/classNameUtils";
-import { useState } from "react";
+import { defaultButtonLayout, setBooksGridLayout } from "../../utils/classNameUtils";
+import { useRef, useState } from "react";
 import { showHideAnything, centerAnyContent } from "../../utils/classNameUtils";
 
 
-const BookSearch = () => {
+const BooksGrid = () => {
+
+  const searchInputText = useRef<HTMLInputElement>(null);
 
   const [displayBooks, setDisplayBooks] = useState<boolean>(false);
   const [checkboxState, setCheckboxState] = useState<boolean>(false);
@@ -15,6 +17,8 @@ const BookSearch = () => {
 
   const handleSubmitSearch = async (e: React.FormEvent) => {
     e.preventDefault();
+    if(!searchInputText.current) return;
+    if(searchInputText.current.value.trim() === '') return;
     setDisplayBooks(true);
   }; 
 
@@ -29,7 +33,7 @@ const BookSearch = () => {
           <form 
             onSubmit={handleSubmitSearch}
             className={`
-              ${setGridLayoutBookSearch(displayBooks)} 
+              ${setBooksGridLayout(displayBooks)} 
               grid
               gap-6
               max-w-xl  
@@ -42,6 +46,7 @@ const BookSearch = () => {
               type="text" 
               name="searchInput" 
               id="searchInput"
+              ref={searchInputText}
               placeholder="search a book..."
               className="
                 max-h-10
@@ -116,4 +121,4 @@ const BookSearch = () => {
   )
 }
 
-export default BookSearch;
+export default BooksGrid;

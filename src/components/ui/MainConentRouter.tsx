@@ -1,6 +1,6 @@
 import Chat from "../form/Chat";
 import Settings from "../form/Settings";
-import BookSearch from "../form/BookSearch";
+import BooksGrid from "../form/BooksGrid";
 import MainContentFrame from "./MainContentFrame";
 import useMainContentRouter from "../../hooks/useMainContentRouter";
 
@@ -18,7 +18,7 @@ const MainContentRouter = () => {
     )
   } else if(isSearch){
     return (
-      <BookSearch />
+      <BooksGrid />
     )
   } else if(isWelcome){
     return (

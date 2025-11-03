@@ -24,3 +24,9 @@ export interface ResponsiveInitialState {
 export interface MessagesInitialState {
     messages: Message[];
 }
+
+export interface BooksSliceInitialState {
+    volumes: string[],
+    status: string,
+    error: string | null;
+}

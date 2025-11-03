@@ -20,8 +20,8 @@ export const highlightBookRoomCard = (openBookRoom: string, bookRoomName: string
     : "bg-secondary-color border-2 border-white text-white"
 
     
-export const setGridLayoutBookSearch = (isOpenMenu: boolean) : string =>
-    isOpenMenu ? "grid-cols-4 grid-rows-1" : "grid-cols-1 grid-rows-3"
+export const setBooksGridLayout = (isOpenGrid: boolean) : string =>
+    isOpenGrid ? "grid-cols-4 grid-rows-1" : "grid-cols-1 grid-rows-3"
 
 
 export const defaultButtonLayout = (): string =>
