@@ -17,7 +17,7 @@ export const changeSidebarLayout = (openSidebar: boolean): string =>
 export const highlightBookRoomCard = (openBookRoom: string, bookRoomName: string): string => 
     openBookRoom !== bookRoomName
     ? "bg-default-bg border-2 border-main-color text-main-color transition-colors duration-300 md:duration-100 ease-in-out md:hover:bg-main-color md:hover:text-white"
-    : "bg-secondary-color border-2 border-white text-white"
+    : "bg-default-bg border-2 border-white text-white"
 
     
 export const setBooksGridLayout = (isOpenGrid: boolean) : string =>

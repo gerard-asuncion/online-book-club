@@ -1,4 +1,5 @@
 import type { Message } from "./types";
+import type { BookItem } from "./books";
 
 export interface AuthSliceInitialState {
     isAuth: boolean;
@@ -26,7 +27,7 @@ export interface MessagesInitialState {
 }
 
 export interface BooksSliceInitialState {
-    volumes: string[],
+    volumes: BookItem[],
     status: string,
     error: string | null;
 }

@@ -22,3 +22,4 @@ const bookRoomSlice = createSlice({
 
 export const { setBookRoom, clearBookRoom } = bookRoomSlice.actions;
 export default bookRoomSlice.reducer;
+

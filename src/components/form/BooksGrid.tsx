@@ -1,26 +1,16 @@
 import MainContentFrame from "../ui/MainContentFrame";
 import { defaultButtonLayout, setBooksGridLayout } from "../../utils/classNameUtils";
-import { useRef, useState } from "react";
+import { useState } from "react";
+import useBooksGrid from "../../hooks/useBooksGrid";
 import { showHideAnything, centerAnyContent } from "../../utils/classNameUtils";
+import type { BookItem } from "../../types/books";
 
 
 const BooksGrid = () => {
 
-  const searchInputText = useRef<HTMLInputElement>(null);
+  const { query, setQuery, displayBooks, booksVolumes, handleBooksSearch } = useBooksGrid();
 
-  const [displayBooks, setDisplayBooks] = useState<boolean>(false);
   const [checkboxState, setCheckboxState] = useState<boolean>(false);
-  const books = ["book example", "book example", "book example", "book example", 
-    "book example", "book example", "book example", "book example",
-    "book example", "book example", "book example", "book example", 
-    "book example", "book example", "book example", "book example"]
-
-  const handleSubmitSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if(!searchInputText.current) return;
-    if(searchInputText.current.value.trim() === '') return;
-    setDisplayBooks(true);
-  }; 
 
   const testCheckbox = (checked: boolean): void => {
     setCheckboxState(checked);
@@ -31,7 +21,7 @@ const BooksGrid = () => {
       <section className={`${centerAnyContent(!displayBooks)} h-full w-full`}>
         <article className="flex flex-col justify-center items-center p-10">
           <form 
-            onSubmit={handleSubmitSearch}
+            onSubmit={(e) => {handleBooksSearch(e, query);}}
             className={`
               ${setBooksGridLayout(displayBooks)} 
               grid
@@ -46,7 +36,7 @@ const BooksGrid = () => {
               type="text" 
               name="searchInput" 
               id="searchInput"
-              ref={searchInputText}
+              onChange={(e) => setQuery(e.target.value)}
               placeholder="search a book..."
               className="
                 max-h-10
@@ -97,8 +87,26 @@ const BooksGrid = () => {
             overflow-y-auto
             scrollbar
           `}>
-          <ul className="grid grid-cols-2 md:grid-cols-4 gap-5">
-            {books.map((book: string, index: number) => {
+            <ul>
+    {booksVolumes.map((book: BookItem) => (
+      <li key={book.id}>
+        {/*
+          * Com que 'imageLinks' és opcional, fem servir '?.'.
+          * Si 'imageLinks' és undefined, tot es talla 
+          * i no intentarà llegir 'thumbnail', evitant un crash.
+        */}
+        <img 
+          src={book.volumeInfo.imageLinks?.thumbnail} 
+          alt={book.volumeInfo.title} 
+        />
+        <strong>{book.volumeInfo.title}</strong>
+        {/* Els autors també són un array, cal fer 'join' */}
+        <p>{book.volumeInfo.authors?.join(', ')}</p>
+      </li>
+    ))}
+  </ul>
+          {/* <ul className="grid grid-cols-2 md:grid-cols-4 gap-5">
+            {booksVolumes.map((book: string, index: number) => {
               return  <li 
                         key={index}
                         className="col-span-1 flex flex-col"
@@ -108,13 +116,13 @@ const BooksGrid = () => {
                           border-3 border-main-color
                           h-80"
                         >
-                          {book}
+                          "cover"
                         </div>
-                        <div className="">Title...</div>
-                        <div className="">Author...</div>
+                        <div>{book.volumeInfo.title}</div>
+                        <div className="text-main-color">{book.volumeInfo.authors}</div>
                       </li>
             })}  
-          </ul>
+          </ul> */}
         </article>
       </section>
     </MainContentFrame>
