@@ -54,9 +54,7 @@ const BookSearch = () => {
                 text-sm
                 text-black
                 bg-white
-                focus:outline-none
-                focus:ring-3
-              focus:ring-green-800"             
+                focus:outline-none"             
             />
             <button 
                 type="submit"
@@ -102,7 +100,7 @@ const BookSearch = () => {
                       >
                         <div className="
                           flex justify-center items-center 
-                          border-3 border-green-800
+                          border-3 border-main-color
                           h-80"
                         >
                           {book}

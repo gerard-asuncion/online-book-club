@@ -7,6 +7,6 @@
 }
 
 @theme {
-  --color-main-color: oklch(0.5 0.2 150 / 1);
+  --color-main-color: oklch(0.6 0.2 15 / 1);
+  /* --color-main-color: oklch(0.6 0.2 150 / 1); */
 }
-
