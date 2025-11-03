@@ -32,6 +32,5 @@ export const defaultButtonLayout = (): string =>
     transition-colors 
     ease-in-out
     duration-200
-    active:text-black
     active:bg-green-800
     md:hover:bg-green-800`
