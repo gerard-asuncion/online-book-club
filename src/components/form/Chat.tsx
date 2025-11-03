@@ -37,20 +37,22 @@ const Chat = () => {
             md:text-base'>Room: {bookRoom}</h1>
           <button
             className="
-              text-white
+              text-green-800
               text-xs 
               md:text-sm 
-              p-2 border-3
+              p-2 border-2
               border-gray-900
               md:hover:border-green-800
+              md:hover:text-white
               rounded-md
               transition-color
               ease-in
+              active:text-white
               active:border-green-800
               cursor-pointer"
-            onClick={() => {}}
+            onClick={() => {alert("room deleted")}}
           >
-            Leave Room
+            Delete room from profile
           </button>
         </div>
       </article>
