@@ -1,3 +1,3 @@
-export const addTimeout = (callback: () => {}, time: number): void => {
+export const addTimeout = (callback: () => void, time: number): void => {
     setTimeout(callback, time);
 };

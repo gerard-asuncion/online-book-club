@@ -15,7 +15,11 @@ const useSidebar = () => {
     const isMobile = useAppSelector(selectIsMobile);
 
     const showSidebar = (open: boolean): void => {
-        open ? dispatch(setOpenSidebar()) : dispatch(setCloseSidebar());
+        if(open){
+            dispatch(setOpenSidebar());
+        }else if(!open){
+            dispatch(setCloseSidebar());
+        }
     }
 
     const hideSidebarInMobile = (): void => {
