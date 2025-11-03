@@ -19,7 +19,7 @@ const Auth = () => {
                 </button>
             </div>   
             <button
-                className={`${defaultButtonLayout}`}
+                className={`${defaultButtonLayout()}`}
                 onClick={loginWithGoogle}
             >
                 Continue With Google
