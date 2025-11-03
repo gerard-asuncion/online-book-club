@@ -38,7 +38,7 @@ export const useChat = (bookRoom: string) => {
     );
 
     const unsubscribe = onSnapshot(queryMessages, (snapshot) => {
-      let arrMessages: Message[] = [];
+      const arrMessages: Message[] = [];
       snapshot.forEach((doc) => {
         arrMessages.push({ ...doc.data() as Omit<Message, 'id'>, id: doc.id });
       });
