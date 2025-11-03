@@ -72,7 +72,7 @@ const Sidebar = () => {
                                 text-white
                                 text-sm
                                 border-2
-                                border-gray-900
+                                border-default-bg
                                 transition-colors 
                                 ease-in-out
                                 duration-200
