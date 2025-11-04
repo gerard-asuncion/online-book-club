@@ -2,13 +2,12 @@ import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { selectIsMobile, selectOpenSidebar } from "../features/responsive/responsiveSelectors";
 import { setCloseSidebar, setOpenSidebar } from "../features/responsive/responsiveSlice";
 import useMainContentRouter from "./useMainContentRouter";
-import useBookRoom from "./useBookRoom";
 import { addTimeout } from "../utils/utils";
+import { clearCurrentBook, setCurrentBook } from "../features/currentBook/currentBookSlice";
 
 const useSidebar = () => {
 
     const { isChat, switchContent } = useMainContentRouter();
-    const { handleSetBookRoom } = useBookRoom();
 
     const dispatch = useAppDispatch();
     const isOpenSidebar = useAppSelector(selectOpenSidebar);
@@ -29,8 +28,12 @@ const useSidebar = () => {
         }
     }
 
-    const handleBookCardClick = (bookRoomName: string): void => {
-        handleSetBookRoom(bookRoomName);
+    const handleBookCardClick = (): void => {
+        dispatch(clearCurrentBook());
+        const id: string = "1234";
+        const title: string = "title";
+        const authors: string[] = ["author"]
+        dispatch(setCurrentBook({ bookId: id, title: title, authors: authors }));
         if(!isChat){
             switchContent("chatRoom");
         };

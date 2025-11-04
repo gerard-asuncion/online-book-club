@@ -14,11 +14,6 @@ export const changeSidebarLayout = (openSidebar: boolean): string =>
     ? "h-full md:col-span-1" 
     : "hidden";
 
-export const highlightAddBookButton = (isActive: boolean): string =>
-    isActive
-    ? "text-main-color"
-    : "text-white md:hover:border-main-color cursor-pointer"
-
 export const highlightBookRoomCard = (openBookRoom: string | null, bookRoomName: string): string => 
     openBookRoom !== bookRoomName
     ? "bg-default-bg border-2 border-main-color text-main-color transition-colors duration-300 md:duration-100 ease-in-out md:hover:bg-main-color md:hover:text-white cursor-pointer"

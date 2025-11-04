@@ -3,10 +3,11 @@ import Settings from "../form/Settings";
 import BooksGrid from "../form/BooksGrid";
 import MainContentFrame from "./MainContentFrame";
 import useMainContentRouter from "../../hooks/useMainContentRouter";
+import AboutSection from "./AboutSection";
 
 const MainContentRouter = () => {
 
-  const { isWelcome, isChat, isSettings, isSearch } = useMainContentRouter();
+  const { isChat, isSettings, isSearch, isAbout } = useMainContentRouter();
 
   if(isChat){
     return (
@@ -20,13 +21,9 @@ const MainContentRouter = () => {
     return (
       <BooksGrid />
     )
-  } else if(isWelcome){
+  } else if(isAbout){
     return (
-      <MainContentFrame>
-        <div className="h-full text-white font-bold text-lg flex justify-center items-center">
-          Welcome, please select a room...
-        </div>
-      </MainContentFrame>
+      <AboutSection />
     )
   } else {
     return (

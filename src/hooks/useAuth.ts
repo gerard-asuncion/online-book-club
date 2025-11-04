@@ -4,8 +4,8 @@ import { auth, provider } from '../firebase-config';
 import Cookies from 'universal-cookie';
 import { useAppDispatch } from '../app/hooks';
 import { setIsAuth, clearAuth } from '../features/auth/authSlice';
-import { clearBookRoom } from '../features/bookRoom/bookRoomSlice';
-import { setIsWelcome } from '../features/mainContentRoute/mainContentRouteSlice';
+import { clearCurrentBook } from '../features/currentBook/currentBookSlice';
+import { setIsSearch } from '../features/mainContentRoute/mainContentRouteSlice';
 import { setOpenSidebar } from '../features/responsive/responsiveSlice';
 
 const cookies = new Cookies();
@@ -44,8 +44,8 @@ const useAuth = () => {
     await signOut(auth);
     cookies.remove("auth-token", { path: "/" });
     dispatch(clearAuth());
-    dispatch(clearBookRoom());
-    dispatch(setIsWelcome());
+    dispatch(clearCurrentBook());
+    dispatch(setIsSearch());
     dispatch(setOpenSidebar());
   }
 

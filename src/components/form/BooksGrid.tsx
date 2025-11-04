@@ -86,7 +86,7 @@ const BooksGrid = () => {
                 htmlFor="activeRoomsCheckbox"
                 className="text-white text-sm"
               >
-                Active chats only
+                Save chat room
               </label>
             </div>
           </form>
@@ -116,7 +116,7 @@ const BooksGrid = () => {
                 >
                     <button 
                       onClick={() => {
-                        handleVolumeSelection(book.id, book.volumeInfo);
+                        handleVolumeSelection(book.id, book.volumeInfo.title, book.volumeInfo.authors);
                       }} 
                       className="cursor-pointer flex flex-col justify-center items-start gap-1 w-70/100 aspect-2/3"
                     >

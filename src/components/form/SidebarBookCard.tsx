@@ -2,14 +2,14 @@ import useSidebar from "../../hooks/useSidebar";
 import { showHideAnything, highlightBookRoomCard } from "../../utils/classNameUtils";
 import type { SidebarBookCardProps } from "../../types/props";
 import useUnreadCounter from "../../hooks/useUnreadCounter";
-import useBookRoom from "../../hooks/useBookRoom";
+import { useAppSelector } from "../../app/hooks";
+import { selectCurrentBookId } from "../../features/currentBook/currentBookSelectors";
 
-const SidebarBookCard = ({ children, user }: SidebarBookCardProps) => {
+const SidebarBookCard = ({ children, displayedBookId, user }: SidebarBookCardProps) => {
 
-  const bookRoomName: string = children.title;
+  const currentBookId = useAppSelector(selectCurrentBookId);
   
-  const { bookRoom } = useBookRoom();
-  const { unreadCount, setUnreadCount } = useUnreadCounter(bookRoomName, user);
+  const { unreadCount, setUnreadCount } = useUnreadCounter(displayedBookId, user);
   const { handleBookCardClick } = useSidebar();
 
   return (
@@ -18,26 +18,26 @@ const SidebarBookCard = ({ children, user }: SidebarBookCardProps) => {
           h-full">
         <button 
           onClick={() => {
-            handleBookCardClick(bookRoomName);
+            handleBookCardClick();
             setUnreadCount(0);
           }}
           className={`
-            ${highlightBookRoomCard(bookRoom, bookRoomName)}
+            ${highlightBookRoomCard(currentBookId, displayedBookId)}
             h-full
             w-full
             flex 
             justify-between
             items-center
             px-4
-            py-1
+            py-2
             rounded-lg
           `}>
             <section className="flex flex-col items-start justify-center text-left">
               <div className="font-bold">
-                {children.title}
+                Title: {children}
               </div>
               <div className="text-sm">
-                {children.author}
+                Author: {children}
               </div>
             </section>
             <div className={`

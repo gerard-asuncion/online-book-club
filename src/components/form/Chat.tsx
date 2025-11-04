@@ -2,13 +2,14 @@ import { useRef, useLayoutEffect } from 'react';
 import { useChat } from '../../hooks/useChat';
 import MainContentFrame from '../ui/MainContentFrame';
 import TextareaAutosize from 'react-textarea-autosize';
-import useBookRoom from '../../hooks/useBookRoom';
 import { formatTimestamp } from '../../utils/dateUtils';
 import type { Message } from "../../types/types";
+import { useAppSelector } from '../../app/hooks';
+import { selectCurrentBookTitle } from '../../features/currentBook/currentBookSelectors';
 
 const Chat = () => {
 
-  const { bookRoom } = useBookRoom();
+  const currentBookTitle: string | null = useAppSelector(selectCurrentBookTitle);
  
   const { 
     messages,
@@ -16,7 +17,7 @@ const Chat = () => {
     setNewMessage, 
     handleSubmitMessage,
     handleKeyDown 
-  } = useChat(bookRoom);
+  } = useChat();
 
   const scrollerRef = useRef<HTMLDivElement>(null);
 
@@ -34,7 +35,7 @@ const Chat = () => {
           <h1 className='
             text-white
             text-sm
-            md:text-base'>Room: {bookRoom}</h1>
+            md:text-base'>Room: {currentBookTitle}</h1>
           <button
             className="
               text-main-color
@@ -51,7 +52,7 @@ const Chat = () => {
               cursor-pointer"
             onClick={() => {alert("room deleted")}}
           >
-            Delete room from profile
+            Save / Remove
           </button>
         </div>
       </article>

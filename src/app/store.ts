@@ -13,14 +13,14 @@ import storage from 'redux-persist/lib/storage';
 
 import authReducer from '../features/auth/authSlice';
 import mainContentRouteReducer from '../features/mainContentRoute/mainContentRouteSlice';
-import bookRoomReducer from '../features/bookRoom/bookRoomSlice';
+import currentBookReducer from '../features/currentBook/currentBookSlice';
 import responsiveReducer from '../features/responsive/responsiveSlice';
 import booksReducer from '../features/books/booksSlice';
 
 const rootReducer = combineReducers({
     auth: authReducer, 
     mainContentRoute: mainContentRouteReducer,
-    bookRoom: bookRoomReducer,
+    currentBook: currentBookReducer,
     responsive: responsiveReducer,
     books: booksReducer
 });
@@ -28,7 +28,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['mainContentRoute', 'bookRoom', 'responsive'] 
+  whitelist: ['mainContentRoute', 'currentBook', 'responsive'] 
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -6,17 +6,16 @@ export interface AuthSliceInitialState {
 }
 
 export interface MainContentRouteInitialState {
-    isWelcome: boolean,
     isChat: boolean,
     isSettings: boolean,
-    isSearch: boolean;
+    isSearch: boolean,
+    isAbout: boolean;
 }
 
-export interface BookRoomInitialState {
-    bookRoom: string | null,
+export interface CurrentBookInitialState {
     bookId: string | null,
     bookTitle: string | null,
-    bookAuthors: string[] | null;
+    bookAuthors: string[];
 }
 
 export interface ResponsiveInitialState {

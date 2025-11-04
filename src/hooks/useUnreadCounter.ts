@@ -13,7 +13,7 @@ import type { User } from 'firebase/auth';
 const MESSAGES_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION;
 const messagesRef: CollectionReference<DocumentData> = collection(db, MESSAGES_COLLECTION);
 
-const useUnreadCounter = (bookRoom: string, user: User | null) => {
+const useUnreadCounter = (displayedBookId: string, user: User | null) => {
 
     const [unreadCount, setUnreadCount] = useState<number>(0);
     
@@ -21,14 +21,14 @@ const useUnreadCounter = (bookRoom: string, user: User | null) => {
 
         const currentUserId = auth.currentUser?.uid;
 
-        if (!currentUserId || !bookRoom) {
+        if (!currentUserId || !displayedBookId) {
             setUnreadCount(0);
             return;
         }
 
         const queryMessages = query(
             messagesRef, 
-            where("room", "==", bookRoom)
+            where("room", "==", displayedBookId)
         );
 
         const unsubscribe = onSnapshot(queryMessages, (snapshot) => {
@@ -43,7 +43,7 @@ const useUnreadCounter = (bookRoom: string, user: User | null) => {
 
         return () => unsubscribe();
 
-    }, [bookRoom, user]); 
+    }, [displayedBookId, user]); 
 
     return { unreadCount, setUnreadCount };
 };

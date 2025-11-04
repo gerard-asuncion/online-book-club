@@ -3,7 +3,7 @@ interface ImageLinks {
   thumbnail: string; 
 }
 
-export interface VolumeInfo {
+interface VolumeInfo {
   title: string,
   authors: string[],  
   imageLinks?: ImageLinks; 
