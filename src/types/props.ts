@@ -5,6 +5,15 @@ export interface OnlyReactNodeChildrenProps {
     children: ReactNode;
 }
 
+export interface UserLoadingUserProps {
+    user: User | null,
+    isLoadingUser: boolean;
+}
+
+export interface MainContentRouterProps {
+    user: User | null;
+}
+
 export interface SidebarBookCardProps {
     children: string,
     displayedBookId: string,

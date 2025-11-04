@@ -18,7 +18,7 @@ const SidebarBookCard = ({ children, displayedBookId, user }: SidebarBookCardPro
           h-full">
         <button 
           onClick={() => {
-            handleBookCardClick();
+            handleBookCardClick("Harry Potter");
             setUnreadCount(0);
           }}
           className={`

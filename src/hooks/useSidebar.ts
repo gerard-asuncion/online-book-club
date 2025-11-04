@@ -28,10 +28,10 @@ const useSidebar = () => {
         }
     }
 
-    const handleBookCardClick = (): void => {
+    const handleBookCardClick = (book: string): void => {
         dispatch(clearCurrentBook());
-        const id: string = "1234";
-        const title: string = "title";
+        const id: string = book;
+        const title: string = book;
         const authors: string[] = ["author"]
         dispatch(setCurrentBook({ bookId: id, title: title, authors: authors }));
         if(!isChat){

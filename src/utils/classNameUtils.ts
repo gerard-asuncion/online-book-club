@@ -1,6 +1,16 @@
 export const showHideAnything = (show: boolean | number): string =>
     show ? "" : "hidden";
 
+export const alineateMessages = (userId: string | undefined, messageId: string): string =>
+    userId === messageId
+    ? "justify-end"
+    : "justify-start"
+
+export const styleMessages = (userId: string | undefined, messageId: string): string =>
+    userId === messageId
+    ? "bg-secondary-color"
+    : "bg-secondary-color"
+
 export const justifyBooksGrid = (center: boolean): string =>
     center ? "justify-center" : "justify-between"
 

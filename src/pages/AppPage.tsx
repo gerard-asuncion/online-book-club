@@ -3,19 +3,19 @@ import Header from "../components/ui/Header";
 import Sidebar from "../components/form/Sidebar";
 import MainContentRouter from "../components/ui/MainConentRouter";
 import ScreenFrame from "../components/ui/ScreenFrame";
+import useAuthUser from "../hooks/useAuthUser";
 import useSidebar from "../hooks/useSidebar";
 import { useAppDispatch } from "../app/hooks";
 import { mdBreakpoint } from "../features/responsive/responsiveSlice";
 import { setIsMobile, setIsNotMobile } from "../features/responsive/responsiveSlice";
-import { 
-  changeWindowLayout, 
-  changeSidebarLayout } from "../utils/classNameUtils";
+import { changeWindowLayout, changeSidebarLayout } from "../utils/classNameUtils";
 
 function AppPage() {
 
   const dispatch = useAppDispatch();
 
   const { isOpenSidebar } = useSidebar();
+  const { user, isLoadingUser } = useAuthUser();
 
   const handleResize = useCallback(() => {
       const currentIsMobile = window.innerWidth < mdBreakpoint;  
@@ -41,7 +41,7 @@ function AppPage() {
             <div className={`
               ${changeWindowLayout(isOpenSidebar)}
               overflow-hidden`}>
-                <MainContentRouter />
+                <MainContentRouter user={user} />
             </div>
             <div className={`
               ${changeSidebarLayout(isOpenSidebar)}
@@ -49,7 +49,7 @@ function AppPage() {
               border-main-color
               overflow-y-auto
               px-5`}>
-                <Sidebar />
+                <Sidebar user={user} isLoadingUser={isLoadingUser} />
             </div>
         </section>
     </ScreenFrame>

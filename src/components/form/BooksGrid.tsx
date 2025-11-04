@@ -74,7 +74,7 @@ const BooksGrid = () => {
             <div className="flex justify-center items-center gap-2 col-span-4 row-span-1">
               <input 
                 type="checkbox"
-                className=""
+                className="accent-main-color"
                 id="activeRoomsCheckbox"
                 name="activeRoomsCheckbox"
                 checked={checkboxState} 
