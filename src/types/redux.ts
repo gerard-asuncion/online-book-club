@@ -1,4 +1,5 @@
 import type { Message } from "./types";
+import type { BookItem } from "./books";
 
 export interface AuthSliceInitialState {
     isAuth: boolean;
@@ -12,7 +13,10 @@ export interface MainContentRouteInitialState {
 }
 
 export interface BookRoomInitialState {
-    bookRoom: string;
+    bookRoom: string | null,
+    bookId: string | null,
+    bookTitle: string | null,
+    bookAuthors: string[] | null;
 }
 
 export interface ResponsiveInitialState {
@@ -23,4 +27,11 @@ export interface ResponsiveInitialState {
 
 export interface MessagesInitialState {
     messages: Message[];
+}
+
+export interface BooksSliceInitialState {
+    volumes: BookItem[],
+    status: string,
+    error: string | null,
+    currentQuery: string;
 }

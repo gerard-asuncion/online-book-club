@@ -4,7 +4,7 @@ import { selectBookRoom } from "../features/bookRoom/bookRoomSelectors";
 
 const useBookRoom = () => {
 
-    const bookRoom: string = useAppSelector(selectBookRoom);
+    const bookRoom: string | null = useAppSelector(selectBookRoom);
     const dispatch = useAppDispatch();
     
     const handleSetBookRoom = (room: string) => {

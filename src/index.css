@@ -7,8 +7,8 @@
 }
 
 @theme {
-  --color-main-color: oklch(0.7 0.2 35 / 1);
+  --color-main-color: oklch(60.57% 0.17 163.63);
   --color-default-bg: oklch(0.21 0 0 / 1);
-  --color-secondary-color: oklch(0.28 0 0 / 1);
+  --color-secondary-color: oklch(0.29 0 0 / 1);
   --color-alt: oklch(0.6 0.2 150 / 1);
 }

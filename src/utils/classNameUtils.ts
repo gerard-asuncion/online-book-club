@@ -1,8 +1,8 @@
 export const showHideAnything = (show: boolean | number): string =>
     show ? "" : "hidden";
 
-export const centerAnyContent = (center: boolean): string =>
-    center ? "flex justify-center items-center" : ""
+export const justifyBooksGrid = (center: boolean): string =>
+    center ? "justify-center" : "justify-between"
 
 export const changeWindowLayout = (openSidebar: boolean): string =>
     openSidebar 
@@ -14,14 +14,19 @@ export const changeSidebarLayout = (openSidebar: boolean): string =>
     ? "h-full md:col-span-1" 
     : "hidden";
 
-export const highlightBookRoomCard = (openBookRoom: string, bookRoomName: string): string => 
+export const highlightAddBookButton = (isActive: boolean): string =>
+    isActive
+    ? "text-main-color"
+    : "text-white md:hover:border-main-color cursor-pointer"
+
+export const highlightBookRoomCard = (openBookRoom: string | null, bookRoomName: string): string => 
     openBookRoom !== bookRoomName
-    ? "bg-default-bg border-2 border-main-color text-main-color transition-colors duration-300 md:duration-100 ease-in-out md:hover:bg-main-color md:hover:text-white"
-    : "bg-secondary-color border-2 border-white text-white"
+    ? "bg-default-bg border-2 border-main-color text-main-color transition-colors duration-300 md:duration-100 ease-in-out md:hover:bg-main-color md:hover:text-white cursor-pointer"
+    : "bg-default-bg border-2 border-white text-white"
 
     
-export const setGridLayoutBookSearch = (isOpenMenu: boolean) : string =>
-    isOpenMenu ? "grid-cols-4 grid-rows-1" : "grid-cols-1 grid-rows-3"
+export const setBooksGridFormLayout = (isOpenGrid: boolean) : string =>
+    isOpenGrid ? "grid-cols-4 grid-rows-1" : "grid-cols-1 grid-rows-3"
 
 
 export const defaultButtonLayout = (): string =>
