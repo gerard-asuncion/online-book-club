@@ -20,7 +20,7 @@ import type { Message } from '../types/types';
 const MESSAGES_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION;
 const messagesRef: CollectionReference<DocumentData> = collection(db, MESSAGES_COLLECTION);
 
-export const useChat = (bookRoom: string) => {
+export const useChat = (bookRoom: string | null) => {
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState<string>("");
@@ -73,7 +73,7 @@ export const useChat = (bookRoom: string) => {
     }
   };
 
-  const markRoomMessagesAsSeen = async (bookRoom: string) => {
+  const markRoomMessagesAsSeen = async (bookRoom: string | null) => {
     const currentUserId = auth.currentUser?.uid;
     if (!currentUserId || !bookRoom) return;
 

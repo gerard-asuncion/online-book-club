@@ -31,7 +31,6 @@ const SidebarBookCard = ({ children, user }: SidebarBookCardProps) => {
             px-4
             py-1
             rounded-lg
-            cursor-pointer
           `}>
             <section className="flex flex-col items-start justify-center text-left">
               <div className="font-bold">

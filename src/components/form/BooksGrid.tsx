@@ -1,14 +1,28 @@
 import MainContentFrame from "../ui/MainContentFrame";
-import { defaultButtonLayout, setBooksGridLayout } from "../../utils/classNameUtils";
+import { 
+  defaultButtonLayout, 
+  justifyBooksGrid, 
+  showHideAnything,
+  setBooksGridFormLayout 
+} from "../../utils/classNameUtils";
 import { useState } from "react";
 import useBooksGrid from "../../hooks/useBooksGrid";
-import { showHideAnything, centerAnyContent } from "../../utils/classNameUtils";
 import type { BookItem } from "../../types/books";
 
 
 const BooksGrid = () => {
 
-  const { query, setQuery, displayBooks, booksVolumes, handleBooksSearch } = useBooksGrid();
+  const { 
+    query, 
+    setQuery, 
+    displayBooks, 
+    booksVolumes, 
+    booksStatus,
+    booksError,
+    handleBooksSearch,
+    handleLoadMoreBooks,
+    handleVolumeSelection,
+  } = useBooksGrid();
 
   const [checkboxState, setCheckboxState] = useState<boolean>(false);
 
@@ -18,19 +32,20 @@ const BooksGrid = () => {
 
   return (
     <MainContentFrame>
-      <section className={`${centerAnyContent(!displayBooks)} h-full w-full`}>
+      <section className={`${justifyBooksGrid(!displayBooks)} flex flex-col items-center h-full w-full`}>
         <article className="flex flex-col justify-center items-center p-10">
           <form 
             onSubmit={(e) => {handleBooksSearch(e, query);}}
             className={`
-              ${setBooksGridLayout(displayBooks)} 
+              ${setBooksGridFormLayout(displayBooks)} 
               grid
               gap-6
-              max-w-xl  
+              max-w-xs
+              md:max-w-xl  
               shrink-0
               w-full
               place-items-center
-              `}
+            `}
           >
             <input 
               type="text" 
@@ -40,7 +55,7 @@ const BooksGrid = () => {
               placeholder="search a book..."
               className="
                 max-h-10
-                w-100
+                md:w-100
                 col-span-3
                 row-span-1
                 p-4
@@ -69,60 +84,73 @@ const BooksGrid = () => {
               />
               <label 
                 htmlFor="activeRoomsCheckbox"
-                className="text-white"
+                className="text-white text-sm"
               >
                 Active chats only
               </label>
             </div>
           </form>
         </article>
-        <article className={`
+        
+        <article
+          className={`
             ${showHideAnything(displayBooks)}
-            text-white 
+            flex
+            flex-col
+            justify-around
+            text-white
             gap-10 
             px-2
             max-w-95/100 m-auto
             max-h-95/100
-            h-full
+            flex-1
+            min-h-0
             overflow-y-auto
             scrollbar
           `}>
-            <ul>
-    {booksVolumes.map((book: BookItem) => (
-      <li key={book.id}>
-        {/*
-          * Com que 'imageLinks' és opcional, fem servir '?.'.
-          * Si 'imageLinks' és undefined, tot es talla 
-          * i no intentarà llegir 'thumbnail', evitant un crash.
-        */}
-        <img 
-          src={book.volumeInfo.imageLinks?.thumbnail} 
-          alt={book.volumeInfo.title} 
-        />
-        <strong>{book.volumeInfo.title}</strong>
-        {/* Els autors també són un array, cal fer 'join' */}
-        <p>{book.volumeInfo.authors?.join(', ')}</p>
-      </li>
-    ))}
-  </ul>
-          {/* <ul className="grid grid-cols-2 md:grid-cols-4 gap-5">
-            {booksVolumes.map((book: string, index: number) => {
-              return  <li 
-                        key={index}
-                        className="col-span-1 flex flex-col"
+            <ul className="grid grid-cols-2 md:grid-cols-5">
+              {booksVolumes.map((book: BookItem) => (
+                <li 
+                  className="col-span-1 mb-10 flex flex-col items-center"
+                  key={book.id}
+                >
+                    <button 
+                      onClick={() => {
+                        handleVolumeSelection(book.id, book.volumeInfo);
+                      }} 
+                      className="cursor-pointer flex flex-col justify-center items-start gap-1 w-70/100 aspect-2/3"
+                    >
+                      <img
+                      className="w-full h-full object-cover"
+                      src={book.volumeInfo.imageLinks?.thumbnail} 
+                      alt={book.volumeInfo.title} 
+                    />
+                    <div className="text-left">
+                      <strong>{book.volumeInfo.title}</strong>
+                      <p
+                        className="text-main-color"
                       >
-                        <div className="
-                          flex justify-center items-center 
-                          border-3 border-main-color
-                          h-80"
-                        >
-                          "cover"
-                        </div>
-                        <div>{book.volumeInfo.title}</div>
-                        <div className="text-main-color">{book.volumeInfo.authors}</div>
-                      </li>
-            })}  
-          </ul> */}
+                        {book.volumeInfo.authors?.join(', ')}
+                      </p>
+                    </div>
+                  </button>
+                </li>
+              ))}
+            </ul>
+            {booksStatus === "loading" && <div className="text-white">Loading...</div>}
+            {booksError && <div className="text-white">{booksError}</div>}
+            {booksStatus === 'succeeded' && booksVolumes.length > 0 && (
+              <div className="flex justify-center col-span-full w-full mb-15">
+                <button
+                  type="button"
+                  onClick={handleLoadMoreBooks}
+                  className={`${defaultButtonLayout()} max-w-40 text-sm`}
+                >
+                  Load more
+                </button>
+              </div>
+            )}
+            {booksStatus === "loading-more" && <div className="text-white mb-20">Loading more books...</div>}
         </article>
       </section>
     </MainContentFrame>

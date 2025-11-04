@@ -3,7 +3,7 @@ import useAuthUser from "../../hooks/useAuthUser";
 import useSidebar from "../../hooks/useSidebar";
 import useMainContentRouter from "../../hooks/useMainContentRouter";
 import SidebarBookCard from "./SidebarBookCard";
-import { defaultButtonLayout } from "../../utils/classNameUtils";
+import { defaultButtonLayout, highlightAddBookButton } from "../../utils/classNameUtils";
 
 interface FakeUser {
     username: string,
@@ -37,7 +37,7 @@ const Sidebar = () => {
     const { logout } = useAuth();
     const { user, isLoading } = useAuthUser();
     const { hideSidebarInMobile } = useSidebar();
-    const { switchContent } = useMainContentRouter();
+    const { isSearch, switchContent } = useMainContentRouter();
 
     return (
         <section className="h-full grid grid-cols-1 grid-rows-[auto_1fr_auto] px-2 py-6 gap-2">
@@ -62,14 +62,14 @@ const Sidebar = () => {
                                 hideSidebarInMobile();
                                 switchContent("bookSearch");
                             }}
-                            className="
+                            className={`
+                                ${highlightAddBookButton(isSearch)}
                                 h-full
                                 w-full
                                 flex
                                 justify-center
                                 items-center
                                 rounded-2xl
-                                text-white
                                 text-sm
                                 border-2
                                 border-default-bg
@@ -77,8 +77,7 @@ const Sidebar = () => {
                                 ease-in-out
                                 duration-200
                                 active:border-main-color
-                                md:hover:border-main-color
-                                cursor-pointer">
+                            `}>
                             Add a book
                         </button>
                     </div>}
