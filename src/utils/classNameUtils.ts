@@ -11,6 +11,11 @@ export const styleMessages = (userId: string | undefined, messageId: string): st
     ? "bg-secondary-color"
     : "bg-secondary-color"
 
+export const displayUserName = (userId: string | undefined, messageId: string): string =>
+    userId === messageId
+    ? "invisible"
+    : ""
+
 export const justifyBooksGrid = (center: boolean): string =>
     center ? "justify-center" : "justify-between"
 

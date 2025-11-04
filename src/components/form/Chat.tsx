@@ -3,7 +3,7 @@ import { useChat } from '../../hooks/useChat';
 import MainContentFrame from '../ui/MainContentFrame';
 import TextareaAutosize from 'react-textarea-autosize';
 import { displayDate } from '../../utils/dateUtils';
-import { alineateMessages, styleMessages } from '../../utils/classNameUtils';
+import { alineateMessages, displayUserName, styleMessages } from '../../utils/classNameUtils';
 import type { Message } from "../../types/types";
 import { useAppSelector } from '../../app/hooks';
 import { selectCurrentBookTitle } from '../../features/currentBook/currentBookSelectors';
@@ -99,8 +99,16 @@ const Chat = ({ user }: MainContentRouterProps) => {
                 `}
               >
               <div className='flex justify-between'>
-                <div className="font-bold sm:text-base text-sm text-white">{message.user}</div> 
-                <div className="text-xs sm:text-sm text-gray-200">{displayDate(message.createdAt, isMobile)}</div>
+                <div className={`
+                  ${displayUserName(userId, message.userId)}
+                  text-main-color            
+                  font-bold 
+                  sm:text-base 
+                  text-sm
+                `}>
+                  {message.user}
+                </div> 
+                <div className="text-xs sm:text-sm text-gray-400">{displayDate(message.createdAt, isMobile)}</div>
               </div>
               <div className="text-white">
                 {message.text}
