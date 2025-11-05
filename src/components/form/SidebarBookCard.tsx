@@ -14,8 +14,8 @@ const SidebarBookCard = ({ children, displayedBookId, user }: SidebarBookCardPro
 
   return (
     <li className="
-          row-span-1
-          h-full">
+          h-full
+          min-h-[50px]">
         <button 
           onClick={() => {
             handleBookCardClick("Harry Potter");
@@ -33,7 +33,7 @@ const SidebarBookCard = ({ children, displayedBookId, user }: SidebarBookCardPro
             rounded-lg
           `}>
             <section className="flex flex-col items-start justify-center text-left">
-              <div className="font-bold">
+              <div className="font-semibold">
                 Title: {children}
               </div>
               <div className="text-sm">

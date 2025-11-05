@@ -12,7 +12,7 @@ const Sidebar = ({ user, isLoadingUser }: UserLoadingUserProps) => {
     const [fakeBooksData, setFakeBooksData] = useState<string[]>([]);
 
     useEffect(() => {
-        setFakeBooksData(["abc", "bcd"]);
+        setFakeBooksData(["abc", "bcd", "cde", "def"]);
     }, []);
 
     const currentBookTitle = useAppSelector(selectCurrentBookTitle);
@@ -26,14 +26,14 @@ const Sidebar = ({ user, isLoadingUser }: UserLoadingUserProps) => {
    
             <article>
                 <div className="pb-4">
-                    <p className="text-gray-400">Username:</p>
+                    <p className="text-gray-400 text-sm">Username:</p>
                     {isLoadingUser && <p className="text-white">Loading username...</p>}
-                    {!isLoadingUser && <p className="text-white font-bold">{user?.displayName}</p>}
+                    {!isLoadingUser && <p className="text-white font-semibold">{user?.displayName}</p>}
                 </div>
                 <div>
-                    <p className="text-gray-400">Active room:</p>
+                    <p className="text-gray-400 text-sm">Active room:</p>
                     {isLoadingUser && <p className="text-white">Loading room...</p>}
-                    {!isLoadingUser && <p className="text-white font-bold">{currentBookTitle || "None"}</p>}
+                    {!isLoadingUser && <p className="text-white font-semibold">{currentBookTitle || "None"}</p>}
                 </div>
             </article>
 
@@ -47,7 +47,13 @@ const Sidebar = ({ user, isLoadingUser }: UserLoadingUserProps) => {
                     Search books
                 </button>
             </article>
-            <ul className="grid grid-cols-1 grid-rows-5 gap-2 overflow-y-auto scrollbar">
+            <ul className="flex
+                    flex-col
+                    justify-center
+                    gap-2
+                    overflow-y-auto 
+                    scrollbar"
+                >
 
                 {fakeBooksData.map((_, index: number) => {
 
@@ -68,15 +74,15 @@ const Sidebar = ({ user, isLoadingUser }: UserLoadingUserProps) => {
 
                 <li className="text-main-color text-xs text-center row-span-1 px-4 py-1 h-6">
                     {!fakeBooksData.length && 
-                        <div>{`Start searching books.`}</div>
+                        <div>Start searching books.</div>
                     }
-                    {fakeBooksData.length > 0 && 
-                        <div>{`You can save ${4 - fakeBooksData.length} more books.`}</div>
+                    {fakeBooksData.length > 0 && fakeBooksData.length < 4 && 
+                        <div>{`saved ${4 - fakeBooksData.length}/4`}</div>
                     }
                     {fakeBooksData.length === 4 && 
                         <div>
-                            <button className="cursor-pointer px-3">
-                                Click here to remove stored books
+                            <button className="cursor-pointer px-3 text-main-color md:hover:text-white">
+                                Remove
                             </button>
                         </div>
                     }

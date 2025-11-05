@@ -95,7 +95,7 @@ const Chat = ({ user }: MainContentRouterProps) => {
                   min-w-60/100
                   justify-between 
                   my-2 sm:my-1 p-2 sm:p-3
-                  rounded-md
+                  rounded-lg
                 `}
               >
               <div className='flex justify-between'>
