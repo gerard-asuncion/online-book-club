@@ -11,7 +11,7 @@ const useUserData = () => {
 
     useEffect(() => {
 
-        const unsubscribe = onAuthStateChanged(auth, (user: User | null) => {
+        const unsubscribe = onAuthStateChanged(auth, (user: User | null): void => {
             setUser(user);
             setIsLoadingUser(false);
         });

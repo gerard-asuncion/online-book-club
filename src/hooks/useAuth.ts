@@ -7,30 +7,32 @@ import { setIsAuth, clearAuth } from '../features/auth/authSlice';
 import { clearCurrentBook } from '../features/currentBook/currentBookSlice';
 import { setIsSearch } from '../features/mainContentRoute/mainContentRouteSlice';
 import { setOpenSidebar } from '../features/responsive/responsiveSlice';
+import type { CookieOptions } from '../types/types';
 
-const cookies = new Cookies();
+const cookies: Cookies = new Cookies();
 
 const useAuth = () => {
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const register = async () => {
+  const register = async (): Promise<void> => {
     console.log("register");
   }
 
-  const loginWithEmailAndPassword = async () => {
+  const loginWithEmailAndPassword = async (): Promise<void> => {
     console.log("Login With Email...");
   }
 
-  const loginWithGoogle = async () => {
+  const loginWithGoogle = async (): Promise<void> => {
     try {
       const result = await signInWithPopup(auth, provider);
 
-      const cookieOptions = {
+      const cookieOptions: CookieOptions = {
         path: '/',
         maxAge: 60 * 60 * 24 * 7
       };
+
       cookies.set("auth-token", result.user.refreshToken, cookieOptions);
 
       dispatch(setIsAuth());
@@ -40,11 +42,11 @@ const useAuth = () => {
     } 
   };
 
-  const logout = async () => {
+  const logout = async (): Promise<void> => {
     await signOut(auth);
     cookies.remove("auth-token", { path: "/" });
-    dispatch(clearAuth());
     dispatch(clearCurrentBook());
+    dispatch(clearAuth());
     dispatch(setIsSearch());
     dispatch(setOpenSidebar());
   }
