@@ -11,7 +11,7 @@ const Auth = () => {
         <ScreenFrame page="full">
             <Header />
             <ScreenFrame page="center">
-                <section className="flex flex-col justify-center items-center p-8 border-2 border-main-color rounded-lg max-w-sm mx-auto space-y-6">
+                <section className="flex flex-col justify-center items-center p-8 border-2 border-main-color rounded-3xl max-w-sm mx-auto space-y-6">
                     <article className="flex flex-col">
                         <label 
                             htmlFor="email"

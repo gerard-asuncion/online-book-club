@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ScreenFrame from "../components/ui/ScreenFrame";
 import Header from "../components/ui/Header";
+import useAuth from "../hooks/useAuth";
 import { defaultButtonLayout } from "../utils/classNameUtils";
 
 const RegisterPage = () => {
@@ -10,14 +11,16 @@ const RegisterPage = () => {
   const testCheckbox = (checked: boolean): void => {
     setCheckboxState(checked);
   }
+
+  const { register, navigateToLogin } = useAuth();
   
   return (
     <ScreenFrame page="full">
         <Header />
         <ScreenFrame page="center">
-          <section className="flex flex-col gap-5 p-10 border-2 rounded-3xl border-main-color">
-            <form action="" className="grid grid-col grid-cols-1 grid-rows-5">
-              <div className="flex flex-col gap-3">
+          <section className="flex flex-col gap-4 p-8 border-2 rounded-3xl border-main-color">
+            <form action="" className="grid grid-col grid-cols-1 grid-rows-5 gap-4">
+              <div className="flex flex-col gap-1">
                 <label 
                   htmlFor="username"
                   className="text-white"
@@ -32,7 +35,7 @@ const RegisterPage = () => {
                   placeholder="enter username..." 
                 />
               </div>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-1">
                 <label 
                   htmlFor="email"
                   className="text-white"
@@ -47,7 +50,7 @@ const RegisterPage = () => {
                   placeholder="enter email..." 
                 />
               </div>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-1">
                 <label 
                   htmlFor="password"
                   className="text-white"
@@ -62,7 +65,7 @@ const RegisterPage = () => {
                   placeholder="enter password..." 
                 />
               </div>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-1">
                 <label 
                   htmlFor="passwordRepeat"
                   className="text-white"
@@ -97,12 +100,14 @@ const RegisterPage = () => {
               </div>
               <button
                 className={`${defaultButtonLayout}`}
+                onClick={register}
               >
                 Register
               </button>
             </form>
             <button
-            className={`${defaultButtonLayout}`}
+              className={`${defaultButtonLayout}`}
+              onClick={navigateToLogin}
             >
               Go back
             </button>

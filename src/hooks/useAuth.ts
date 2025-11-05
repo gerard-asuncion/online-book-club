@@ -20,6 +20,10 @@ const useAuth = () => {
     navigate("/register", { replace: true });
   }
 
+  const navigateToLogin = (): void => {
+    navigate("/login", { replace: true });
+  }
+
   const register = async (): Promise<void> => {
     const userEmail = "user@user.com";
     const userPassword = "password1234";
@@ -65,6 +69,7 @@ const useAuth = () => {
 
   return {
     navigateToRegister,
+    navigateToLogin,
     register,
     loginWithEmailAndPassword,
     loginWithGoogle,
