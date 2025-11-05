@@ -10,7 +10,7 @@ import { selectCurrentBookTitle } from '../../features/currentBook/currentBookSe
 import type { MainContentRouterProps } from '../../types/props';
 import { selectIsMobile } from '../../features/responsive/responsiveSelectors';
 
-const Chat = ({ user }: MainContentRouterProps) => {
+const Chat = ({ currentUser }: MainContentRouterProps) => {
 
   const currentBookTitle: string | null = useAppSelector(selectCurrentBookTitle);
 
@@ -24,7 +24,7 @@ const Chat = ({ user }: MainContentRouterProps) => {
     handleKeyDown 
   } = useChat();
 
-  const userId: string | undefined = user?.uid;
+  const userId: string | undefined = currentUser?.uid;
 
   const scrollerRef = useRef<HTMLDivElement>(null);
 

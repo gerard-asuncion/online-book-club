@@ -6,13 +6,13 @@ import useMainContentRouter from "../../hooks/useMainContentRouter";
 import AboutSection from "./AboutSection";
 import type { MainContentRouterProps } from "../../types/props";
 
-const MainContentRouter = ({ user }: MainContentRouterProps) => {
+const MainContentRouter = ({ currentUser }: MainContentRouterProps) => {
 
   const { isChat, isSettings, isSearch, isAbout } = useMainContentRouter();
 
   if(isChat){
     return (
-      <Chat user={user} />
+      <Chat currentUser={currentUser} />
     )
   } else if(isSettings){
     return (

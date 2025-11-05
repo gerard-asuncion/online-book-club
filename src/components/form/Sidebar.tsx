@@ -4,21 +4,21 @@ import SidebarBookCard from "./SidebarBookCard";
 import { defaultButtonLayout } from "../../utils/classNameUtils";
 import { useAppSelector } from "../../app/hooks";
 import { selectCurrentBookTitle } from "../../features/currentBook/currentBookSelectors";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import type { UserLoadingUserProps } from "../../types/props";
 
-const Sidebar = ({ user, isLoadingUser }: UserLoadingUserProps) => {
+const Sidebar = ({ currentUser, userProfile, isLoadingUser }: UserLoadingUserProps) => {
 
     const [fakeBooksData, setFakeBooksData] = useState<string[]>([]);
-
-    useEffect(() => {
-        setFakeBooksData(["abc"]);
-    }, []);
 
     const currentBookTitle = useAppSelector(selectCurrentBookTitle);
 
     const { hideSidebarInMobile } = useSidebar();
     const { switchContent } = useMainContentRouter();
+
+    if (isLoadingUser) {
+        return <p>Loading user data...</p>;
+    }
 
     return(
 
@@ -28,7 +28,7 @@ const Sidebar = ({ user, isLoadingUser }: UserLoadingUserProps) => {
                 <div className="pb-4">
                     <p className="text-gray-400 text-sm">Username:</p>
                     {isLoadingUser && <p className="text-white">Loading username...</p>}
-                    {!isLoadingUser && <p className="text-white font-semibold">{user?.displayName}</p>}
+                    {!isLoadingUser && <p className="text-white font-semibold">{currentUser?.displayName}</p>}
                 </div>
                 <div>
                     <p className="text-gray-400 text-sm">Active room:</p>
@@ -55,19 +55,16 @@ const Sidebar = ({ user, isLoadingUser }: UserLoadingUserProps) => {
                     scrollbar"
                 >
 
-                {fakeBooksData.map((_, index: number) => {
+                {userProfile?.storedBookRooms.map((_, index: number) => {
 
-                    const book = fakeBooksData[index];
+                    const bookRoom = userProfile.storedBookRooms[index];
                     
-                    return book ? (
+                    return bookRoom ? (
                     <SidebarBookCard 
                         key={index}
                         displayedBookId="book_id"
-                        user={user}
-                        >
-                        {book}
-                    </SidebarBookCard> ) : (
-
+                        userProfile={userProfile} /> 
+                    ) : (
                         <li key={index} className="h-full min-h-[50px]"></li> 
                     );
                 })}
