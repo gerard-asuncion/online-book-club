@@ -12,7 +12,7 @@ const Sidebar = ({ user, isLoadingUser }: UserLoadingUserProps) => {
     const [fakeBooksData, setFakeBooksData] = useState<string[]>([]);
 
     useEffect(() => {
-        setFakeBooksData(["abc", "bcd", "cde", "def"]);
+        setFakeBooksData(["abc"]);
     }, []);
 
     const currentBookTitle = useAppSelector(selectCurrentBookTitle);
@@ -49,7 +49,7 @@ const Sidebar = ({ user, isLoadingUser }: UserLoadingUserProps) => {
             </article>
             <ul className="flex
                     flex-col
-                    justify-center
+                    justify-start
                     gap-2
                     overflow-y-auto 
                     scrollbar"
@@ -77,7 +77,7 @@ const Sidebar = ({ user, isLoadingUser }: UserLoadingUserProps) => {
                         <div>Start searching books.</div>
                     }
                     {fakeBooksData.length > 0 && fakeBooksData.length < 4 && 
-                        <div>{`saved ${4 - fakeBooksData.length}/4`}</div>
+                        <div>{`saved ${fakeBooksData.length}/4`}</div>
                     }
                     {fakeBooksData.length === 4 && 
                         <div>

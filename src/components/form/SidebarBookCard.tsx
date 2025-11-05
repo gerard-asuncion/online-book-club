@@ -14,7 +14,6 @@ const SidebarBookCard = ({ children, displayedBookId, user }: SidebarBookCardPro
 
   return (
     <li className="
-          h-full
           min-h-[50px]">
         <button 
           onClick={() => {
