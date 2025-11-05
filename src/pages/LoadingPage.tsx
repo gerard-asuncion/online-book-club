@@ -3,9 +3,9 @@ import ScreenFrame from "../components/ui/ScreenFrame"
 const LoadingPage = () => {
   return (
     <ScreenFrame page="center">
-        <div>Loading...</div>
+        Loading...
     </ScreenFrame>
   )
 }
 
-export default LoadingPage;
+export default LoadingPage

@@ -2,10 +2,10 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { MainContentRouteInitialState } from "../../types/redux";
 
 const initialState: MainContentRouteInitialState = {
-    isWelcome: true,
     isChat: false,
     isSettings: false,
-    isSearch: false
+    isSearch: false,
+    isAbout: false
 }
 
 const mainContentRouteSlice = createSlice({
@@ -13,44 +13,44 @@ const mainContentRouteSlice = createSlice({
   initialState,
   
   reducers: {
-    setIsWelcome: (state) => {
-      state.isWelcome = true;
-      state.isChat = false;
-      state.isSettings = false;
-      state.isSearch = false;
-    },
     setIsChat: (state) => {
-      state.isWelcome = false;
       state.isChat = true;
       state.isSettings = false;
       state.isSearch = false;
+      state.isAbout = false;
     },
     setIsSettings: (state) => {
-      state.isWelcome = false;
       state.isChat = false;
       state.isSettings = true;
       state.isSearch = false;
+      state.isAbout = false;
     },
     setIsSearch: (state) => {
-      state.isWelcome = false;
       state.isChat = false;
       state.isSettings = false;
       state.isSearch = true;
+      state.isAbout = false;
     },
-    clearMainContentRoute: (state) => {
-      state.isWelcome = false;
+     setIsAbout: (state) => {
       state.isChat = false;
       state.isSettings = false;
       state.isSearch = false;
+      state.isAbout = true;
+    },
+    clearMainContentRoute: (state) => {
+      state.isChat = false;
+      state.isSettings = false;
+      state.isSearch = false;
+      state.isAbout = false;
     }
   },
 });
 
-export const { 
-  setIsWelcome,
+export const {
   setIsChat,
   setIsSettings, 
   setIsSearch,
+  setIsAbout,
   clearMainContentRoute
   } = mainContentRouteSlice.actions;
 export default mainContentRouteSlice.reducer;

@@ -1,6 +1,21 @@
 export const showHideAnything = (show: boolean | number): string =>
     show ? "" : "hidden";
 
+export const alineateMessages = (userId: string | undefined, messageId: string): string =>
+    userId === messageId
+    ? "justify-end"
+    : "justify-start"
+
+export const styleMessages = (userId: string | undefined, messageId: string): string =>
+    userId === messageId
+    ? "border-main-color border-2"
+    : "bg-secondary-color"
+
+export const displayUserName = (userId: string | undefined, messageId: string): string =>
+    userId === messageId
+    ? "invisible"
+    : ""
+
 export const justifyBooksGrid = (center: boolean): string =>
     center ? "justify-center" : "justify-between"
 
@@ -13,11 +28,6 @@ export const changeSidebarLayout = (openSidebar: boolean): string =>
     openSidebar 
     ? "h-full md:col-span-1" 
     : "hidden";
-
-export const highlightAddBookButton = (isActive: boolean): string =>
-    isActive
-    ? "text-main-color"
-    : "text-white md:hover:border-main-color cursor-pointer"
 
 export const highlightBookRoomCard = (openBookRoom: string | null, bookRoomName: string): string => 
     openBookRoom !== bookRoomName
@@ -32,12 +42,13 @@ export const setBooksGridFormLayout = (isOpenGrid: boolean) : string =>
 export const defaultButtonLayout = (): string =>
         `w-full
         text-white
+        text-sm
+        font-semibold
         flex items-center justify-center 
         py-3 px-4 
         border-2
         border-main-color
-        rounded-lg 
-        font-semibold     
+        rounded-lg  
         transition-colors 
         cursor-pointer
         transition-colors 

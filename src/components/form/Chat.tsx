@@ -2,13 +2,19 @@ import { useRef, useLayoutEffect } from 'react';
 import { useChat } from '../../hooks/useChat';
 import MainContentFrame from '../ui/MainContentFrame';
 import TextareaAutosize from 'react-textarea-autosize';
-import useBookRoom from '../../hooks/useBookRoom';
-import { formatTimestamp } from '../../utils/dateUtils';
+import { displayDate } from '../../utils/dateUtils';
+import { alineateMessages, displayUserName, styleMessages } from '../../utils/classNameUtils';
 import type { Message } from "../../types/types";
+import { useAppSelector } from '../../app/hooks';
+import { selectCurrentBookTitle } from '../../features/currentBook/currentBookSelectors';
+import type { MainContentRouterProps } from '../../types/props';
+import { selectIsMobile } from '../../features/responsive/responsiveSelectors';
 
-const Chat = () => {
+const Chat = ({ user }: MainContentRouterProps) => {
 
-  const { bookRoom } = useBookRoom();
+  const currentBookTitle: string | null = useAppSelector(selectCurrentBookTitle);
+
+  const isMobile: boolean = useAppSelector(selectIsMobile);
  
   const { 
     messages,
@@ -16,7 +22,9 @@ const Chat = () => {
     setNewMessage, 
     handleSubmitMessage,
     handleKeyDown 
-  } = useChat(bookRoom);
+  } = useChat();
+
+  const userId: string | undefined = user?.uid;
 
   const scrollerRef = useRef<HTMLDivElement>(null);
 
@@ -29,12 +37,12 @@ const Chat = () => {
 
   return (
     <MainContentFrame>
-      <article className="shrink-0 md:flex md:justify-center sm:text-lg w-full">
-        <div className='flex justify-between items-center md:w-95/100 px-4 sm:px-12 py-1 lg:py-5'>
+      <article className="shrink-0 md:flex items-center sm:text-lg w-95/100 mx-auto">
+        <div className='flex justify-between items-center w-full px-4 sm:px-12 py-1 lg:py-5'>
           <h1 className='
             text-white
             text-sm
-            md:text-base'>Room: {bookRoom}</h1>
+            md:text-base'>Room: {currentBookTitle}</h1>
           <button
             className="
               text-main-color
@@ -51,39 +59,60 @@ const Chat = () => {
               cursor-pointer"
             onClick={() => {alert("room deleted")}}
           >
-            Delete room from profile
+            Save / Remove
           </button>
         </div>
       </article>
       <section
         ref={scrollerRef} 
         className="
+          mx-auto
+          md:w-95/100
           px-4 
           sm:px-12
           flex-1
           overflow-y-auto
           scrollbar
-          md:flex 
-          md:flex-col
-          md:items-center">
+          flex
+          flex-col
+          gap-1     
+          py-2
+        ">
         {messages.map((message: Message) => (
-          <article 
-            key={message.id} 
-            className="
-              bg-secondary-color
-              flex 
-              flex-col 
-              md:w-95/100
-              justify-between 
-              my-2 sm:my-1 p-2 sm:p-3
-              rounded-md"
-            >
-            <div className='flex justify-between'>
-              <div className="font-bold sm:text-base text-sm text-main-color">{message.user}</div> 
-              <div className="text-xs sm:text-sm text-gray-400">{formatTimestamp(message.createdAt)}</div>
-            </div>
-            <div className="text-white">
-              {message.text}
+          <article
+            key={message.id}
+            className={`
+              flex w-full
+              ${alineateMessages(userId, message.userId)}
+            `}
+          >
+            <div 
+              key={message.id} 
+              className={`
+                  ${styleMessages(userId, message.userId)}
+                  flex 
+                  flex-col
+                  min-w-60/100
+                  justify-between 
+                  my-2 sm:my-1 p-2 sm:p-3
+                  rounded-lg
+                `}
+              >
+              <div className='flex justify-between'>
+                <div className={`
+                  ${displayUserName(userId, message.userId)}
+                  text-main-color            
+                  font-bold 
+                  sm:text-base 
+                  text-sm
+                `}>
+                  {message.user}
+                </div> 
+                <div className="text-xs sm:text-sm text-gray-400">{displayDate(message.createdAt, isMobile)}</div>
+              </div>
+              <div className="text-white">
+                {message.text}
+              </div>
             </div>
           </article>
         ))}

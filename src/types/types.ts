@@ -7,5 +7,7 @@ export interface Message {
     user: string,
     userId: string,
     room: string,
-    seenBy: string[]
+    bookTitle: string,
+    bookAuthors: string[],
+    seenBy: string[];
 }

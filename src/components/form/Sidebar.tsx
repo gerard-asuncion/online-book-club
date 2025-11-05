@@ -1,114 +1,119 @@
-import useAuth from "../../hooks/useAuth";
-import useAuthUser from "../../hooks/useAuthUser";
 import useSidebar from "../../hooks/useSidebar";
 import useMainContentRouter from "../../hooks/useMainContentRouter";
 import SidebarBookCard from "./SidebarBookCard";
-import { defaultButtonLayout, highlightAddBookButton } from "../../utils/classNameUtils";
+import { defaultButtonLayout } from "../../utils/classNameUtils";
+import { useAppSelector } from "../../app/hooks";
+import { selectCurrentBookTitle } from "../../features/currentBook/currentBookSelectors";
+import { useState, useEffect } from "react";
+import type { UserLoadingUserProps } from "../../types/props";
 
-interface FakeUser {
-    username: string,
-    books: Book[];
-}
+const Sidebar = ({ user, isLoadingUser }: UserLoadingUserProps) => {
 
-interface Book {
-    title: string,
-    author: string;
-}
+    const [fakeBooksData, setFakeBooksData] = useState<string[]>([]);
 
-const fakeUsersData: FakeUser[] = [
-    {
-        username: "name",
-        books: [{
-                title: "Harry Potter",
-                author: "JK Rowling"            
-            },{
-                title: "El petit príncep",
-                author: "Antoine de Saint-Exupéry"
-            },{
-                title: "Història de Roma",
-                author: "Polibi"
-            }]
-    }]
+    useEffect(() => {
+        setFakeBooksData(["abc", "bcd", "cde", "def"]);
+    }, []);
 
-const totalBooks: number = fakeUsersData[0].books.length
+    const currentBookTitle = useAppSelector(selectCurrentBookTitle);
 
-const Sidebar = () => {
-
-    const { logout } = useAuth();
-    const { user, isLoading } = useAuthUser();
     const { hideSidebarInMobile } = useSidebar();
-    const { isSearch, switchContent } = useMainContentRouter();
+    const { switchContent } = useMainContentRouter();
 
-    return (
-        <section className="h-full grid grid-cols-1 grid-rows-[auto_1fr_auto] px-2 py-6 gap-2">
-            <article className="pb-5">
-                <p className="text-gray-400">Username:</p>
-                {isLoading && <p className="text-white">Loading username...</p>}
-                {!isLoading && <p className="text-white font-bold">{user?.displayName}</p>}
+    return(
+
+        <section className="h-full grid grid-cols-1 grid-rows-[auto_auto_1fr_auto] px-2 py-6 gap-6">
+   
+            <article>
+                <div className="pb-4">
+                    <p className="text-gray-400 text-sm">Username:</p>
+                    {isLoadingUser && <p className="text-white">Loading username...</p>}
+                    {!isLoadingUser && <p className="text-white font-semibold">{user?.displayName}</p>}
+                </div>
+                <div>
+                    <p className="text-gray-400 text-sm">Active room:</p>
+                    {isLoadingUser && <p className="text-white">Loading room...</p>}
+                    {!isLoadingUser && <p className="text-white font-semibold">{currentBookTitle || "None"}</p>}
+                </div>
             </article>
-            <ul className={`grid grid-cols-1 grid-rows-4 gap-2`}>
-                {fakeUsersData[0].books.map((book: Book, index: number) =>
+
+            <article>
+                <button 
+                    onClick={() => {
+                        hideSidebarInMobile();
+                        switchContent("bookSearch");
+                    }}
+                    className={`${defaultButtonLayout()}`}>
+                    Search books
+                </button>
+            </article>
+            <ul className="flex
+                    flex-col
+                    justify-center
+                    gap-2
+                    overflow-y-auto 
+                    scrollbar"
+                >
+
+                {fakeBooksData.map((_, index: number) => {
+
+                    const book = fakeBooksData[index];
+                    
+                    return book ? (
                     <SidebarBookCard 
                         key={index}
+                        displayedBookId="book_id"
                         user={user}
                         >
                         {book}
-                    </SidebarBookCard>
-                )}
-                {totalBooks < 4 && 
-                    <div className="row-span-1 h-full">
-                        <button 
-                            onClick={() => {
-                                hideSidebarInMobile();
-                                switchContent("bookSearch");
-                            }}
-                            className={`
-                                ${highlightAddBookButton(isSearch)}
-                                h-full
-                                w-full
-                                flex
-                                justify-center
-                                items-center
-                                rounded-2xl
-                                text-sm
-                                border-2
-                                border-default-bg
-                                transition-colors 
-                                ease-in-out
-                                duration-200
-                                active:border-main-color
-                            `}>
-                            Add a book
-                        </button>
-                    </div>}
+                    </SidebarBookCard> ) : (
+
+                        <li key={index} className="h-full min-h-[50px]"></li> 
+                    );
+                })}
+
+                <li className="text-main-color text-xs text-center row-span-1 px-4 py-1 h-6">
+                    {!fakeBooksData.length && 
+                        <div>Start searching books.</div>
+                    }
+                    {fakeBooksData.length > 0 && fakeBooksData.length < 4 && 
+                        <div>{`saved ${4 - fakeBooksData.length}/4`}</div>
+                    }
+                    {fakeBooksData.length === 4 && 
+                        <div>
+                            <button className="cursor-pointer px-3 text-main-color md:hover:text-white">
+                                Remove
+                            </button>
+                        </div>
+                    }
+                </li>
             </ul>
-            <article className="row-span-1 grid grid-cols-1 gap-2 pt-8">   
-                <div className="row-span-1 grid">
-                    <div className="flex gap-2">
-                        <button 
-                            className={`${defaultButtonLayout()}`}
-                            onClick={() => {
-                                hideSidebarInMobile();
-                                switchContent("userSettings");
-                            }}>
-                            Settings
-                        </button>
-                    </div>
+
+            <article className="grid grid-cols-1 gap-2">
+                <div className="row-span-1">
+                    <button 
+                        className={`${defaultButtonLayout()}`}
+                        onClick={() => {
+                            hideSidebarInMobile();
+                            switchContent("userSettings");
+                        }}>
+                        Settings
+                    </button>
                 </div>
                 <div className="row-span-1">
                     <button 
                         className={`${defaultButtonLayout()}`}
                         onClick={() => {
                             hideSidebarInMobile();
-                            switchContent("");
-                            logout();
+                            switchContent("aboutSection");
                         }}>
-                        Log Out
-                    </button> 
+                        About
+                    </button>
                 </div>
             </article>
         </section>
     )
+
 }
 
 export default Sidebar

@@ -16,24 +16,34 @@ import {
 import { auth, db } from '../firebase-config';
 import type { DocumentData } from 'firebase/firestore';
 import type { Message } from '../types/types';
+import { useAppSelector } from '../app/hooks';
+import { 
+  selectCurrentBookId, 
+  selectCurrentBookTitle, 
+  selectCurrentBookAuthors
+} from '../features/currentBook/currentBookSelectors';
 
 const MESSAGES_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION;
 const messagesRef: CollectionReference<DocumentData> = collection(db, MESSAGES_COLLECTION);
 
-export const useChat = (bookRoom: string | null) => {
+export const useChat = () => {
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState<string>("");
 
+  const currentBookId: string | null = useAppSelector(selectCurrentBookId);
+  const currentBookTitle: string | null = useAppSelector(selectCurrentBookTitle);
+  const currentBookAuthors: string[] = useAppSelector(selectCurrentBookAuthors);
+
   useEffect(() => {
 
-    if (!bookRoom) return;
+    if (!(currentBookId && currentBookTitle && currentBookAuthors)) return;
 
-    markRoomMessagesAsSeen(bookRoom);
+    markRoomMessagesAsSeen(currentBookId);
 
     const queryMessages = query(
       messagesRef,
-      where("room", "==", bookRoom),
+      where("room", "==", currentBookId),
       orderBy("createdAt")
     );
 
@@ -47,7 +57,7 @@ export const useChat = (bookRoom: string | null) => {
 
     return () => unsubscribe();
 
-  }, [bookRoom]);
+  }, [currentBookId]);
 
   const handleSubmitMessage = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -59,7 +69,9 @@ export const useChat = (bookRoom: string | null) => {
       createdAt: serverTimestamp(),
       user: auth.currentUser.displayName,
       userId: auth.currentUser.uid,
-      room: bookRoom,
+      room: currentBookId,
+      bookTitle: currentBookTitle,
+      bookAuthors: currentBookAuthors,
       seenBy: [ auth.currentUser.uid ]
     });
 
@@ -73,11 +85,11 @@ export const useChat = (bookRoom: string | null) => {
     }
   };
 
-  const markRoomMessagesAsSeen = async (bookRoom: string | null) => {
+  const markRoomMessagesAsSeen = async (currentBookId: string | null) => {
     const currentUserId = auth.currentUser?.uid;
-    if (!currentUserId || !bookRoom) return;
+    if (!(currentUserId && currentBookId)) return;
 
-    const queryRoom = query(messagesRef, where("room", "==", bookRoom));
+    const queryRoom = query(messagesRef, where("room", "==", currentBookId));
 
     const batch = writeBatch(db);
 

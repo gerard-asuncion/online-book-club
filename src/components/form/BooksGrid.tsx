@@ -74,7 +74,7 @@ const BooksGrid = () => {
             <div className="flex justify-center items-center gap-2 col-span-4 row-span-1">
               <input 
                 type="checkbox"
-                className=""
+                className="accent-main-color"
                 id="activeRoomsCheckbox"
                 name="activeRoomsCheckbox"
                 checked={checkboxState} 
@@ -86,7 +86,7 @@ const BooksGrid = () => {
                 htmlFor="activeRoomsCheckbox"
                 className="text-white text-sm"
               >
-                Active chats only
+                Save chat room
               </label>
             </div>
           </form>
@@ -116,7 +116,7 @@ const BooksGrid = () => {
                 >
                     <button 
                       onClick={() => {
-                        handleVolumeSelection(book.id, book.volumeInfo);
+                        handleVolumeSelection(book.id, book.volumeInfo.title, book.volumeInfo.authors);
                       }} 
                       className="cursor-pointer flex flex-col justify-center items-start gap-1 w-70/100 aspect-2/3"
                     >

@@ -5,14 +5,18 @@ export interface OnlyReactNodeChildrenProps {
     children: ReactNode;
 }
 
-// Provisional Book interface:
-interface Book {
-    title: string,
-    author: string;
+export interface UserLoadingUserProps {
+    user: User | null,
+    isLoadingUser: boolean;
+}
+
+export interface MainContentRouterProps {
+    user: User | null;
 }
 
 export interface SidebarBookCardProps {
-    children: Book,
+    children: string,
+    displayedBookId: string,
     user: User | null;
 }
 

@@ -6,7 +6,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import store, { persistor } from './app/store';
 import './index.css'
 import App from './App.tsx'
-import LoadingPage from './pages/LoadingPage.tsx';
+import LoadingPage from './pages/LoadingPage';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
