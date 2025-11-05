@@ -10,7 +10,7 @@ import { auth, db } from '../firebase-config';
 import type { DocumentData } from 'firebase/firestore';
 import type { User } from 'firebase/auth';
 
-const MESSAGES_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION;
+const MESSAGES_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION_MESSAGES;
 const messagesRef: CollectionReference<DocumentData> = collection(db, MESSAGES_COLLECTION);
 
 const useUnreadCounter = (displayedBookId: string, user: User | null) => {
