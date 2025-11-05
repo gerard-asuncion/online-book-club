@@ -3,7 +3,7 @@ import Header from "../components/ui/Header";
 import Sidebar from "../components/form/Sidebar";
 import MainContentRouter from "../components/ui/MainConentRouter";
 import ScreenFrame from "../components/ui/ScreenFrame";
-import useAuthUser from "../hooks/useAuthUser";
+import useUserData from "../hooks/useUserData";
 import useSidebar from "../hooks/useSidebar";
 import { useAppDispatch } from "../app/hooks";
 import { mdBreakpoint } from "../features/responsive/responsiveSlice";
@@ -15,7 +15,7 @@ function AppPage() {
   const dispatch = useAppDispatch();
 
   const { isOpenSidebar } = useSidebar();
-  const { user, isLoadingUser } = useAuthUser();
+  const { user, isLoadingUser } = useUserData();
 
   const handleResize = useCallback(() => {
       const currentIsMobile = window.innerWidth < mdBreakpoint;  

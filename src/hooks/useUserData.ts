@@ -3,7 +3,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase-config';
 import type { User } from 'firebase/auth';
 
-const useAuthUser = () => {
+const useUserData = () => {
 
     const [user, setUser] = useState<User | null>(auth.currentUser);
 
@@ -23,4 +23,4 @@ const useAuthUser = () => {
     return { user, isLoadingUser };
 };
 
-export default useAuthUser;
+export default useUserData;
