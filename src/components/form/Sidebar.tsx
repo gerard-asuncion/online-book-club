@@ -76,8 +76,8 @@ const Sidebar = ({ user, isLoadingUser }: UserLoadingUserProps) => {
                     {!fakeBooksData.length && 
                         <div>Start searching books.</div>
                     }
-                    {fakeBooksData.length > 0 && fakeBooksData.length < 4 && 
-                        <div>{`saved ${fakeBooksData.length}/4`}</div>
+                    {fakeBooksData.length < 4 && 
+                        <div>{`Stored ${fakeBooksData.length}/4`}</div>
                     }
                     {fakeBooksData.length === 4 && 
                         <div>

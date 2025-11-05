@@ -9,7 +9,7 @@ export const alineateMessages = (userId: string | undefined, messageId: string):
 export const styleMessages = (userId: string | undefined, messageId: string): string =>
     userId === messageId
     ? "border-main-color border-2"
-    : "bg-secondary-color"
+    : "border-secondary-color border-2 bg-secondary-color"
 
 export const displayUserName = (userId: string | undefined, messageId: string): string =>
     userId === messageId
@@ -28,6 +28,16 @@ export const changeSidebarLayout = (openSidebar: boolean): string =>
     openSidebar 
     ? "h-full md:col-span-1" 
     : "hidden";
+
+export const centerHeaderTitle = (locationPathname: string): string =>
+    locationPathname !== "/"
+    ? "justify-center"
+    : "justify-between"
+
+export const hideHeaderButton = (locationPathname: string): string =>
+    locationPathname !== "/"
+    ? "hidden"
+    : ""
 
 export const highlightBookRoomCard = (openBookRoom: string | null, bookRoomName: string): string => 
     openBookRoom !== bookRoomName

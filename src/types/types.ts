@@ -11,3 +11,8 @@ export interface Message {
     bookAuthors: string[],
     seenBy: string[];
 }
+
+export interface CookieOptions {
+    path: string,
+    maxAge: number;
+}
