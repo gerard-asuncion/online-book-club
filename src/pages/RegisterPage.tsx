@@ -12,14 +12,23 @@ const RegisterPage = () => {
     setCheckboxState(checked);
   }
 
-  const { register, navigateToLogin } = useAuth();
+  const { 
+    setNewUsername,
+    setNewUserEmail,
+    setNewUserPassword,
+    setNewPasswordConfirmation,
+    submitRegisterForm, 
+    navigateToLogin 
+  } = useAuth();
   
   return (
     <ScreenFrame page="full">
         <Header />
         <ScreenFrame page="center">
           <section className="flex flex-col gap-4 p-8 border-2 rounded-3xl border-main-color">
-            <form action="" className="grid grid-col grid-cols-1 grid-rows-5 gap-4">
+            <form 
+                onSubmit={submitRegisterForm}
+                className="grid grid-col grid-cols-1 grid-rows-5 gap-4">
               <div className="flex flex-col gap-1">
                 <label 
                   htmlFor="username"
@@ -31,6 +40,7 @@ const RegisterPage = () => {
                   type="text"
                   name="username" 
                   id="username" 
+                  onChange={(e) => setNewUsername(e.target.value)}
                   className="bg-white py-1 px-2 rounded-md" 
                   placeholder="enter username..." 
                 />
@@ -46,6 +56,7 @@ const RegisterPage = () => {
                   type="text"
                   name="email" 
                   id="email" 
+                  onChange={(e) => setNewUserEmail(e.target.value)}
                   className="bg-white py-1 px-2 rounded-md" 
                   placeholder="enter email..." 
                 />
@@ -61,6 +72,7 @@ const RegisterPage = () => {
                   type="text" 
                   name="password" 
                   id="password" 
+                  onChange={(e) => setNewUserPassword(e.target.value)}
                   className="bg-white py-1 px-2 rounded-md" 
                   placeholder="enter password..." 
                 />
@@ -76,6 +88,7 @@ const RegisterPage = () => {
                   type="text" 
                   name="passwordRepeat" 
                   id="passwordRepeat" 
+                  onChange={(e) => setNewPasswordConfirmation(e.target.value)}
                   className="bg-white py-1 px-2 rounded-md" 
                   placeholder="repeat password..."
                 />
@@ -99,8 +112,8 @@ const RegisterPage = () => {
                 </label>
               </div>
               <button
+                type="submit" 
                 className={`${defaultButtonLayout}`}
-                onClick={register}
               >
                 Register
               </button>

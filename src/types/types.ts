@@ -16,3 +16,8 @@ export interface CookieOptions {
     path: string,
     maxAge: number;
 }
+
+export type ErrorType = {
+    input?: string,
+    message: string 
+}
