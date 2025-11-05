@@ -106,7 +106,7 @@ export const useChat = () => {
       await batch.commit();
 
     } catch (error) {
-      console.error("Error en marcar missatges com a llegits (batch): ", error);
+      console.error("Error en marcar missatges com a llegits (batch): ", error, 4000);
     }
   };
 

@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { signInWithPopup, signOut} from 'firebase/auth';
+import { createUserWithEmailAndPassword, sendEmailVerification, signInWithPopup, signOut} from 'firebase/auth';
 import { auth, provider } from '../firebase-config';
 import Cookies from 'universal-cookie';
 import { useAppDispatch } from '../app/hooks';
@@ -16,8 +16,20 @@ const useAuth = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
+  const navigateToRegister = (): void => {
+    navigate("/register", { replace: true });
+  }
+
   const register = async (): Promise<void> => {
-    console.log("register");
+    const userEmail = "user@user.com";
+    const userPassword = "password1234";
+    try {
+      const result = await createUserWithEmailAndPassword(auth, userEmail, userPassword);
+      await sendEmailVerification(result.user);
+      console.log("Verification email sent!");
+     }catch (error) {
+      console.error("Error creating user or sending verification email:", error, 4000);
+     }
   }
 
   const loginWithEmailAndPassword = async (): Promise<void> => {
@@ -38,7 +50,7 @@ const useAuth = () => {
       dispatch(setIsAuth());
       navigate("/", { replace: true });
     } catch (error) {
-      console.error(error);
+      console.error(error, 4000);
     } 
   };
 
@@ -52,6 +64,7 @@ const useAuth = () => {
   }
 
   return {
+    navigateToRegister,
     register,
     loginWithEmailAndPassword,
     loginWithGoogle,
