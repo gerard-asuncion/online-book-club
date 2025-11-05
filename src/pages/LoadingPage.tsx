@@ -1,10 +1,10 @@
-import ScreenFrame from "../components/ui/ScreenFrame"
+import ScreenFrame from "../components/ui/ScreenFrame";
 
 const LoadingPage = () => {
   return (
-    <ScreenFrame page="center">
+      <ScreenFrame page="center">
         Loading...
-    </ScreenFrame>
+      </ScreenFrame>
   )
 }
 

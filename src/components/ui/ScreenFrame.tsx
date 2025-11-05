@@ -4,7 +4,7 @@ const ScreenFrame = ({ children, page }: ScreenFrameProps) => {
 
   if(page === "center"){
     return (
-      <div className="h-dvh flex items-center justify-center w-screen bg-default-bg">
+      <div className="h-full flex items-center justify-center w-screen bg-default-bg">
         {children}
       </div>
     )

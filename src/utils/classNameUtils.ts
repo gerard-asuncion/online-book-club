@@ -30,12 +30,12 @@ export const changeSidebarLayout = (openSidebar: boolean): string =>
     : "hidden";
 
 export const centerHeaderTitle = (locationPathname: string): string =>
-    locationPathname === "/register"
+    locationPathname !== "/"
     ? "justify-center"
     : "justify-between"
 
 export const hideHeaderButton = (locationPathname: string): string =>
-    locationPathname === "/register"
+    locationPathname !== "/"
     ? "hidden"
     : ""
 
