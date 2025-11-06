@@ -30,9 +30,9 @@ const Sidebar = ({ isLoadingUser }: LoadingUserProps) => {
                     {isLoadingUser && <p>Loading room...</p>}
                     {!isLoadingUser && 
                         <div className="">
-                            <p className="text-gray-400 text-sm">Active room:</p>
+                            <p className="text-gray-400 text-sm text-left">Active room:</p>
                             <button 
-                                className={`${setCursorPointer(currentBookTitle)} text-white hover:text-main-color`} 
+                                className={`${setCursorPointer(currentBookTitle)} text-left text-white hover:text-main-color`} 
                                 onClick={() => openChat(currentBookTitle)}
                             >
                                 <div>{currentBookTitle}</div>
@@ -68,9 +68,9 @@ const Sidebar = ({ isLoadingUser }: LoadingUserProps) => {
 
                 <li className="text-main-color text-xs text-center row-span-1 px-4 py-1 h-6">
                     {!storedBooks.length && 
-                        <div>Start searching books.</div>
+                        <div>No books stored.</div>
                     }
-                    {storedBooks.length && 
+                    {storedBooks.length > 0 && 
                         <section className="flex flex-col justify-around items-center gap-2">
                             <div>
                                 {`Stored ${storedBooks.length}/3.`}

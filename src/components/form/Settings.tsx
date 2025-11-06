@@ -14,7 +14,7 @@ const Settings = () => {
     <MainContentFrame>
       <div className="h-full w-full text-white font-bold text-lg flex flex-col justify-center items-center">
         <section>
-          <div><h2>Chats:</h2></div>
+          <div>Chats:</div>
           {!isLoading && error && <div>{error}</div>}
           {isLoading && <div>Loading...</div>}
           {!isLoading && userHistorialBooks.map(room =>
