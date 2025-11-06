@@ -8,7 +8,16 @@ import {
   signInWithPopup, 
   signOut,
 } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { 
+  doc,
+  setDoc,
+  collection, 
+  query, 
+  where, 
+  getDocs, 
+  limit, 
+  QuerySnapshot
+} from 'firebase/firestore';
 import { auth, db, provider } from '../firebase-config';
 import Cookies from 'universal-cookie';
 import { useAppDispatch } from '../app/hooks';
@@ -55,7 +64,35 @@ const useAuth = () => {
     return regex.test(username);
   };
 
-  const submitRegisterForm = (e: React.FormEvent): void => {
+  const isEmailFormatValid = (email: string): boolean => {
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return regex.test(email);
+  };
+
+  const checkAvailableUsername = async (newUsername: string): Promise<boolean> => {
+
+    const usersCollectionRef = collection(db, USERS_COLLECTION); 
+    const newUsernameLowerCase = newUsername.toLowerCase();
+    let isAvailable: boolean = false;
+
+    const queryUsers = query(
+      usersCollectionRef, 
+      where("displayName_lowercase", "==", newUsernameLowerCase),
+      limit(1)
+    );
+
+    try {
+      const querySnapshot: QuerySnapshot = await getDocs(queryUsers);
+      isAvailable = querySnapshot.empty;
+
+    } catch (error) {
+      console.error("Error checking username availability:", error);
+    }
+
+    return isAvailable;
+  }
+
+  const submitRegisterForm = async (e: React.FormEvent): Promise<void> => {
 
     e.preventDefault();
     
@@ -63,8 +100,12 @@ const useAuth = () => {
 
     try {
 
-      // if(newUsername === registered username)...
+      const isAvailable = await checkAvailableUsername(newUsername);
 
+      if(!isAvailable) validationErrors.push({
+        input: "Username",
+        message: "Username not available."
+      });
       if(newUsername.trim() === "") validationErrors.push({
         input: "Username",
         message: "Username can't be empty."
@@ -73,7 +114,7 @@ const useAuth = () => {
         input: "Username",
         message: "Username can't contain symbols or spaces."
       });
-      if(!newUserEmail.includes("@") || !newUserEmail.includes(".")) validationErrors.push({
+      if(!isEmailFormatValid(newUserEmail)) validationErrors.push({
         input: "Email",
         message: "Invalid email address."
       });
@@ -81,7 +122,7 @@ const useAuth = () => {
         input: "Password",
         message: "Password must be at least 8 characters long."
       });
-      if(newUserPassword.length < 8 || newPasswordConfirmation.length < 8) validationErrors.push({
+      if(newPasswordConfirmation !== newUserPassword) validationErrors.push({
         input: "Password",
         message: "Confirmation password doesn't match."
       });
@@ -103,18 +144,13 @@ const useAuth = () => {
       : setRegistrationErrors([{message: `Unexpected: ${error}`}])
 
     }finally{
-
-      console.log(newUsername);
-      console.log(newUserEmail);
-      console.log(newUserPassword);
-      console.log(newPasswordConfirmation);
       
       setNewUsername("")
       setNewUserEmail("");
       setNewUserPassword("");
       setNewPasswordConfirmation("");
 
-      validationErrors.splice(0, validationErrors.length)
+      validationErrors.length = 0;
 
     }
   }
@@ -128,19 +164,14 @@ const useAuth = () => {
         displayName: newUser.userUsername
       });
   
-      console.log("Profile updated with displayName: ", result.user.displayName);
-
       const userDocRef = doc(db, USERS_COLLECTION, result.user.uid);
 
       const dataForFirestore = newUser.toFirestoreObject();
       dataForFirestore.uid = result.user.uid;
 
       await setDoc(userDocRef, dataForFirestore);
-    
-      console.log("User document created in Firestore!");
 
       await sendEmailVerification(result.user);
-      console.log("Verification email sent!");
 
      }catch (error) {
 

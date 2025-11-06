@@ -43,7 +43,7 @@ const Auth = () => {
                             User Password:
                         </label>
                         <input 
-                            type="text" 
+                            type="password" 
                             name="password" 
                             value={loginPassword}
                             onChange={(e) => {setLoginPassword(e.target.value)}}

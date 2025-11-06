@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { updateDoc, doc, arrayUnion } from 'firebase/firestore';
 import { db } from '../firebase-config';
 import useMainContentRouter from './useMainContentRouter';
@@ -12,14 +12,7 @@ import {
   selectGoogleBooksVolumes 
 } from '../features/books/googleBooksSelectors';
 import type { BookItem } from '../types/books';
-import type { CurrentBookInitialState } from '../types/redux';
 import { selectUserProfileUid, selectUserProfileStoredBooks } from '../features/userProfile/userProfileSelectors';
-import { 
-  selectCurrentBook, 
-  selectCurrentBookId, 
-  selectCurrentBookTitle, 
-  selectCurrentBookAuthors 
-} from '../features/currentBook/currentBookSelectors';
 
 const USERS_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERS;
 
@@ -41,12 +34,6 @@ const useBooksGrid = () => {
   const booksVolumes: BookItem[] = useAppSelector(selectGoogleBooksVolumes);
   const booksStatus: string = useAppSelector(selectGoogleBooksStatus);
   const booksError: string | null = useAppSelector(selectGoogleBooksError);
-
-  const currentBook: CurrentBookInitialState = useAppSelector(selectCurrentBook);
-
-  const currentBookId: string | null = useAppSelector(selectCurrentBookId);
-  const currentBookTitle: string | null = useAppSelector(selectCurrentBookTitle);
-  const currentBookAuthors: string[] | null = useAppSelector(selectCurrentBookAuthors);
 
   const handleBooksSearch = (e: React.FormEvent, query: string) => {
     e.preventDefault();
@@ -86,12 +73,6 @@ const useBooksGrid = () => {
         switchContent("chatRoom");
     };
   }
-
-  useEffect(() => {
-    currentBookId ? console.log(currentBookId) : console.log("Unable to get book's Id");
-    currentBookTitle ? console.log("title: ", currentBookTitle) : console.log("Unable to get book's author");
-    currentBookAuthors ? console.log("authors :", currentBookAuthors.join(", ")) : console.log("Unable to get book's title");
-  }, [currentBook]);
 
   return { 
     query, 
