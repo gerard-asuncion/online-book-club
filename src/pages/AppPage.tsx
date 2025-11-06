@@ -10,7 +10,7 @@ import { changeWindowLayout, changeSidebarLayout } from "../utils/classNameUtils
 function AppPage() {
 
   const { isOpenSidebar } = useSidebar();
-  const { user, isLoadingUser } = useUserData();
+  const { isLoadingUser } = useUserData();
 
   useResponsive();
 
@@ -21,7 +21,7 @@ function AppPage() {
             <div className={`
               ${changeWindowLayout(isOpenSidebar)}
               overflow-hidden`}>
-                <MainContentRouter user={user} />
+                <MainContentRouter />
             </div>
             <div className={`
               ${changeSidebarLayout(isOpenSidebar)}
@@ -29,11 +29,11 @@ function AppPage() {
               border-main-color
               overflow-y-auto
               px-5`}>
-                <Sidebar user={user} isLoadingUser={isLoadingUser} />
+                <Sidebar isLoadingUser={isLoadingUser} />
             </div>
         </section>
     </ScreenFrame>
   )
 }
 
-export default AppPage
+export default AppPage;

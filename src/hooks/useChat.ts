@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { 
-  addDoc, 
+  addDoc,
+  updateDoc,
   getDocs,
   serverTimestamp, 
   onSnapshot,
@@ -17,6 +18,7 @@ import { auth, db } from '../firebase-config';
 import type { DocumentData } from 'firebase/firestore';
 import type { Message } from '../types/types';
 import { useAppSelector } from '../app/hooks';
+import { selectUserProfileUid } from '../features/userProfile/userProfileSelectors';
 import { 
   selectCurrentBookId, 
   selectCurrentBookTitle, 
@@ -24,12 +26,15 @@ import {
 } from '../features/currentBook/currentBookSelectors';
 
 const MESSAGES_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION_MESSAGES;
+const USERS_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERS;
 const messagesRef: CollectionReference<DocumentData> = collection(db, MESSAGES_COLLECTION);
 
 export const useChat = () => {
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState<string>("");
+
+  const currentUserUid: string | null = useAppSelector(selectUserProfileUid);
 
   const currentBookId: string | null = useAppSelector(selectCurrentBookId);
   const currentBookTitle: string | null = useAppSelector(selectCurrentBookTitle);
@@ -59,7 +64,35 @@ export const useChat = () => {
 
   }, [currentBookId]);
 
+  const addChatToHistorial = async (currentRoom: string | null) => {
+    
+    if (!currentUserUid) {
+      console.error("Error: L'usuari no està autenticat.");
+      return;
+    }
+
+    if (!currentRoom) {
+      console.error("Error: El missatge no conté l'id de l'usuari.");
+      return;
+    }
+
+    try {
+
+      const userDocRef = doc(db, USERS_COLLECTION, currentUserUid);
+
+      await updateDoc(userDocRef, {
+        userChatHistorial: arrayUnion(currentRoom) 
+      });
+
+      console.log("Historial de xat actualitzat a Firestore!");
+
+    } catch (error) {
+      console.error("Error en actualitzar l'historial de xat:", error);
+    }
+  }
+
   const handleSubmitMessage = async (e: React.FormEvent) => {
+    
     e.preventDefault();
     
     if(newMessage.trim() === '' || !auth.currentUser) return;
@@ -76,6 +109,8 @@ export const useChat = () => {
     });
 
     setNewMessage('');
+    addChatToHistorial(currentBookId);
+
   } ; 
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {
@@ -86,20 +121,21 @@ export const useChat = () => {
   };
 
   const markRoomMessagesAsSeen = async (currentBookId: string | null) => {
-    const currentUserId = auth.currentUser?.uid;
-    if (!(currentUserId && currentBookId)) return;
+    const currentUserUid = auth.currentUser?.uid;
+    if (!(currentUserUid && currentBookId)) return;
 
     const queryRoom = query(messagesRef, where("room", "==", currentBookId));
 
     const batch = writeBatch(db);
 
     try {
+
       const querySnapshot = await getDocs(queryRoom);
 
       querySnapshot.forEach((document) => {
         const messageDocRef = doc(db, MESSAGES_COLLECTION, document.id);
         batch.update(messageDocRef, {
-          seenBy: arrayUnion(currentUserId)
+          seenBy: arrayUnion(currentUserUid)
         });
       });
     

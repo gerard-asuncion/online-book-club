@@ -8,7 +8,7 @@ export class RegisterUser {
 	#createdAt: FieldValue;
 	#uid: string | null;
 
-	static defaultBooks: string[] = ["3I_ODwAAQBAJ", "gxW6EAAAQBAJ", "1qPTywEACAAJ"];
+	static defaultBooks: string[] = ["3I_ODwAAQBAJ"];
 
 	constructor(
 		userUsername: string,
@@ -33,7 +33,8 @@ export class RegisterUser {
             email: this.#userEmail,
             displayName: this.#userUsername,
             displayName_lowercase: this.#userUsername.toLowerCase(),
-            storedBookRooms: RegisterUser.defaultBooks,
+            storedBookIds: RegisterUser.defaultBooks,
+			userChatHistorial: [],
             createdAt: this.#createdAt
         };
 	}

@@ -1,22 +1,46 @@
 import { useEffect, useState } from 'react';
+import { updateDoc, doc, arrayUnion } from 'firebase/firestore';
+import { db } from '../firebase-config';
+import useMainContentRouter from './useMainContentRouter';
+import useUserData from './useUserData';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { clearBookSearch, fetchBooks, fetchMoreBooks } from '../features/books/booksSlice';
+import { clearGoogleBooksSearch, fetchGoogleBooks, fetchMoreGoogleBooks } from '../features/books/googleBooksSlice';
 import { setCurrentBook, clearCurrentBook } from '../features/currentBook/currentBookSlice';
-import { selectBooksErrorState, selectBooksStatusState, selectBooksVolumesState } from '../features/books/booksSelectors';
+import { 
+  selectGoogleBooksError, 
+  selectGoogleBooksStatus, 
+  selectGoogleBooksVolumes 
+} from '../features/books/googleBooksSelectors';
 import type { BookItem } from '../types/books';
 import type { CurrentBookInitialState } from '../types/redux';
-import { selectCurrentBook, selectCurrentBookId, selectCurrentBookTitle, selectCurrentBookAuthors } from '../features/currentBook/currentBookSelectors';
+import { selectUserProfileUid, selectUserProfileStoredBooks } from '../features/userProfile/userProfileSelectors';
+import { 
+  selectCurrentBook, 
+  selectCurrentBookId, 
+  selectCurrentBookTitle, 
+  selectCurrentBookAuthors 
+} from '../features/currentBook/currentBookSelectors';
+
+const USERS_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERS;
 
 const useBooksGrid = () => {
 
+  const { isChat, switchContent } = useMainContentRouter();
+  const { storeBooksById } = useUserData();
+
   const [query, setQuery] = useState<string>("");
   const [displayBooks, setDisplayBooks] = useState<boolean>(false);
+  const [checkboxState, setCheckboxState] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
 
-  const booksVolumes: BookItem[] = useAppSelector(selectBooksVolumesState);
-  const booksStatus: string = useAppSelector(selectBooksStatusState);
-  const booksError: string | null = useAppSelector(selectBooksErrorState);
+  const currentUserUid: string | null = useAppSelector(selectUserProfileUid);
+
+  const userStoredBooks: BookItem[] = useAppSelector(selectUserProfileStoredBooks);
+
+  const booksVolumes: BookItem[] = useAppSelector(selectGoogleBooksVolumes);
+  const booksStatus: string = useAppSelector(selectGoogleBooksStatus);
+  const booksError: string | null = useAppSelector(selectGoogleBooksError);
 
   const currentBook: CurrentBookInitialState = useAppSelector(selectCurrentBook);
 
@@ -27,19 +51,40 @@ const useBooksGrid = () => {
   const handleBooksSearch = (e: React.FormEvent, query: string) => {
     e.preventDefault();
     if (query.trim()) {
-      dispatch(clearBookSearch());
-      dispatch(fetchBooks(query));
+      dispatch(clearGoogleBooksSearch());
+      dispatch(fetchGoogleBooks(query));
     }
     setDisplayBooks(true);
   };
 
   const handleLoadMoreBooks = () => {
-    dispatch(fetchMoreBooks());
+    dispatch(fetchMoreGoogleBooks());
   };
 
-  const handleVolumeSelection = (volumeId: string, volumeTitle: string, volumeAuthors: string[]) => {
+  const autoSaveBook = (checked: boolean): void => {
+    setCheckboxState(checked);
+  }
+
+  const handleVolumeSelection = async (volumeId: string, volumeTitle: string, volumeAuthors: string[]) => {
     dispatch(clearCurrentBook());
-    dispatch(setCurrentBook({bookId: volumeId, title: volumeTitle, authors: volumeAuthors}));
+    dispatch(setCurrentBook({bookId: volumeId, bookTitle: volumeTitle, bookAuthors: volumeAuthors}));
+    if(checkboxState && userStoredBooks.length < 3){
+      try {   
+        if(!currentUserUid) throw new Error ("There's no loged user.")
+        const userDocRef = doc(db, USERS_COLLECTION, currentUserUid);
+        await updateDoc(userDocRef, {
+          storedBookIds: arrayUnion(volumeId) 
+        });
+        storeBooksById(currentUserUid);
+      } catch (error) {
+        console.error("Failed loading data", error);
+      }
+    }else if(checkboxState){
+      return alert("You can't store more than 3 books. Please, remove some. In 'settings' you can recover any chat where you have written.")
+    }
+    if(!isChat){
+        switchContent("chatRoom");
+    };
   }
 
   useEffect(() => {
@@ -54,7 +99,9 @@ const useBooksGrid = () => {
     displayBooks, 
     booksVolumes, 
     booksStatus, 
-    booksError, 
+    booksError,
+    checkboxState,
+    autoSaveBook,
     handleBooksSearch, 
     handleLoadMoreBooks,
     handleVolumeSelection }

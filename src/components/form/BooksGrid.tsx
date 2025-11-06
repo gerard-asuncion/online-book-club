@@ -5,7 +5,6 @@ import {
   showHideAnything,
   setBooksGridFormLayout 
 } from "../../utils/classNameUtils";
-import { useState } from "react";
 import useBooksGrid from "../../hooks/useBooksGrid";
 import type { BookItem } from "../../types/books";
 
@@ -19,16 +18,12 @@ const BooksGrid = () => {
     booksVolumes, 
     booksStatus,
     booksError,
+    checkboxState,
+    autoSaveBook,
     handleBooksSearch,
     handleLoadMoreBooks,
     handleVolumeSelection,
   } = useBooksGrid();
-
-  const [checkboxState, setCheckboxState] = useState<boolean>(false);
-
-  const testCheckbox = (checked: boolean): void => {
-    setCheckboxState(checked);
-  }
 
   return (
     <MainContentFrame>
@@ -79,7 +74,7 @@ const BooksGrid = () => {
                 name="activeRoomsCheckbox"
                 checked={checkboxState} 
                 onChange={(e) => {
-                    testCheckbox(e.target.checked);
+                  autoSaveBook(e.target.checked);
                 }}
               />
               <label 

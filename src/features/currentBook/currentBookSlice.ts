@@ -13,10 +13,10 @@ const currentBookSlice = createSlice({
   initialState,
   
   reducers: {
-    setCurrentBook: (state, action: PayloadAction<{ bookId: string, title: string, authors: string[] }>) => {
+    setCurrentBook: (state, action: PayloadAction<{ bookId: string, bookTitle: string, bookAuthors: string[] }>) => {
       state.bookId = action.payload.bookId;
-      state.bookTitle = action.payload.title;
-      state.bookAuthors = action.payload.authors;
+      state.bookTitle = action.payload.bookTitle;
+      state.bookAuthors = action.payload.bookAuthors;
     },
     clearCurrentBook: (state) =>{
       state.bookId = null;

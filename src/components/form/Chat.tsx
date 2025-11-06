@@ -7,13 +7,13 @@ import { alineateMessages, displayUserName, styleMessages } from '../../utils/cl
 import type { Message } from "../../types/types";
 import { useAppSelector } from '../../app/hooks';
 import { selectCurrentBookTitle } from '../../features/currentBook/currentBookSelectors';
-import type { MainContentRouterProps } from '../../types/props';
 import { selectIsMobile } from '../../features/responsive/responsiveSelectors';
+import { selectUserProfileUid } from '../../features/userProfile/userProfileSelectors';
 
-const Chat = ({ user }: MainContentRouterProps) => {
+const Chat = () => {
 
+  const currentUserUid: string | null = useAppSelector(selectUserProfileUid);
   const currentBookTitle: string | null = useAppSelector(selectCurrentBookTitle);
-
   const isMobile: boolean = useAppSelector(selectIsMobile);
  
   const { 
@@ -23,8 +23,6 @@ const Chat = ({ user }: MainContentRouterProps) => {
     handleSubmitMessage,
     handleKeyDown 
   } = useChat();
-
-  const userId: string | undefined = user?.uid;
 
   const scrollerRef = useRef<HTMLDivElement>(null);
 
@@ -83,13 +81,13 @@ const Chat = ({ user }: MainContentRouterProps) => {
             key={message.id}
             className={`
               flex w-full
-              ${alineateMessages(userId, message.userId)}
+              ${alineateMessages(currentUserUid, message.userId)}
             `}
           >
             <div 
               key={message.id} 
               className={`
-                  ${styleMessages(userId, message.userId)}
+                  ${styleMessages(currentUserUid, message.userId)}
                   flex 
                   flex-col
                   min-w-60/100
@@ -100,7 +98,7 @@ const Chat = ({ user }: MainContentRouterProps) => {
               >
               <div className='flex justify-between'>
                 <div className={`
-                  ${displayUserName(userId, message.userId)}
+                  ${displayUserName(currentUserUid, message.userId)}
                   text-main-color            
                   font-bold 
                   sm:text-base 

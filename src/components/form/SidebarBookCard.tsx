@@ -1,27 +1,31 @@
 import useSidebar from "../../hooks/useSidebar";
-import { showHideAnything, highlightBookRoomCard } from "../../utils/classNameUtils";
-import type { SidebarBookCardProps } from "../../types/props";
 import useUnreadCounter from "../../hooks/useUnreadCounter";
+import { showHideAnything, highlightBookRoomCard } from "../../utils/classNameUtils";
 import { useAppSelector } from "../../app/hooks";
 import { selectCurrentBookId } from "../../features/currentBook/currentBookSelectors";
+import type { SidebarBookCardProps } from "../../types/props";
 
-const SidebarBookCard = ({ children, displayedBookId, user }: SidebarBookCardProps) => {
+const SidebarBookCard = ({ cardStoredBook, removeMode }: SidebarBookCardProps) => {
 
   const currentBookId = useAppSelector(selectCurrentBookId);
-  
-  const { unreadCount, setUnreadCount } = useUnreadCounter(displayedBookId, user);
+
+  const cardStoredBookId: string = cardStoredBook.id;
+  const cardStoredBookTitle: string = cardStoredBook.volumeInfo.title;
+  const cardStoredBookAuthors: string[] = cardStoredBook.volumeInfo.authors;
+
   const { handleBookCardClick } = useSidebar();
+  const { unreadCount, setUnreadCount } = useUnreadCounter(currentBookId);
 
   return (
     <li className="
           min-h-[50px]">
         <button 
           onClick={() => {
-            handleBookCardClick("Harry Potter");
+            handleBookCardClick(cardStoredBookId, cardStoredBookTitle, cardStoredBookAuthors, removeMode);
             setUnreadCount(0);
           }}
           className={`
-            ${highlightBookRoomCard(currentBookId, displayedBookId)}
+            ${highlightBookRoomCard(currentBookId, cardStoredBookId, removeMode)}
             h-full
             w-full
             flex 
@@ -33,10 +37,10 @@ const SidebarBookCard = ({ children, displayedBookId, user }: SidebarBookCardPro
           `}>
             <section className="flex flex-col items-start justify-center text-left">
               <div className="font-semibold">
-                Title: {children}
+                {cardStoredBookTitle}
               </div>
               <div className="text-sm">
-                Author: {children}
+                {cardStoredBookAuthors.join(", ")}
               </div>
             </section>
             <div className={`

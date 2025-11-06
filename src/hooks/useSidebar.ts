@@ -1,17 +1,22 @@
+import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { selectIsMobile, selectOpenSidebar } from "../features/responsive/responsiveSelectors";
 import { setCloseSidebar, setOpenSidebar } from "../features/responsive/responsiveSlice";
 import useMainContentRouter from "./useMainContentRouter";
 import { addTimeout } from "../utils/utils";
 import { clearCurrentBook, setCurrentBook } from "../features/currentBook/currentBookSlice";
+import useUserData from "./useUserData";
 
 const useSidebar = () => {
 
     const { isChat, switchContent } = useMainContentRouter();
+    const { removeBookFromProfile } = useUserData();
 
     const dispatch = useAppDispatch();
     const isOpenSidebar = useAppSelector(selectOpenSidebar);
     const isMobile = useAppSelector(selectIsMobile);
+
+    const [removeMode, setRemoveMode] = useState<boolean>(false);
 
     const showSidebar = (open: boolean): void => {
         if(open){
@@ -28,19 +33,34 @@ const useSidebar = () => {
         }
     }
 
-    const handleBookCardClick = (book: string): void => {
-        dispatch(clearCurrentBook());
-        const id: string = book;
-        const title: string = book;
-        const authors: string[] = ["author"]
-        dispatch(setCurrentBook({ bookId: id, title: title, authors: authors }));
-        if(!isChat){
+    const openChat = (currentBookTitle: string | null) => {
+        if(!isChat && currentBookTitle){
             switchContent("chatRoom");
         };
-        hideSidebarInMobile();
+    }
+
+    const handleBookCardClick = (id: string, title: string, authors: string[], removeMode: boolean) => {
+
+        if(removeMode){
+            
+            removeBookFromProfile(id);
+
+        } else {
+
+            dispatch(clearCurrentBook());
+            dispatch(setCurrentBook({ bookId: id, bookTitle: title, bookAuthors: authors }));
+            if(!isChat){
+                switchContent("chatRoom");
+            };
+            hideSidebarInMobile();
+
+        }
     }
 
     return {
+        openChat,
+        removeMode,
+        setRemoveMode,
         isMobile,
         isOpenSidebar,
         showSidebar,

@@ -1,19 +1,19 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import type { BooksSliceInitialState } from '../../types/redux';
+import type { GoogleBooksSliceInitialState } from '../../types/redux';
 import type { BookItem } from '../../types/books';
 import type { RootState } from '../../app/store';
 
-const BOOKS_API_URL = 'https://www.googleapis.com/books/v1/volumes';
+const BOOKS_API_URL = import.meta.env.VITE_GOOGLE_BOOKS_API_URL;
 
-const initialState: BooksSliceInitialState = {
+const initialState: GoogleBooksSliceInitialState = {
   volumes:[],
   status: 'idle', 
   error: null,
   currentQuery: ''
 };
 
-export const fetchBooks = createAsyncThunk<
+export const fetchGoogleBooks = createAsyncThunk<
   BookItem[],
   string,
   { rejectValue: string }
@@ -40,14 +40,15 @@ export const fetchBooks = createAsyncThunk<
   }
 );
 
-export const fetchMoreBooks = createAsyncThunk<
+export const fetchMoreGoogleBooks = createAsyncThunk<
   BookItem[],
   void,
   { state: RootState; rejectValue: string }
 >(
   'books/fetchMoreBooks',
   async (_, { getState, rejectWithValue }) => {
-    const state = getState().books;
+
+    const state = getState().googleBooks;
     const { currentQuery, volumes } = state;
 
     const startIndex = volumes.length;
@@ -60,7 +61,9 @@ export const fetchMoreBooks = createAsyncThunk<
           maxResults: 40
         }
       });
+
       return response.data.items as BookItem[] || [];
+
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const apiError = error.response?.data?.error?.message;
@@ -71,11 +74,11 @@ export const fetchMoreBooks = createAsyncThunk<
   }
 );
 
-const booksSlice = createSlice({
-  name: 'books',
+const googleBooksSlice = createSlice({
+  name: 'googleBooks',
   initialState,
   reducers: {
-    clearBookSearch: (state) => {
+    clearGoogleBooksSearch: (state) => {
       state.volumes = [];
       state.status = 'idle';
       state.error = null;
@@ -85,35 +88,35 @@ const booksSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
-      .addCase(fetchBooks.pending, (state) => {
+      .addCase(fetchGoogleBooks.pending, (state) => {
         state.status = 'loading';
         state.error = null;
       })
-      .addCase(fetchBooks.fulfilled, (state, action) => {
+      .addCase(fetchGoogleBooks.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.volumes = action.payload;
         state.currentQuery = action.meta.arg
       })
-      .addCase(fetchBooks.rejected, (state, action) => {
+      .addCase(fetchGoogleBooks.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload as string; 
       })
-      .addCase(fetchMoreBooks.pending, (state) => {
+      .addCase(fetchMoreGoogleBooks.pending, (state) => {
         state.status = 'loading-more';
         state.error = null;
       })
-      .addCase(fetchMoreBooks.fulfilled, (state, action) => {
+      .addCase(fetchMoreGoogleBooks.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.volumes = state.volumes.concat(action.payload); 
       })
-      .addCase(fetchMoreBooks.rejected, (state, action) => {
+      .addCase(fetchMoreGoogleBooks.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload as string; 
       });
   },
 });
 
-export const { clearBookSearch } = booksSlice.actions;
-export default booksSlice.reducer;
+export const { clearGoogleBooksSearch } = googleBooksSlice.actions;
+export default googleBooksSlice.reducer;
 
 
