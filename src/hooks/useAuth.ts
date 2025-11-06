@@ -65,7 +65,7 @@ const useAuth = () => {
 
       // if(newUsername === registered username)...
 
-      if(newUsername === "") validationErrors.push({
+      if(newUsername.trim() === "") validationErrors.push({
         input: "Username",
         message: "Username can't be empty."
       });

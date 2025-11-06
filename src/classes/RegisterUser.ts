@@ -34,6 +34,7 @@ export class RegisterUser {
             displayName: this.#userUsername,
             displayName_lowercase: this.#userUsername.toLowerCase(),
             storedBookIds: RegisterUser.defaultBooks,
+			userChatHistorial: [],
             createdAt: this.#createdAt
         };
 	}

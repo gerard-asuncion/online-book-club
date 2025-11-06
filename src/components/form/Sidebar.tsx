@@ -75,7 +75,7 @@ const Sidebar = ({ isLoadingUser }: LoadingUserProps) => {
                                     setRemoveMode(!removeMode);
                                 }}
                             >
-                                Click here to remove
+                                Remove from sidebar
                             </button>
                         </div>
                     }

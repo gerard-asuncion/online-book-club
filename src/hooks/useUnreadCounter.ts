@@ -7,9 +7,9 @@ import {
     CollectionReference,
 } from 'firebase/firestore';
 import { db } from '../firebase-config';
-import type { DocumentData } from 'firebase/firestore';
 import { useAppSelector } from '../app/hooks';
 import { selectUserProfileUid } from '../features/userProfile/userProfileSelectors';
+import type { DocumentData } from 'firebase/firestore';
 
 const MESSAGES_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION_MESSAGES;
 const messagesRef: CollectionReference<DocumentData> = collection(db, MESSAGES_COLLECTION);
