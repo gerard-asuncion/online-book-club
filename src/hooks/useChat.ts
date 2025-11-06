@@ -15,15 +15,18 @@ import {
   writeBatch
 } from 'firebase/firestore';
 import { auth, db } from '../firebase-config';
-import type { DocumentData } from 'firebase/firestore';
-import type { Message } from '../types/types';
 import { useAppSelector } from '../app/hooks';
+import useUserData from './useUserData';
 import { selectUserProfileUid } from '../features/userProfile/userProfileSelectors';
 import { 
   selectCurrentBookId, 
   selectCurrentBookTitle, 
   selectCurrentBookAuthors
 } from '../features/currentBook/currentBookSelectors';
+import { selectUserProfileStoredBooks } from '../features/userProfile/userProfileSelectors';
+import type { DocumentData } from 'firebase/firestore';
+import type { Message } from '../types/types';
+import type { BookItem } from '../types/books';
 
 const MESSAGES_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION_MESSAGES;
 const USERS_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERS;
@@ -34,11 +37,17 @@ export const useChat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState<string>("");
 
+  const { addBookToProfile } = useUserData();
+
   const currentUserUid: string | null = useAppSelector(selectUserProfileUid);
+
+  const userStoredBooks: BookItem[] = useAppSelector(selectUserProfileStoredBooks);
 
   const currentBookId: string | null = useAppSelector(selectCurrentBookId);
   const currentBookTitle: string | null = useAppSelector(selectCurrentBookTitle);
   const currentBookAuthors: string[] = useAppSelector(selectCurrentBookAuthors);
+
+  const isStored = userStoredBooks.some(book => book.id === currentBookId);
 
   useEffect(() => {
 
@@ -59,7 +68,7 @@ export const useChat = () => {
       });
       setMessages(arrMessages);
     });
-
+    
     return () => unsubscribe();
 
   }, [currentBookId]);
@@ -146,11 +155,18 @@ export const useChat = () => {
     }
   };
 
+  const handleAddCurrentBook = async () => { 
+    if(!currentBookId) return;
+    addBookToProfile(currentBookId);
+  }
+
   return {
     messages,
     newMessage,
     setNewMessage,
     handleSubmitMessage,
-    handleKeyDown
+    handleKeyDown,
+    handleAddCurrentBook,
+    isStored
   };
 };
