@@ -11,7 +11,7 @@ import type { MainContentRouterProps } from '../../types/props';
 import { selectIsMobile } from '../../features/responsive/responsiveSelectors';
 
 const Chat = ({ currentUser }: MainContentRouterProps) => {
-
+  
   const currentBookTitle: string | null = useAppSelector(selectCurrentBookTitle);
 
   const isMobile: boolean = useAppSelector(selectIsMobile);

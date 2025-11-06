@@ -33,7 +33,7 @@ export class RegisterUser {
             email: this.#userEmail,
             displayName: this.#userUsername,
             displayName_lowercase: this.#userUsername.toLowerCase(),
-            storedBookRooms: RegisterUser.defaultBooks,
+            storedBookIds: RegisterUser.defaultBooks,
             createdAt: this.#createdAt
         };
 	}

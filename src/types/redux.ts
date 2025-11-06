@@ -28,9 +28,16 @@ export interface MessagesInitialState {
     messages: Message[];
 }
 
-export interface BooksSliceInitialState {
+export interface GoogleBooksSliceInitialState {
     volumes: BookItem[],
-    status: string,
+    status: 'idle' | 'loading' | 'succeeded' | 'failed' | 'loading-more';
     error: string | null,
     currentQuery: string;
+}
+
+export interface UserProfileInitialState {
+    userProfileUid: string | null,
+    storedBooks: BookItem[],
+    fetchStoredBooksStatus: 'idle' | 'loading' | 'succeeded' | 'failed',
+    fetchStoredBooksError: string | null;
 }

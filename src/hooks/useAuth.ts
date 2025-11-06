@@ -13,6 +13,7 @@ import { auth, db, provider } from '../firebase-config';
 import Cookies from 'universal-cookie';
 import { useAppDispatch } from '../app/hooks';
 import { setIsAuth, clearAuth } from '../features/auth/authSlice';
+import { setUserProfileUid, clearUserProfile } from '../features/userProfile/userProfileSlice';
 import { clearCurrentBook } from '../features/currentBook/currentBookSlice';
 import { setIsSearch } from '../features/mainContentRoute/mainContentRouteSlice';
 import { setOpenSidebar } from '../features/responsive/responsiveSlice';
@@ -151,62 +152,47 @@ const useAuth = () => {
   }
 
   const loginWithEmailAndPassword = async (e: React.FormEvent): Promise<void> => {
-    // 1. Prevé l'enviament del formulari
+
     e.preventDefault();
-    
-    // 2. Neteja errors anteriors
+
     setLoginError(null); 
 
     try {
-      // 3. AQUESTA ÉS LA LÍNIA QUE HAS COMENÇAT:
-      // Executa l'inici de sessió
       const result = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
 
-      // --- 4. LÒGICA D'ÈXIT (Copiada del teu 'loginWithGoogle') ---
-
-      // Defineix les opcions de la cookie
       const cookieOptions: CookieOptions = {
         path: '/',
         maxAge: 60 * 60 * 24 * 7 // 7 dies
       };
 
-      // Estableix la cookie de sessió
       cookies.set("auth-token", result.user.refreshToken, cookieOptions);
 
-      // Actualitza l'estat global de Redux
       dispatch(setIsAuth());
-      
-      // Navega a la pàgina principal
+
+      dispatch(setUserProfileUid({ userProfileUid: result.user.uid }));
+
       navigate("/", { replace: true });
 
     } catch (error) {
-      // --- 5. GESTIÓ D'ERRORS (Millorat) ---
-      // Aquí és on fem servir la 'traducció' de la documentació
-      
-      // La majoria d'errors de Firebase tenen un 'code'
+ 
       if (error instanceof Error && 'code' in error) {
         const errorCode = (error as { code: string }).code;
         console.error("Firebase Login Error:", errorCode);
 
-        // Donem un missatge útil a l'usuari
         switch (errorCode) {
-          case "auth/invalid-credential":
-          case "auth/invalid-email":
-            setLoginError("L'email o la contrasenya són incorrectes.");
-            break;
-          case "auth/user-not-found": // Encara que 'invalid-credential' és més comú
-            setLoginError("No s'ha trobat cap usuari amb aquest email.");
-            break;
-          case "auth/wrong-password": // Encara que 'invalid-credential' és més comú
-            setLoginError("L'email o la contrasenya són incorrectes.");
-            break;
-          default:
-            setLoginError("Ha ocorregut un error. Torna a intentar-ho.");
+            case "auth/invalid-credential":
+            case "auth/invalid-email":
+            case "auth/user-not-found":
+            case "auth/wrong-password":
+                setLoginError("Incorrect email or password");
+                break;
+
+            default:
+                setLoginError("Unexpected error, please try again.");
         }
       } else {
-        // Per a errors genèrics
         console.error("Unexpected Error:", error);
-        setLoginError("Ha ocorregut un error inesperat.");
+        setLoginError("Unexpected error, please try again.");
       }
     }
   };
@@ -234,6 +220,7 @@ const useAuth = () => {
     cookies.remove("auth-token", { path: "/" });
     dispatch(clearCurrentBook());
     dispatch(clearAuth());
+    dispatch(clearUserProfile());
     dispatch(setIsSearch());
     dispatch(setOpenSidebar());
   }
@@ -243,6 +230,7 @@ const useAuth = () => {
     setLoginEmail,
     loginPassword,
     setLoginPassword,
+    loginError,
     registrationErrors,
     newUsername,
     newUserEmail,

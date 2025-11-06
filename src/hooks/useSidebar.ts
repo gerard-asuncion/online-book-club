@@ -28,12 +28,9 @@ const useSidebar = () => {
         }
     }
 
-    const handleBookCardClick = (book: string): void => {
+    const handleBookCardClick = (id: string, title: string, authors: string[]): void => {
         dispatch(clearCurrentBook());
-        const id: string = book;
-        const title: string = book;
-        const authors: string[] = ["author"]
-        dispatch(setCurrentBook({ bookId: id, title: title, authors: authors }));
+        dispatch(setCurrentBook({ bookId: id, bookTitle: title, bookAuthors: authors }));
         if(!isChat){
             switchContent("chatRoom");
         };

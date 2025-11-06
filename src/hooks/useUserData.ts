@@ -4,61 +4,81 @@ import { doc, getDoc } from 'firebase/firestore';
 import { auth, db } from '../firebase-config';
 import type { User } from 'firebase/auth';
 import type { UserProfile } from '../types/types';
+import { useAppDispatch } from '../app/hooks';
 
+// Importa TOTES les accions que necessitaràs
+import { 
+    setUserProfileUid, 
+    setUserProfileStoredBookIds, 
+    fetchStoredBooks,
+    clearUserProfile 
+} from '../features/userProfile/userProfileSlice';
+
+// El nom de la teva col·lecció (assegura't que coincideixi amb la imatge, ex: 'obc-users-db')
 const USERS_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERS;
 
+/**
+ * Hook observador que s'executa un cop a l'arrel de l'app.
+ * Sincronitza l'estat d'autenticació de Firebase (Auth i Firestore) amb Redux.
+ */
 const useUserData = () => {
 
-    const [currentUser, setCurrentUser] = useState<User | null>(auth.currentUser);
+    const dispatch = useAppDispatch();
     
-    // 4. AFEGEIX UN NOU ESTAT PER AL PERFIL DE FIRESTORE
-    const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-    
+    // Encara mantenim 'isLoadingUser' com un estat local,
+    // ja que és útil per a la UI principal.
     const [isLoadingUser, setIsLoadingUser] = useState<boolean>(true);
 
     useEffect(() => {
-        
-        // 5. Converteix la funció 'onAuthStateChanged' en 'async'
+
+        // Aquesta és la funció 'unsubscribe' que esmentaves.
+        // S'executa quan l'aplicació es tanca o el component es desmunta.
         const unsubscribe = onAuthStateChanged(auth, async (user: User | null) => {
             
-            setIsLoadingUser(true); // Activem la càrrega
+            setIsLoadingUser(true);
 
             if (user) {
-                // --- Usuari ha iniciat sessió ---
-                setCurrentUser(user); // Guarda l'usuari d'Auth
-
-                // 6. BUSCA EL DOCUMENT A FIRESTORE
-                // Crea la referència al document
-                const userDocRef = doc(db, USERS_COLLECTION, user.uid);
+                // --- 1. Usuari ha iniciat sessió ---
                 
-                // Demana el document
+                // (Ja ho fas a 'useAuth', però ho reforcem aquí)
+                dispatch(setUserProfileUid({ userProfileUid: user.uid }));
+
+                // --- 2. Busca el document a Firestore ---
+                const userDocRef = doc(db, USERS_COLLECTION, user.uid);
                 const docSnap = await getDoc(userDocRef);
 
                 if (docSnap.exists()) {
-                    // 7. Si existeix, guarda les dades del perfil
-                    setUserProfile(docSnap.data() as UserProfile);
+                    // --- 3. El document existeix ---
+                    const profileData = docSnap.data() as UserProfile;
+                    const bookIds = profileData.storedBookIds || [];
+
+                    if (bookIds.length > 0) {
+                        dispatch(fetchStoredBooks(bookIds));
+                    }
                     console.log("User profile loaded from Firestore.");
+
                 } else {
-                    // Això no hauria de passar si el registre va bé,
-                    // però és bo controlar-ho
                     console.warn("User is authenticated but no Firestore document was found.");
-                    setUserProfile(null);
+                    dispatch(clearUserProfile());
                 }
+
             } else {
-                // --- Usuari ha tancat sessió ---
-                setCurrentUser(null);
-                setUserProfile(null); // Neteja el perfil
+                // --- 6. Usuari ha tancat sessió ---
+                // 'useAuth' ja ho gestiona al 'logout', 
+                // però això captura expiracions de sessió.
+                dispatch(clearUserProfile());
             }
             
             setIsLoadingUser(false);
         });
 
+        // Retorna la funció 'unsubscribe' perquè s'executi en desmuntar
         return () => unsubscribe();
         
-    }, []);
+    }, [dispatch]); // El 'dependency array' només necessita 'dispatch'
 
-
-    return { currentUser, userProfile, isLoadingUser };
+    // Retorna l'estat de càrrega perquè la teva App pugui mostrar un 'spinner'
+    return { isLoadingUser };
 };
 
 export default useUserData;

@@ -10,6 +10,7 @@ const Auth = () => {
         setLoginEmail,
         loginPassword,
         setLoginPassword,
+        loginError,
         loginWithGoogle, 
         loginWithEmailAndPassword, 
         navigateToRegister
@@ -49,6 +50,13 @@ const Auth = () => {
                             placeholder="Enter password..."
                             className="bg-white"
                         />
+                        
+                            {loginError && (
+                                <div className="text-red-500 text-xs text-center p-2 rounded-md">
+                                    {loginError}
+                                </div>
+                            )}
+                            
                         <button 
                             type="submit"
                             className={`${defaultButtonLayout()}`}

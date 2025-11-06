@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { clearBookSearch, fetchBooks, fetchMoreBooks } from '../features/books/booksSlice';
+import { clearGoogleBooksSearch, fetchGoogleBooks, fetchMoreGoogleBooks } from '../features/books/googleBooksSlice';
 import { setCurrentBook, clearCurrentBook } from '../features/currentBook/currentBookSlice';
-import { selectBooksErrorState, selectBooksStatusState, selectBooksVolumesState } from '../features/books/booksSelectors';
+import { selectGoogleBooksError, selectGoogleBooksStatus, selectGoogleBooksVolumes } from '../features/books/googleBooksSelectors';
 import type { BookItem } from '../types/books';
 import type { CurrentBookInitialState } from '../types/redux';
 import { selectCurrentBook, selectCurrentBookId, selectCurrentBookTitle, selectCurrentBookAuthors } from '../features/currentBook/currentBookSelectors';
@@ -14,9 +14,9 @@ const useBooksGrid = () => {
 
   const dispatch = useAppDispatch();
 
-  const booksVolumes: BookItem[] = useAppSelector(selectBooksVolumesState);
-  const booksStatus: string = useAppSelector(selectBooksStatusState);
-  const booksError: string | null = useAppSelector(selectBooksErrorState);
+  const booksVolumes: BookItem[] = useAppSelector(selectGoogleBooksVolumes);
+  const booksStatus: string = useAppSelector(selectGoogleBooksStatus);
+  const booksError: string | null = useAppSelector(selectGoogleBooksError);
 
   const currentBook: CurrentBookInitialState = useAppSelector(selectCurrentBook);
 
@@ -27,14 +27,14 @@ const useBooksGrid = () => {
   const handleBooksSearch = (e: React.FormEvent, query: string) => {
     e.preventDefault();
     if (query.trim()) {
-      dispatch(clearBookSearch());
-      dispatch(fetchBooks(query));
+      dispatch(clearGoogleBooksSearch());
+      dispatch(fetchGoogleBooks(query));
     }
     setDisplayBooks(true);
   };
 
   const handleLoadMoreBooks = () => {
-    dispatch(fetchMoreBooks());
+    dispatch(fetchMoreGoogleBooks());
   };
 
   const handleVolumeSelection = (volumeId: string, volumeTitle: string, volumeAuthors: string[]) => {

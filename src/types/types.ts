@@ -5,7 +5,7 @@ export interface UserProfile {
     email: string;
     displayName: string;
     displayName_lowercase: string;
-    storedBookRooms: string[];
+    storedBookIds: string[];
     createdAt: Timestamp;
 }
 

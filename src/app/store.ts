@@ -12,23 +12,25 @@ import {
 import storage from 'redux-persist/lib/storage';
 
 import authReducer from '../features/auth/authSlice';
+import userProfileReducer from '../features/userProfile/userProfileSlice';
 import mainContentRouteReducer from '../features/mainContentRoute/mainContentRouteSlice';
 import currentBookReducer from '../features/currentBook/currentBookSlice';
 import responsiveReducer from '../features/responsive/responsiveSlice';
-import booksReducer from '../features/books/booksSlice';
+import googleBooksReducer from '../features/books/googleBooksSlice';
 
 const rootReducer = combineReducers({
-    auth: authReducer, 
+    auth: authReducer,
+    userProfile: userProfileReducer,
     mainContentRoute: mainContentRouteReducer,
     currentBook: currentBookReducer,
     responsive: responsiveReducer,
-    books: booksReducer
+    googleBooks: googleBooksReducer,
 });
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['mainContentRoute', 'currentBook', 'responsive'] 
+  whitelist: ['userProfile', 'mainContentRoute', 'currentBook', 'responsive', 'storedBooks'] 
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

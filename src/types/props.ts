@@ -1,14 +1,12 @@
 import type { ReactNode } from "react";
 import type { User } from 'firebase/auth';
-import type { UserProfile } from '../types/types';
+import type { BookItem } from "./books";
 
 export interface OnlyReactNodeChildrenProps {
     children: ReactNode;
 }
 
-export interface UserLoadingUserProps {
-    currentUser: User | null,
-    userProfile: UserProfile | null,
+export interface LoadingUserProps {
     isLoadingUser: boolean;
 }
 
@@ -17,8 +15,7 @@ export interface MainContentRouterProps {
 }
 
 export interface SidebarBookCardProps {
-    displayedBookId: string,
-    currentUser: User | null;
+    cardStoredBook: BookItem,
 }
 
 export interface UseAuthProps {
