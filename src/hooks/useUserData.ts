@@ -1,22 +1,26 @@
 import { useState, useEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
-import { doc, getDoc, updateDoc, arrayRemove } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, arrayRemove, arrayUnion } from 'firebase/firestore';
 import { auth, db } from '../firebase-config';
 import type { User } from 'firebase/auth';
 import type { UserProfile } from '../types/types';
-import { useAppDispatch } from '../app/hooks';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { 
     setUserProfileUid, 
     fetchStoredBooks,
     clearUserProfile, 
     clearAllStoredBooks
 } from '../features/userProfile/userProfileSlice';
+import type { BookItem } from '../types/books';
+import { selectUserProfileStoredBooks } from '../features/userProfile/userProfileSelectors';
 
 const USERS_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERS;
 
 const useUserData = () => {
 
     const dispatch = useAppDispatch();
+
+    const userStoredBooks: BookItem[] = useAppSelector(selectUserProfileStoredBooks);
 
     const [isLoadingUser, setIsLoadingUser] = useState<boolean>(true);
 
@@ -43,6 +47,27 @@ const useUserData = () => {
         }
     }
 
+    const addBookToProfile = async (bookIdToAdd: string): Promise<void> => {
+        
+        const userId: string | undefined = auth.currentUser?.uid;
+
+        if (!userId) {
+            console.error("No user is logged in to perform this action.");
+            return;
+        }
+        if(userStoredBooks.length >= 3) return alert("You can't store more than 3 books. Please, remove some. In 'settings' you can recover any chat where you have written.");
+
+        try {
+            const userDocRef = doc(db, USERS_COLLECTION, userId);
+            await updateDoc(userDocRef, {
+            storedBookIds: arrayUnion(bookIdToAdd)
+            });
+            storeBooksById(userId);  
+        } catch (error) {
+            console.error("Error adding book to profile:", error);
+        }               
+    }
+
     const removeBookFromProfile = async (bookIdToRemove: string): Promise<void> => {
         
         const userId: string | undefined = auth.currentUser?.uid;
@@ -53,21 +78,13 @@ const useUserData = () => {
         }
 
         try {
-
-            console.log(`Attempting to remove book ${bookIdToRemove} from user ${userId}...`);
-            
             const userDocRef = doc(db, USERS_COLLECTION, userId);
-
             await updateDoc(userDocRef, {
                 storedBookIds: arrayRemove(bookIdToRemove) //
             });
-
-            console.log("Book removed from Firestore successfully.");
-
             storeBooksById(userId);
 
         } catch (error) {
-
             console.error("Error removing book from profile:", error);
         }
     };
@@ -94,7 +111,7 @@ const useUserData = () => {
         
     }, [dispatch]);
 
-    return { isLoadingUser, removeBookFromProfile, storeBooksById };
+    return { isLoadingUser, addBookToProfile, removeBookFromProfile };
 };
 
 export default useUserData;

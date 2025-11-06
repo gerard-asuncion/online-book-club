@@ -21,7 +21,9 @@ const Chat = () => {
     newMessage,
     setNewMessage, 
     handleSubmitMessage,
-    handleKeyDown 
+    handleKeyDown,
+    handleAddCurrentBook,
+    isStored
   } = useChat();
 
   const scrollerRef = useRef<HTMLDivElement>(null);
@@ -41,24 +43,28 @@ const Chat = () => {
             text-white
             text-sm
             md:text-base'>Room: {currentBookTitle}</h1>
-          <button
-            className="
-              text-main-color
-              text-xs 
-              md:text-sm 
-              p-2 border-2
-              border-default-bg
-              md:hover:border-main-color
-              md:hover:text-white
-              rounded-md
-              transition-color
-              ease-in
-              active:text-white
-              cursor-pointer"
-            onClick={() => {alert("room deleted")}}
-          >
-            Save / Remove
-          </button>
+          {!isStored && 
+            <button
+              className={`
+                text-main-color 
+                border-default-bg
+                hover:text-white 
+                hover:border-main-color
+                cursor-pointer
+                text-xs 
+                md:text-sm
+                p-2
+                border
+                rounded-md
+                transition-color
+                ease-in
+                active:text-white
+              `}
+              onClick={handleAddCurrentBook}
+            >
+              Store Book in Sidebar
+            </button>
+          }
         </div>
       </article>
       <section
