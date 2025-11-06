@@ -8,7 +8,7 @@ export class RegisterUser {
 	#createdAt: FieldValue;
 	#uid: string | null;
 
-	static defaultBooks: string[] = ["3I_ODwAAQBAJ", "gxW6EAAAQBAJ", "1qPTywEACAAJ"];
+	static defaultBooks: string[] = ["3I_ODwAAQBAJ", "gxW6EAAAQBAJ", "1qPTywEACAAJ", "-aDtAAAAMAAJ"];
 
 	constructor(
 		userUsername: string,

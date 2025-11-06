@@ -39,7 +39,7 @@ const useBooksGrid = () => {
 
   const handleVolumeSelection = (volumeId: string, volumeTitle: string, volumeAuthors: string[]) => {
     dispatch(clearCurrentBook());
-    dispatch(setCurrentBook({bookId: volumeId, title: volumeTitle, authors: volumeAuthors}));
+    dispatch(setCurrentBook({bookId: volumeId, bookTitle: volumeTitle, bookAuthors: volumeAuthors}));
   }
 
   useEffect(() => {

@@ -14,8 +14,6 @@ function AppPage() {
   const { isOpenSidebar } = useSidebar();
   const { isLoadingUser } = useUserData();
 
-  const currentUser = null
-
   useResponsive();
 
   useEffect(() =>{
@@ -29,7 +27,7 @@ function AppPage() {
             <div className={`
               ${changeWindowLayout(isOpenSidebar)}
               overflow-hidden`}>
-                <MainContentRouter currentUser={currentUser} />
+                <MainContentRouter />
             </div>
             <div className={`
               ${changeSidebarLayout(isOpenSidebar)}
@@ -44,4 +42,4 @@ function AppPage() {
   )
 }
 
-export default AppPage
+export default AppPage;

@@ -5,13 +5,13 @@ import { useAppSelector } from "../../app/hooks";
 import { selectCurrentBookId } from "../../features/currentBook/currentBookSelectors";
 import type { SidebarBookCardProps } from "../../types/props";
 
-const SidebarBookCard = ({ cardStoredBook }: SidebarBookCardProps) => {
+const SidebarBookCard = ({ cardStoredBook, removeMode }: SidebarBookCardProps) => {
 
   const currentBookId = useAppSelector(selectCurrentBookId);
 
   const cardStoredBookId: string = cardStoredBook.id;
   const cardStoredBookTitle: string = cardStoredBook.volumeInfo.title;
-    const cardStoredBookAuthors: string[] = cardStoredBook.volumeInfo.authors;
+  const cardStoredBookAuthors: string[] = cardStoredBook.volumeInfo.authors;
 
   const { handleBookCardClick } = useSidebar();
   const { unreadCount, setUnreadCount } = useUnreadCounter(currentBookId);
@@ -21,11 +21,11 @@ const SidebarBookCard = ({ cardStoredBook }: SidebarBookCardProps) => {
           min-h-[50px]">
         <button 
           onClick={() => {
-            handleBookCardClick(cardStoredBookId, cardStoredBookTitle, cardStoredBookAuthors);
+            handleBookCardClick(cardStoredBookId, cardStoredBookTitle, cardStoredBookAuthors, removeMode);
             setUnreadCount(0);
           }}
           className={`
-            ${highlightBookRoomCard(currentBookId, cardStoredBookId)}
+            ${highlightBookRoomCard(currentBookId, cardStoredBookId, removeMode)}
             h-full
             w-full
             flex 

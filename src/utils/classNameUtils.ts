@@ -1,17 +1,17 @@
 export const showHideAnything = (show: boolean | number): string =>
     show ? "" : "hidden";
 
-export const alineateMessages = (userId: string | undefined, messageId: string): string =>
+export const alineateMessages = (userId: string | null, messageId: string): string =>
     userId === messageId
     ? "justify-end"
     : "justify-start"
 
-export const styleMessages = (userId: string | undefined, messageId: string): string =>
+export const styleMessages = (userId: string | null, messageId: string): string =>
     userId === messageId
     ? "border-main-color border-2"
     : "border-secondary-color border-2 bg-secondary-color"
 
-export const displayUserName = (userId: string | undefined, messageId: string): string =>
+export const displayUserName = (userId: string | null, messageId: string): string =>
     userId === messageId
     ? "invisible"
     : ""
@@ -39,11 +39,15 @@ export const hideHeaderButton = (locationPathname: string): string =>
     ? "hidden"
     : ""
 
-export const highlightBookRoomCard = (openBookRoom: string | null, bookRoomName: string): string => 
-    openBookRoom !== bookRoomName
-    ? "bg-default-bg border-2 border-main-color text-main-color transition-colors duration-300 md:duration-100 ease-in-out md:hover:bg-main-color md:hover:text-white cursor-pointer"
-    : "bg-default-bg border-2 border-white text-white"
-
+export const highlightBookRoomCard = (openBookRoom: string | null, bookRoomName: string, removeMode: boolean): string => {
+    if(removeMode){
+        return "bg-default-bg border-2 border-red-500 text-white"
+    } else {
+        return openBookRoom !== bookRoomName
+        ? "bg-default-bg border-2 border-main-color text-main-color transition-colors duration-300 md:duration-100 ease-in-out md:hover:bg-main-color md:hover:text-white cursor-pointer"
+        : "bg-default-bg border-2 border-white text-white"
+    }
+}
     
 export const setBooksGridFormLayout = (isOpenGrid: boolean) : string =>
     isOpenGrid ? "grid-cols-4 grid-rows-1" : "grid-cols-1 grid-rows-3"

@@ -162,7 +162,7 @@ const useAuth = () => {
 
       const cookieOptions: CookieOptions = {
         path: '/',
-        maxAge: 60 * 60 * 24 * 7 // 7 dies
+        maxAge: 60 * 60 * 24 * 7
       };
 
       cookies.set("auth-token", result.user.refreshToken, cookieOptions);
@@ -209,6 +209,7 @@ const useAuth = () => {
       cookies.set("auth-token", result.user.refreshToken, cookieOptions);
 
       dispatch(setIsAuth());
+      
       navigate("/", { replace: true });
     } catch (error) {
       console.error(error, 4000);

@@ -14,7 +14,7 @@ const Sidebar = ({ isLoadingUser }: LoadingUserProps) => {
     const currentBookTitle = useAppSelector(selectCurrentBookTitle);
     const storedBooks = useAppSelector(selectUserProfileStoredBooks);
 
-    const { hideSidebarInMobile } = useSidebar();
+    const { hideSidebarInMobile, removeMode, setRemoveMode } = useSidebar();
     const { switchContent } = useMainContentRouter();
 
     return(
@@ -56,6 +56,7 @@ const Sidebar = ({ isLoadingUser }: LoadingUserProps) => {
                     <SidebarBookCard 
                         key={index}
                         cardStoredBook={storedBook}
+                        removeMode={removeMode}
                     /> 
                 )}
 
@@ -66,10 +67,15 @@ const Sidebar = ({ isLoadingUser }: LoadingUserProps) => {
                     {!storedBooks.length && 
                         <div>Start searching books.</div>
                     }
-                    {storedBooks.length === 4 && 
+                    {storedBooks.length && 
                         <div>
-                            <button className="cursor-pointer px-3 text-main-color md:hover:text-white">
-                                Remove
+                            <button
+                                className={`${removeMode ? "text-red-500" : "text-main-color"} md:hover:text-white cursor-pointer px-3`}
+                                onClick={() => {
+                                    setRemoveMode(!removeMode);
+                                }}
+                            >
+                                Click here to remove
                             </button>
                         </div>
                     }

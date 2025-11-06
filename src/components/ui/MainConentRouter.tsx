@@ -4,15 +4,14 @@ import BooksGrid from "../form/BooksGrid";
 import MainContentFrame from "./MainContentFrame";
 import useMainContentRouter from "../../hooks/useMainContentRouter";
 import AboutSection from "./AboutSection";
-import type { MainContentRouterProps } from "../../types/props";
 
-const MainContentRouter = ({ currentUser }: MainContentRouterProps) => {
+const MainContentRouter = () => {
 
   const { isChat, isSettings, isSearch, isAbout } = useMainContentRouter();
 
   if(isChat){
     return (
-      <Chat currentUser={currentUser} />
+      <Chat />
     )
   } else if(isSettings){
     return (

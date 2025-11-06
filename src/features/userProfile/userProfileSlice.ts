@@ -59,7 +59,7 @@ const userProfileSlice = createSlice({
         state.fetchStoredBooksStatus = 'idle';
         state.fetchStoredBooksError = null;
     },
-    clearStoredBooks: (state) => {
+    clearAllStoredBooks: (state) => {
       state.storedBooks = [];
       state.fetchStoredBooksStatus = 'idle';
       state.fetchStoredBooksError = null;
@@ -83,8 +83,8 @@ const userProfileSlice = createSlice({
 
 export const { 
   setUserProfileUid,
-  clearUserProfile, 
-  clearStoredBooks 
+  clearUserProfile,
+  clearAllStoredBooks
 } = userProfileSlice.actions;
 
 export default userProfileSlice.reducer;
