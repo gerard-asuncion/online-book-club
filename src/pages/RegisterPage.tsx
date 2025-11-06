@@ -84,7 +84,7 @@ const RegisterPage = () => {
                     Password:
                   </label>
                   <input 
-                    type="text" 
+                    type="password" 
                     name="password" 
                     value={newUserPassword}
                     onChange={(e) => setNewUserPassword(e.target.value)}
@@ -100,7 +100,7 @@ const RegisterPage = () => {
                     Repeat password:
                   </label>
                   <input 
-                    type="text" 
+                    type="password"
                     name="passwordRepeat" 
                     value={newPasswordConfirmation}
                     onChange={(e) => setNewPasswordConfirmation(e.target.value)}
