@@ -33,6 +33,12 @@ const useSidebar = () => {
         }
     }
 
+    const openChat = (currentBookTitle: string | null) => {
+        if(!isChat && currentBookTitle){
+            switchContent("chatRoom");
+        };
+    }
+
     const handleBookCardClick = (id: string, title: string, authors: string[], removeMode: boolean) => {
 
         if(removeMode){
@@ -52,6 +58,7 @@ const useSidebar = () => {
     }
 
     return {
+        openChat,
         removeMode,
         setRemoveMode,
         isMobile,

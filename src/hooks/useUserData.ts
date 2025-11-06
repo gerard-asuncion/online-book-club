@@ -91,7 +91,7 @@ const useUserData = () => {
         
     }, [dispatch]);
 
-    return { isLoadingUser, removeBookFromProfile };
+    return { isLoadingUser, removeBookFromProfile, storeBooksById };
 };
 
 export default useUserData;

@@ -1,7 +1,7 @@
 import useSidebar from "../../hooks/useSidebar";
 import useMainContentRouter from "../../hooks/useMainContentRouter";
 import SidebarBookCard from "./SidebarBookCard";
-import { defaultButtonLayout } from "../../utils/classNameUtils";
+import { defaultButtonLayout, setCursorPointer } from "../../utils/classNameUtils";
 import { useAppSelector } from "../../app/hooks";
 import { selectCurrentBookTitle } from "../../features/currentBook/currentBookSelectors";
 import { selectUserProfileStoredBooks } from "../../features/userProfile/userProfileSelectors";
@@ -14,7 +14,7 @@ const Sidebar = ({ isLoadingUser }: LoadingUserProps) => {
     const currentBookTitle = useAppSelector(selectCurrentBookTitle);
     const storedBooks = useAppSelector(selectUserProfileStoredBooks);
 
-    const { hideSidebarInMobile, removeMode, setRemoveMode } = useSidebar();
+    const { openChat, hideSidebarInMobile, removeMode, setRemoveMode } = useSidebar();
     const { switchContent } = useMainContentRouter();
 
     return(
@@ -27,11 +27,17 @@ const Sidebar = ({ isLoadingUser }: LoadingUserProps) => {
                     {isLoadingUser && <p className="text-white">Loading username...</p>}
                     {!isLoadingUser && <p className="text-white font-semibold">{auth.currentUser?.displayName}</p>}
                 </div>
-                <div>
-                    <p className="text-gray-400 text-sm">Active room:</p>
-                    {isLoadingUser && <p className="text-white">Loading room...</p>}
-                    {!isLoadingUser && <p className="text-white font-semibold">{currentBookTitle || "none"}</p>}
-                </div>
+                    {isLoadingUser && <p>Loading room...</p>}
+                    {!isLoadingUser && 
+                        <div className="">
+                            <p className="text-gray-400 text-sm">Active room:</p>
+                            <button 
+                                className={`${setCursorPointer(currentBookTitle)} text-white hover:text-main-color`} 
+                                onClick={() => openChat(currentBookTitle)}
+                            >
+                                <div>{currentBookTitle}</div>
+                            </button>
+                        </div>}
             </article>
 
             <article>
@@ -61,23 +67,28 @@ const Sidebar = ({ isLoadingUser }: LoadingUserProps) => {
                 )}
 
                 <li className="text-main-color text-xs text-center row-span-1 px-4 py-1 h-6">
-                    {storedBooks.length < 4 && 
-                        <div>{`Stored ${storedBooks.length}/4.`}</div>
-                    }
                     {!storedBooks.length && 
                         <div>Start searching books.</div>
                     }
                     {storedBooks.length && 
-                        <div>
+                        <section className="flex flex-col justify-around items-center gap-2">
+                            <div>
+                                {`Stored ${storedBooks.length}/3.`}
+                            </div>
                             <button
-                                className={`${removeMode ? "text-red-500" : "text-main-color"} md:hover:text-white cursor-pointer px-3`}
+                                className={`
+                                    ${removeMode 
+                                    ? "text-white border-red-500" 
+                                    : "text-main-color border-main-color "} 
+                                        border rounded-3xl p-1 md:hover:text-white cursor-pointer px-3 w-80/100`}
                                 onClick={() => {
                                     setRemoveMode(!removeMode);
                                 }}
                             >
-                                Remove from sidebar
+                                {removeMode ? "Cancel" : "Remove from sidebar"}
                             </button>
-                        </div>
+
+                        </section>
                     }
                 </li>
             </ul>
