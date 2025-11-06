@@ -8,7 +8,8 @@ import { useAppDispatch } from '../app/hooks';
 import { 
     setUserProfileUid, 
     fetchStoredBooks,
-    clearUserProfile 
+    clearUserProfile, 
+    clearAllStoredBooks
 } from '../features/userProfile/userProfileSlice';
 
 const USERS_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERS;
@@ -31,6 +32,8 @@ const useUserData = () => {
 
                 if (bookIds.length > 0) {
                     dispatch(fetchStoredBooks(bookIds));
+                } else {
+                    dispatch(clearAllStoredBooks());
                 }
                 console.log("Stored books actualized by id from firebase");
             } else {
