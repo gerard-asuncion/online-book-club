@@ -5,7 +5,6 @@ import {
   signInWithEmailAndPassword,
   sendEmailVerification,
   updateProfile,
-  signInWithPopup, 
   signOut
 } from 'firebase/auth';
 import { 
@@ -14,7 +13,7 @@ import {
   getDoc,
   writeBatch
 } from 'firebase/firestore';
-import { auth, db, provider } from '../firebase-config';
+import { auth, db } from '../firebase-config';
 import Cookies from 'universal-cookie';
 import { useAppDispatch } from '../app/hooks';
 import { setIsAuth, clearAuth } from '../features/auth/authSlice';
@@ -233,25 +232,6 @@ const useAuth = () => {
     }
   };
 
-  const loginWithGoogle = async (): Promise<void> => {
-    try {
-      const result = await signInWithPopup(auth, provider);
-
-      const cookieOptions: CookieOptions = {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7
-      };
-
-      cookies.set("auth-token", result.user.refreshToken, cookieOptions);
-
-      dispatch(setIsAuth());
-      
-      navigate("/", { replace: true });
-    } catch (error) {
-      console.error(error, 4000);
-    } 
-  };
-
   const logout = async (): Promise<void> => {
     await signOut(auth);
     cookies.remove("auth-token", { path: "/" });
@@ -281,7 +261,6 @@ const useAuth = () => {
     navigateToRegister,
     navigateToLogin,
     loginWithEmailAndPassword,
-    loginWithGoogle,
     checkboxState,
     premiumRegister,
     logout
