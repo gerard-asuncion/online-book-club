@@ -151,20 +151,18 @@ const useAuth = () => {
   const registerNewUser = async (newUser: RegisterUser): Promise<void> => {
 
     try {
-      // Pas 1: Auth (com abans)
       const result = await createUserWithEmailAndPassword(auth, newUser.userEmail, newUser.userPassword);
       await updateProfile(result.user, {
         displayName: newUser.userUsername
       });
 
-      // Pas 2: Firestore (amb un Lot d'Escriptura)
-      const batch = writeBatch(db); // Creem un lot
+      const batch = writeBatch(db);
 
       const userDocRef: DocumentReference = doc(db, USERS_COLLECTION, result.user.uid);
       const dataForFirestore: UserProfileType = newUser.toFirestoreObject();
       const resultUserUid: string = result.user.uid;
       dataForFirestore.uid = resultUserUid;
-      batch.set(userDocRef, dataForFirestore); // Afegim al lot
+      batch.set(userDocRef, dataForFirestore);
 
       const usernameDocRef: DocumentReference = doc(db, USERNAMES_COLLECTION, dataForFirestore.displayName_lowercase);
       batch.set(usernameDocRef, {});
