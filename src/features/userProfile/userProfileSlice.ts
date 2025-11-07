@@ -2,12 +2,13 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { UserProfileInitialState } from '../../types/redux';
-import type { BookItem } from '../../types/books';
+import type { BookItem } from '../../types/booksTypes';
 
 const BOOKS_API_URL = import.meta.env.VITE_GOOGLE_BOOKS_API_URL;
 
 const initialState: UserProfileInitialState = {
   userProfileUid: null,
+  userProfileUsername: null,
   storedBooks: [],
   fetchStoredBooksStatus: 'idle',
   fetchStoredBooksError: null,
@@ -26,7 +27,6 @@ export const fetchStoredBooks = createAsyncThunk<
     }
     
     try {
-
         const fetchPromises = bookIds.map(bookId => 
             axios.get(`${BOOKS_API_URL}/${bookId}`)
         );
@@ -51,13 +51,17 @@ const userProfileSlice = createSlice({
   initialState,
   reducers: {
     setUserProfileUid: (state, action: PayloadAction<{ userProfileUid: string | null }>) => {
-        state.userProfileUid = action.payload.userProfileUid;
+      state.userProfileUid = action.payload.userProfileUid;
+    },
+    setUserProfileUsername: (state, action: PayloadAction<{ userProfileUsername: string | null }>) => {
+      state.userProfileUsername = action.payload.userProfileUsername;
     },
     clearUserProfile: (state) => {
-        state.userProfileUid = 'unknown_user';
-        state.storedBooks = [];
-        state.fetchStoredBooksStatus = 'idle';
-        state.fetchStoredBooksError = null;
+      state.userProfileUid = null;
+      state.userProfileUsername = null;
+      state.storedBooks = [];
+      state.fetchStoredBooksStatus = 'idle';
+      state.fetchStoredBooksError = null;
     },
     clearAllStoredBooks: (state) => {
       state.storedBooks = [];
@@ -83,6 +87,7 @@ const userProfileSlice = createSlice({
 
 export const { 
   setUserProfileUid,
+  setUserProfileUsername,
   clearUserProfile,
   clearAllStoredBooks
 } = userProfileSlice.actions;

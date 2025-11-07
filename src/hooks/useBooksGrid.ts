@@ -9,7 +9,7 @@ import {
   selectGoogleBooksStatus, 
   selectGoogleBooksVolumes 
 } from '../features/books/googleBooksSelectors';
-import type { BookItem } from '../types/books';
+import type { BookItem } from '../types/booksTypes';
 
 const useBooksGrid = () => {
 
@@ -50,8 +50,10 @@ const useBooksGrid = () => {
       addBookToProfile(volumeId);
     };
     if(!isChat){
-        switchContent("chatRoom");
+      switchContent("chatRoom");
     };
+    console.log('Selected volume title:', volumeTitle);
+    console.log('Selected volume ID:', volumeId);
   }
 
   return { 

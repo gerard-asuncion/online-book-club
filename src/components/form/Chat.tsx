@@ -4,7 +4,7 @@ import MainContentFrame from '../ui/MainContentFrame';
 import TextareaAutosize from 'react-textarea-autosize';
 import { displayDate } from '../../utils/dateUtils';
 import { alineateMessages, displayUserName, styleMessages } from '../../utils/classNameUtils';
-import type { Message } from "../../types/types";
+import type { SentMessage } from "../../types/messageTypes";
 import { useAppSelector } from '../../app/hooks';
 import { selectCurrentBookTitle } from '../../features/currentBook/currentBookSelectors';
 import { selectIsMobile } from '../../features/responsive/responsiveSelectors';
@@ -71,7 +71,7 @@ const Chat = () => {
         ref={scrollerRef} 
         className="
           mx-auto
-          md:w-95/100
+          w-95/100
           px-4 
           sm:px-12
           flex-1
@@ -82,7 +82,7 @@ const Chat = () => {
           gap-1     
           py-2
         ">
-        {messages.map((message: Message) => (
+        {messages.map((message: SentMessage) => (
           <article
             key={message.id}
             className={`
@@ -110,7 +110,7 @@ const Chat = () => {
                   sm:text-base 
                   text-sm
                 `}>
-                  {message.user}
+                  {message.username}
                 </div> 
                 <div className="text-xs sm:text-sm text-gray-400">{displayDate(message.createdAt, isMobile)}</div>
               </div>

@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import type { GoogleBooksSliceInitialState } from '../../types/redux';
-import type { BookItem } from '../../types/books';
+import type { BookItem } from '../../types/booksTypes';
 import type { RootState } from '../../app/store';
 
 const BOOKS_API_URL = import.meta.env.VITE_GOOGLE_BOOKS_API_URL;

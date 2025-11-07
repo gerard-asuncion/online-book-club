@@ -10,18 +10,6 @@ export interface UserProfile {
     createdAt: Timestamp;
 }
 
-export interface Message {
-    id: string,
-    text: string,
-    createdAt: Timestamp | Date,
-    user: string,
-    userId: string,
-    room: string,
-    bookTitle: string,
-    bookAuthors: string[],
-    seenBy: string[];
-}
-
 export interface CookieOptions {
     path: string,
     maxAge: number;

@@ -6,7 +6,7 @@ import {
   setBooksGridFormLayout 
 } from "../../utils/classNameUtils";
 import useBooksGrid from "../../hooks/useBooksGrid";
-import type { BookItem } from "../../types/books";
+import type { BookItem } from "../../types/booksTypes";
 
 
 const BooksGrid = () => {

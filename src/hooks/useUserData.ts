@@ -7,11 +7,12 @@ import type { UserProfile } from '../types/types';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { 
     setUserProfileUid, 
+    setUserProfileUsername,
     fetchStoredBooks,
     clearUserProfile, 
     clearAllStoredBooks
 } from '../features/userProfile/userProfileSlice';
-import type { BookItem } from '../types/books';
+import type { BookItem } from '../types/booksTypes';
 import { selectUserProfileStoredBooks } from '../features/userProfile/userProfileSelectors';
 
 const USERS_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERS;
@@ -96,10 +97,9 @@ const useUserData = () => {
             setIsLoadingUser(true);
 
             if (user) {
-
                 dispatch(setUserProfileUid({ userProfileUid: user.uid }));
+                dispatch(setUserProfileUsername({ userProfileUsername: user.displayName }));
                 storeBooksById(user.uid);
-
             } else {
                 dispatch(clearUserProfile());
             }

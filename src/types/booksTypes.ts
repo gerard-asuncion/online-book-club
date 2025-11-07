@@ -11,5 +11,6 @@ interface VolumeInfo {
 
 export interface BookItem {
   id: string,
-  volumeInfo: VolumeInfo;
+  volumeInfo: VolumeInfo,
+  hasMessages?: boolean;
 }

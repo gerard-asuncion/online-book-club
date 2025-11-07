@@ -7,7 +7,7 @@ import { selectUserProfileUid } from '../features/userProfile/userProfileSelecto
 import { clearCurrentBook, setCurrentBook } from "../features/currentBook/currentBookSlice";
 import useMainContentRouter from './useMainContentRouter';
 import type { UserProfile } from '../types/types';
-import type { BookItem } from '../types/books';
+import type { BookItem } from '../types/booksTypes';
 
 const USERS_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERS;
 const BOOKS_API_URL = import.meta.env.VITE_GOOGLE_BOOKS_API_URL;

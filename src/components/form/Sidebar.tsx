@@ -7,7 +7,7 @@ import { selectCurrentBookTitle } from "../../features/currentBook/currentBookSe
 import { selectUserProfileStoredBooks } from "../../features/userProfile/userProfileSelectors";
 import { auth } from "../../firebase-config";
 import type { LoadingUserProps } from "../../types/props";
-import type { BookItem } from "../../types/books";
+import type { BookItem } from "../../types/booksTypes";
 
 const Sidebar = ({ isLoadingUser }: LoadingUserProps) => {
 
