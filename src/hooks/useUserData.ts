@@ -3,7 +3,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc, updateDoc, arrayRemove, arrayUnion } from 'firebase/firestore';
 import { auth, db } from '../firebase-config';
 import type { User } from 'firebase/auth';
-import type { UserProfile } from '../types/types';
+import type { UserProfileType } from '../types/types';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { 
     setUserProfileUid, 
@@ -26,25 +26,24 @@ const useUserData = () => {
     const [isLoadingUser, setIsLoadingUser] = useState<boolean>(true);
 
     const storeBooksById = async (userId: string | undefined) => {
-
-        if(userId){
+        
+        try {
+            if(!userId) throw new Error("User ID not found.");
 
             const userDocRef = doc(db, USERS_COLLECTION, userId);
             const docSnap = await getDoc(userDocRef);
-            if (docSnap.exists()) {
-                const profileData = docSnap.data() as UserProfile;
-                const bookIds = profileData.storedBookIds || [];
 
-                if (bookIds.length > 0) {
-                    dispatch(fetchStoredBooks(bookIds));
-                } else {
-                    dispatch(clearAllStoredBooks());
-                }
-                console.log("Stored books actualized by id from firebase");
-            } else {
+            if(!docSnap.exists()) throw new Error("Unable to find user in database.");
 
-                console.log("This user doesn't exist in database.")
-            }
+            const profileData = docSnap.data() as UserProfileType;
+            const bookIds = profileData.storedBookIds || [];
+
+            bookIds.length > 0
+            ? dispatch(fetchStoredBooks(bookIds))
+            : dispatch(clearAllStoredBooks());
+
+        } catch (error) {
+            console.error("Error fetching user stored books:", error);
         }
     }
 

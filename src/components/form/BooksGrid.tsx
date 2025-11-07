@@ -81,7 +81,7 @@ const BooksGrid = () => {
                 htmlFor="activeRoomsCheckbox"
                 className="text-white text-sm"
               >
-                Save chat room
+                Automatically store in sidebar
               </label>
             </div>
           </form>

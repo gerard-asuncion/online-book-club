@@ -11,10 +11,16 @@ export const styleMessages = (userId: string | null, messageId: string | null): 
     ? "border-main-color border-2"
     : "border-secondary-color border-2 bg-secondary-color"
 
-export const displayUserName = (userId: string | null, messageId: string | null): string =>
-    userId === messageId
-    ? "invisible"
-    : ""
+export const displayUserName = (userId: string | null, messageId: string | null, username: string | null): string => {
+    if(!username) {
+        console.log("Message ID is null or undefined");
+        return "text-gray-400";
+    }else {
+        return userId === messageId
+        ? "invisible"
+        : "text-main-color"
+    }
+}
 
 export const justifyBooksGrid = (center: boolean): string =>
     center ? "justify-center" : "justify-between"

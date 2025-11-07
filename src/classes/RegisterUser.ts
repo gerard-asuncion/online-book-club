@@ -5,6 +5,7 @@ export class RegisterUser {
 	#userUsername: string;
     #userEmail: string;
     #userPassword: string;
+	#userPremium: boolean;
 	#createdAt: FieldValue;
 	#uid: string | null;
 
@@ -14,18 +15,19 @@ export class RegisterUser {
 		userUsername: string,
 		userEmail: string,
 		userPassword: string,
+		userPremium: boolean = false
 	) {
 		this.#userUsername = userUsername;
         this.#userEmail = userEmail;
         this.#userPassword = userPassword;
+		this.#userPremium = userPremium;
 		this.#createdAt = serverTimestamp();
 		this.#uid = null;
     }
 
 	get userUsername() { return this.#userUsername }
-    get userEmail() { return this.#userEmail }
-    get userPassword() { return this.#userPassword }
-	get createdAt() { return this.#createdAt }
+	get userEmail() { return this.#userEmail }
+	get userPassword() { return this.#userPassword }
 
 	toFirestoreObject() {
         return {
@@ -35,7 +37,8 @@ export class RegisterUser {
             displayName_lowercase: this.#userUsername.toLowerCase(),
             storedBookIds: RegisterUser.defaultBooks,
 			userChatHistorial: [],
-            createdAt: this.#createdAt
+            createdAt: this.#createdAt,
+			isPremium: this.#userPremium
         };
 	}
 }

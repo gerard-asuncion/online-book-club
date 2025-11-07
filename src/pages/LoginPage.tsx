@@ -11,7 +11,6 @@ const Auth = () => {
         loginPassword,
         setLoginPassword,
         loginError,
-        loginWithGoogle, 
         loginWithEmailAndPassword, 
         navigateToRegister
     } = useAuth();
@@ -52,7 +51,7 @@ const Auth = () => {
                         />
                         
                             {loginError && (
-                                <div className="text-red-500 text-xs text-center p-2 rounded-md">
+                                <div className="text-main-color text-xs text-center p-2 rounded-md">
                                     {loginError}
                                 </div>
                             )}
@@ -64,20 +63,12 @@ const Auth = () => {
                             Log In
                         </button>
                     </form>
-                    <article>
-                        <button 
-                            className={`${defaultButtonLayout()}`}
-                            onClick={navigateToRegister}
-                        >
-                            Register
-                        </button>
-                        <button
-                            className={`${defaultButtonLayout()}`}
-                            onClick={loginWithGoogle}
-                        >
-                            Continue With Google
-                        </button>
-                    </article>
+                    <button 
+                        className={`${defaultButtonLayout()}`}
+                        onClick={navigateToRegister}
+                    >
+                        Register
+                    </button>
                 </section>
             </ScreenFrame>
         </ScreenFrame>

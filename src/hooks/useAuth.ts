@@ -5,21 +5,15 @@ import {
   signInWithEmailAndPassword,
   sendEmailVerification,
   updateProfile,
-  signInWithPopup, 
-  signOut,
-  type UserProfile,
+  signOut
 } from 'firebase/auth';
 import { 
   doc,
-  setDoc,
-  collection, 
-  query, 
-  where, 
-  getDocs, 
-  limit, 
-  QuerySnapshot
+  DocumentReference,
+  getDoc,
+  writeBatch
 } from 'firebase/firestore';
-import { auth, db, provider } from '../firebase-config';
+import { auth, db } from '../firebase-config';
 import Cookies from 'universal-cookie';
 import { useAppDispatch } from '../app/hooks';
 import { setIsAuth, clearAuth } from '../features/auth/authSlice';
@@ -29,9 +23,10 @@ import { setIsSearch } from '../features/mainContentRoute/mainContentRouteSlice'
 import { setOpenSidebar } from '../features/responsive/responsiveSlice';
 import { ValidationError } from "../classes/ValidationError"
 import { RegisterUser } from '../classes/RegisterUser';
-import type { CookieOptions, ErrorType } from '../types/types';
+import type { CookieOptions, ErrorType, UserProfileType } from '../types/types';
 
 const USERS_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERS;
+const USERNAMES_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERNAMES;
 
 const cookies: Cookies = new Cookies();
 
@@ -51,6 +46,8 @@ const useAuth = () => {
 
   const [loginEmail, setLoginEmail] = useState<string>("");
   const [loginPassword, setLoginPassword] = useState<string>("");
+
+  const [checkboxState, setCheckboxState] = useState<boolean>(false);
 
   const navigateToRegister = (): void => {
     navigate("/register", { replace: true });
@@ -72,25 +69,17 @@ const useAuth = () => {
 
   const checkAvailableUsername = async (newUsername: string): Promise<boolean> => {
 
-    const usersCollectionRef = collection(db, USERS_COLLECTION); 
-    const newUsernameLowerCase = newUsername.toLowerCase();
-    let isAvailable: boolean = false;
-
-    const queryUsers = query(
-      usersCollectionRef, 
-      where("displayName_lowercase", "==", newUsernameLowerCase),
-      limit(1)
-    );
+    const newUsernameLowerCase = newUsername.toLowerCase();    
+    const usernameDocRef = doc(db, USERNAMES_COLLECTION, newUsernameLowerCase);
 
     try {
-      const querySnapshot: QuerySnapshot = await getDocs(queryUsers);
-      isAvailable = querySnapshot.empty;
+      const docSnap = await getDoc(usernameDocRef);
+      return !docSnap.exists();
 
     } catch (error) {
       console.error("Error checking username availability:", error);
+      return false;
     }
-
-    return isAvailable;
   }
 
   const submitRegisterForm = async (e: React.FormEvent): Promise<void> => {
@@ -101,12 +90,6 @@ const useAuth = () => {
 
     try {
 
-      const isAvailable = await checkAvailableUsername(newUsername);
-
-      if(!isAvailable) validationErrors.push({
-        input: "Username",
-        message: "Username not available."
-      });
       if(newUsername.trim() === "") validationErrors.push({
         input: "Username",
         message: "Username can't be empty."
@@ -128,15 +111,24 @@ const useAuth = () => {
         message: "Confirmation password doesn't match."
       });
 
+      const isAvailable = await checkAvailableUsername(newUsername);
+
+      if(!isAvailable) validationErrors.push({
+        input: "Username",
+        message: "Username not available."
+      });
+
       if(validationErrors.length > 0) { 
           throw new ValidationError(validationErrors); 
       };
       
       if(registrationErrors.length > 0) setRegistrationErrors([]);
 
-      const newUser: RegisterUser = new RegisterUser(newUsername, newUserEmail, newUserPassword);
+      const newUser: RegisterUser = new RegisterUser(newUsername, newUserEmail, newUserPassword, checkboxState);
 
       registerNewUser(newUser);
+
+      navigate("/login", { replace: true });
 
     }catch(error){
 
@@ -159,28 +151,35 @@ const useAuth = () => {
   const registerNewUser = async (newUser: RegisterUser): Promise<void> => {
 
     try {
+      // Pas 1: Auth (com abans)
       const result = await createUserWithEmailAndPassword(auth, newUser.userEmail, newUser.userPassword);
-
       await updateProfile(result.user, {
         displayName: newUser.userUsername
       });
-  
-      const userDocRef = doc(db, USERS_COLLECTION, result.user.uid);
 
-      const dataForFirestore: UserProfile = newUser.toFirestoreObject();
-      dataForFirestore.uid = result.user.uid;
+      // Pas 2: Firestore (amb un Lot d'Escriptura)
+      const batch = writeBatch(db); // Creem un lot
 
-      await setDoc(userDocRef, dataForFirestore);
+      const userDocRef: DocumentReference = doc(db, USERS_COLLECTION, result.user.uid);
+      const dataForFirestore: UserProfileType = newUser.toFirestoreObject();
+      const resultUserUid: string = result.user.uid;
+      dataForFirestore.uid = resultUserUid;
+      batch.set(userDocRef, dataForFirestore); // Afegim al lot
+
+      const usernameDocRef: DocumentReference = doc(db, USERNAMES_COLLECTION, dataForFirestore.displayName_lowercase);
+      batch.set(usernameDocRef, {});
+
+      await batch.commit();
 
       await sendEmailVerification(result.user);
 
-     }catch (error) {
-
+      }catch (error) {
       console.error("Error creating user or sending verification email:", error, 4000);
+    }
+  }
 
-     }finally{
-
-     }
+  const premiumRegister = (checked: boolean): void => {
+    setCheckboxState(checked);
   }
 
   const loginWithEmailAndPassword = async (e: React.FormEvent): Promise<void> => {
@@ -213,40 +212,24 @@ const useAuth = () => {
         console.error("Firebase Login Error:", errorCode);
 
         switch (errorCode) {
-            case "auth/invalid-credential":
-            case "auth/invalid-email":
-            case "auth/user-not-found":
-            case "auth/wrong-password":
-                setLoginError("Incorrect email or password");
-                break;
+          case "auth/invalid-credential":
+          case "auth/invalid-email":
+          case "auth/user-not-found":
+          case "auth/wrong-password":
+            setLoginError("Incorrect email or password");
+              break;
 
-            default:
-                setLoginError("Unexpected error, please try again.");
+          default:
+            setLoginError("Unexpected error, please try again.");
         }
       } else {
         console.error("Unexpected Error:", error);
         setLoginError("Unexpected error, please try again.");
-      }
+      } 
+    }finally {
+      setLoginEmail("");
+      setLoginPassword("");
     }
-  };
-
-  const loginWithGoogle = async (): Promise<void> => {
-    try {
-      const result = await signInWithPopup(auth, provider);
-
-      const cookieOptions: CookieOptions = {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7
-      };
-
-      cookies.set("auth-token", result.user.refreshToken, cookieOptions);
-
-      dispatch(setIsAuth());
-      
-      navigate("/", { replace: true });
-    } catch (error) {
-      console.error(error, 4000);
-    } 
   };
 
   const logout = async (): Promise<void> => {
@@ -278,7 +261,8 @@ const useAuth = () => {
     navigateToRegister,
     navigateToLogin,
     loginWithEmailAndPassword,
-    loginWithGoogle,
+    checkboxState,
+    premiumRegister,
     logout
   };
 

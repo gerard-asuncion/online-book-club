@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { selectUserProfileUid } from '../features/userProfile/userProfileSelectors';
 import { clearCurrentBook, setCurrentBook } from "../features/currentBook/currentBookSlice";
 import useMainContentRouter from './useMainContentRouter';
-import type { UserProfile } from '../types/types';
+import type { UserProfileType } from '../types/types';
 import type { BookItem } from '../types/booksTypes';
 
 const USERS_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERS;
@@ -73,7 +73,7 @@ const useSettings = () => {
             const docSnap = await getDoc(userDocRef);
 
             if (docSnap.exists()) {
-                const profileData = docSnap.data() as UserProfile;
+                const profileData = docSnap.data() as UserProfileType;
                 profileData.userChatHistorial.forEach(id => historialBookIds.push(id));
             } else {
                 console.warn("Settings: No user profile document found.");

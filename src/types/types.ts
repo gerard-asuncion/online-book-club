@@ -1,13 +1,14 @@
 import type { Timestamp } from "firebase/firestore";
+import type { FieldValue } from "firebase/firestore/lite";
 
-export interface UserProfile {
-    uid: string,
+export interface UserProfileType {
+    uid: string | null,
     email: string,
     displayName: string,
     displayName_lowercase: string,
     storedBookIds: string[],
     userChatHistorial: string[],
-    createdAt: Timestamp;
+    createdAt: FieldValue | Timestamp;
 }
 
 export interface CookieOptions {

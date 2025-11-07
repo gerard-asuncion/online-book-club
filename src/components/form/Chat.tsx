@@ -3,6 +3,7 @@ import { useChat } from '../../hooks/useChat';
 import MainContentFrame from '../ui/MainContentFrame';
 import TextareaAutosize from 'react-textarea-autosize';
 import { displayDate } from '../../utils/dateUtils';
+import { detectDeletedUser } from '../../utils/utils';
 import { alineateMessages, displayUserName, styleMessages } from '../../utils/classNameUtils';
 import type { SentMessage } from "../../types/messageTypes";
 import { useAppSelector } from '../../app/hooks';
@@ -104,13 +105,12 @@ const Chat = () => {
               >
               <div className='flex justify-between'>
                 <div className={`
-                  ${displayUserName(currentUserUid, message.userId)}
-                  text-main-color            
+                  ${displayUserName(currentUserUid, message.userId, message.username)}           
                   font-bold 
                   sm:text-base 
                   text-sm
                 `}>
-                  {message.username}
+                  {detectDeletedUser(message.username)}
                 </div> 
                 <div className="text-xs sm:text-sm text-gray-400">{displayDate(message.createdAt, isMobile)}</div>
               </div>
