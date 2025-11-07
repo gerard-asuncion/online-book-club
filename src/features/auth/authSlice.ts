@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import Cookies from 'universal-cookie';
 import type { AuthSliceInitialState } from '../../types/redux';
 
-const cookies = new Cookies();
+const cookies: Cookies = new Cookies();
 
 const initialState: AuthSliceInitialState = {
   isAuth: !!cookies.get("auth-token"),

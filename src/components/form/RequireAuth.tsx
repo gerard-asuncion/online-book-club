@@ -4,7 +4,7 @@ import { selectIsAuthenticated } from "../../features/auth/authSelectors";
 
 const RequireAuth = () => {
 
-    const isAuth = useAppSelector(selectIsAuthenticated);
+    const isAuth: boolean = useAppSelector(selectIsAuthenticated);
 
     if (!isAuth) {
 		return <Navigate to="/login" replace />;

@@ -5,13 +5,14 @@ import {
     collection,
     onSnapshot,
     CollectionReference,
+    type DocumentData,
+    QueryDocumentSnapshot
 } from 'firebase/firestore';
 import { db } from '../firebase-config';
 import { useAppSelector } from '../app/hooks';
 import { selectUserProfileUid } from '../features/userProfile/userProfileSelectors';
-import type { DocumentData } from 'firebase/firestore';
 
-const MESSAGES_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION_MESSAGES;
+const MESSAGES_COLLECTION: string = import.meta.env.VITE_FIREBASE_DB_COLLECTION_MESSAGES;
 const messagesRef: CollectionReference<DocumentData> = collection(db, MESSAGES_COLLECTION);
 
 const useUnreadCounter = (displayedBookId: string | null) => {
@@ -34,7 +35,7 @@ const useUnreadCounter = (displayedBookId: string | null) => {
 
         const unsubscribe = onSnapshot(queryMessages, (snapshot) => {
             
-            const unreadMessages = snapshot.docs.filter(doc => {
+            const unreadMessages: QueryDocumentSnapshot<DocumentData, DocumentData>[] = snapshot.docs.filter(doc => {
                 const seenBy = doc.data().seenBy || [userProfileUid];
                 return !seenBy.includes(userProfileUid);
             });

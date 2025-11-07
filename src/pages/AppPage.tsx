@@ -14,9 +14,9 @@ function AppPage() {
   const { isOpenSidebar } = useSidebar();
   const { autoUpdateUserData } = useUserData();
 
-  const isLoadingUser = false;
-
   useResponsive();
+
+  const isLoadingUser: boolean = false; // Hardcoded
 
   useEffect(() => {
         autoUpdateUserData();

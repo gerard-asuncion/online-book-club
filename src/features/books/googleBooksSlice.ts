@@ -3,8 +3,9 @@ import axios from 'axios';
 import type { GoogleBooksSliceInitialState } from '../../types/redux';
 import type { BookItem } from '../../types/booksTypes';
 import type { RootState } from '../../app/store';
+import type { AxiosResponse } from 'axios';
 
-const BOOKS_API_URL = import.meta.env.VITE_GOOGLE_BOOKS_API_URL;
+const BOOKS_API_URL: string = import.meta.env.VITE_GOOGLE_BOOKS_API_URL;
 
 const initialState: GoogleBooksSliceInitialState = {
   volumes:[],
@@ -21,7 +22,7 @@ export const fetchGoogleBooks = createAsyncThunk<
   'books/fetchBooks',
   async (searchQuery: string, { rejectWithValue }) => {
     try {
-      const response = await axios.get(BOOKS_API_URL, {
+      const response: AxiosResponse = await axios.get(BOOKS_API_URL, {
         params: {
           q: searchQuery,
           maxResults: 40
@@ -32,7 +33,7 @@ export const fetchGoogleBooks = createAsyncThunk<
     } catch (error) {
 
       if (axios.isAxiosError(error)) {
-        const apiError = error.response?.data?.error?.message;
+        const apiError: string = error.response?.data?.error?.message;
         return rejectWithValue(apiError || 'Unable to contact API.');
       }
       return rejectWithValue('Unexpected error.');
@@ -54,7 +55,7 @@ export const fetchMoreGoogleBooks = createAsyncThunk<
     const startIndex = volumes.length;
 
     try {
-      const response = await axios.get(BOOKS_API_URL, {
+      const response: AxiosResponse = await axios.get(BOOKS_API_URL, {
         params: {
           q: currentQuery,
           startIndex: startIndex,

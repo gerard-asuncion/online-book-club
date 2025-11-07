@@ -30,7 +30,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['userProfile', 'mainContentRoute', 'currentBook', 'responsive', 'storedBooks'] 
+  whitelist: ['userProfile', 'mainContentRoute', 'currentBook', 'responsive'] 
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

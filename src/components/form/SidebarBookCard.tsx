@@ -9,7 +9,7 @@ import type { SidebarBookCardProps } from "../../types/props";
 
 const SidebarBookCard = ({ cardStoredBook, removeMode }: SidebarBookCardProps) => {
 
-  const currentBookId = useAppSelector(selectCurrentBookId);
+  const currentBookId: string | null = useAppSelector(selectCurrentBookId);
   const isPremiumUser: boolean = useAppSelector(selectUserProfilePremium);
 
   const cardStoredBookId: string = cardStoredBook.id;

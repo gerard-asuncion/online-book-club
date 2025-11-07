@@ -11,7 +11,8 @@ import {
   CollectionReference,
   doc,
   arrayUnion,
-  writeBatch
+  writeBatch,
+  type Query
 } from 'firebase/firestore';
 import { auth, db } from '../firebase-config';
 import { useAppSelector } from '../app/hooks';
@@ -22,14 +23,14 @@ import {
   selectCurrentBookTitle, 
   selectCurrentBookAuthors
 } from '../features/currentBook/currentBookSelectors';
-import { selectUserProfileStoredBooks, selectUserProfilePremium } from '../features/userProfile/userProfileSelectors';
+import { selectUserProfileStoredBooks } from '../features/userProfile/userProfileSelectors';
 import { ChatMessage } from '../classes/ChatMessage';
-import type { DocumentData } from 'firebase/firestore';
+import type { DocumentData, DocumentReference, QuerySnapshot, WriteBatch } from 'firebase/firestore';
 import type { SentMessage, MessageToFirestore, ChatMessageData } from '../types/messageTypes';
 import type { BookItem } from '../types/booksTypes';
 
-const MESSAGES_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION_MESSAGES;
-const USERS_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERS;
+const MESSAGES_COLLECTION: string = import.meta.env.VITE_FIREBASE_DB_COLLECTION_MESSAGES;
+const USERS_COLLECTION: string = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERS;
 const messagesRef: CollectionReference<DocumentData> = collection(db, MESSAGES_COLLECTION);
 
 export const useChat = () => {
@@ -42,7 +43,6 @@ export const useChat = () => {
   const currentUserUid: string | null = useAppSelector(selectUserProfileUid);
   const currentUsername: string | null = useAppSelector(selectUserProfileUsername);
   const userStoredBooks: BookItem[] = useAppSelector(selectUserProfileStoredBooks);
-  const isPremiumUser: boolean = useAppSelector(selectUserProfilePremium);
 
   const currentBookId: string | null = useAppSelector(selectCurrentBookId);
   const currentBookTitle: string | null = useAppSelector(selectCurrentBookTitle);
@@ -95,7 +95,7 @@ export const useChat = () => {
     }
   }
 
-  const handleSubmitMessage = async (e: React.FormEvent) => {
+  const handleSubmitMessage = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
     
     if(newMessage.trim() === '' || !auth.currentUser) return;
@@ -142,18 +142,19 @@ export const useChat = () => {
     }
   };
 
-  const markRoomMessagesAsSeen = async (currentBookId: string | null) => {
-    const currentUserUid = auth.currentUser?.uid;
+  const markRoomMessagesAsSeen = async (currentBookId: string | null): Promise<void> => {
+    const currentUserUid: string | undefined = auth.currentUser?.uid;
     if (!(currentUserUid && currentBookId)) return;
 
-    const queryRoom = query(messagesRef, where("room", "==", currentBookId));
-    const batch = writeBatch(db);
+    const queryRoom: Query<DocumentData, DocumentData> = query(messagesRef, where("room", "==", currentBookId));
+    const batch: WriteBatch = writeBatch(db);
 
     try {
-      const querySnapshot = await getDocs(queryRoom);
+      const querySnapshot: QuerySnapshot<DocumentData, DocumentData> = await getDocs(queryRoom);
 
       querySnapshot.forEach((document) => {
-        const messageDocRef = doc(db, MESSAGES_COLLECTION, document.id);
+        const messageDocRef: DocumentReference<DocumentData, DocumentData> = 
+          doc(db, MESSAGES_COLLECTION, document.id);
         batch.update(messageDocRef, {
           seenBy: arrayUnion(currentUserUid)
         });
@@ -164,9 +165,9 @@ export const useChat = () => {
     }
   };
 
-  const handleAddCurrentBook = async () => { 
+  const handleAddCurrentBook = async (): Promise<void> => { 
     if(!currentBookId) return;
-    addBookToProfile(currentBookId, isPremiumUser);
+    addBookToProfile(currentBookId);
   }
 
   return {

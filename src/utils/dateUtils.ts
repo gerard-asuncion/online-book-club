@@ -3,8 +3,8 @@ import { Timestamp } from "firebase/firestore";
 const formatTimestampHour = (timestamp: Timestamp | undefined): string => {
   if (!timestamp) return "---";
   const dateObject: Date = timestamp instanceof Timestamp ? timestamp.toDate() : timestamp;
-  const hours = String(dateObject.getHours()).padStart(2, '0');
-  const minutes = String(dateObject.getMinutes()).padStart(2, '0');
+  const hours: string = String(dateObject.getHours()).padStart(2, '0');
+  const minutes: string = String(dateObject.getMinutes()).padStart(2, '0');
 
   return `${hours}:${minutes}h`;
 }  
@@ -12,9 +12,9 @@ const formatTimestampHour = (timestamp: Timestamp | undefined): string => {
 const formatTimestampDate = (timestamp: Timestamp | undefined): string => {
   if (!timestamp) return "---";
   const dateObject: Date = timestamp instanceof Timestamp ? timestamp.toDate() : timestamp;
-  const day = String(dateObject.getDate()).padStart(2, '0');
-  const month = String(dateObject.getMonth() + 1).padStart(2, '0');
-  const year = String(dateObject.getFullYear());
+  const day: string = String(dateObject.getDate()).padStart(2, '0');
+  const month: string = String(dateObject.getMonth() + 1).padStart(2, '0');
+  const year: string = String(dateObject.getFullYear());
   
   return `${day}-${month}-${year}`;
     }   

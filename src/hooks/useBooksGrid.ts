@@ -26,7 +26,7 @@ const useBooksGrid = () => {
   const booksStatus: string = useAppSelector(selectGoogleBooksStatus);
   const booksError: string | null = useAppSelector(selectGoogleBooksError);
 
-  const handleBooksSearch = (e: React.FormEvent, query: string) => {
+  const handleBooksSearch = (e: React.FormEvent, query: string): void => {
     e.preventDefault();
     if (query.trim()) {
       dispatch(clearGoogleBooksSearch());
@@ -35,7 +35,7 @@ const useBooksGrid = () => {
     setDisplayBooks(true);
   };
 
-  const handleLoadMoreBooks = () => {
+  const handleLoadMoreBooks = (): void => {
     dispatch(fetchMoreGoogleBooks());
   };
 
@@ -43,7 +43,7 @@ const useBooksGrid = () => {
     setCheckboxState(checked);
   }
 
-  const handleVolumeSelection = async (volumeId: string, volumeTitle: string, volumeAuthors: string[]) => {
+  const handleVolumeSelection = async (volumeId: string, volumeTitle: string, volumeAuthors: string[]): Promise<void> => {
     dispatch(clearCurrentBook());
     dispatch(setCurrentBook({bookId: volumeId, bookTitle: volumeTitle, bookAuthors: volumeAuthors}));
     if(checkboxState){

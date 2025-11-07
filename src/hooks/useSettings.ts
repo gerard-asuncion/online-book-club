@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, DocumentReference, DocumentSnapshot, getDoc, type DocumentData } from 'firebase/firestore';
 import { db } from '../firebase-config';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import useUserData from './useUserData';
@@ -10,8 +10,8 @@ import useMainContentRouter from './useMainContentRouter';
 import type { UserProfileType } from '../types/types';
 import type { BookItem } from '../types/booksTypes';
 
-const USERS_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERS;
-const BOOKS_API_URL = import.meta.env.VITE_GOOGLE_BOOKS_API_URL;
+const USERS_COLLECTION: string = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERS;
+const BOOKS_API_URL: string = import.meta.env.VITE_GOOGLE_BOOKS_API_URL;
 
 const useSettings = () => {
 
@@ -19,7 +19,7 @@ const useSettings = () => {
     const [isLoadingHistorial, setIsLoadingHistorial] = useState<boolean>(false);
 
     const { isChat, switchContent } = useMainContentRouter();
-    const { activatePremiumMode, disablePremiumMode} = useUserData();
+    const { activatePremiumMode, disablePremiumMode } = useUserData();
 
     const dispatch = useAppDispatch();
 
@@ -49,7 +49,7 @@ const useSettings = () => {
                 axios.get(`${BOOKS_API_URL}/${bookId}`)
             );
             const responses = await Promise.all(fetchPromises);           
-            const historialBooksData = responses.map(response => response.data as BookItem);
+            const historialBooksData: BookItem[] = responses.map(response => response.data as BookItem);
 
             return historialBooksData;
 
@@ -69,11 +69,13 @@ const useSettings = () => {
         const historialBookIds: string[] = [];
 
         try {
-            const userDocRef = doc(db, USERS_COLLECTION, userProfileUid);
-            const docSnap = await getDoc(userDocRef);
+            const userDocRef: DocumentReference<DocumentData, DocumentData> = 
+                doc(db, USERS_COLLECTION, userProfileUid);
+            const docSnap: DocumentSnapshot<DocumentData, DocumentData> = 
+                await getDoc(userDocRef);
 
             if (docSnap.exists()) {
-                const profileData = docSnap.data() as UserProfileType;
+                const profileData: UserProfileType = docSnap.data() as UserProfileType;
                 profileData.userChatHistorial.forEach(id => historialBookIds.push(id));
             } else {
                 console.warn("Settings: No user profile document found.");
