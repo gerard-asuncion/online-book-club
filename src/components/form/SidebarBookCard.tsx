@@ -1,13 +1,16 @@
 import useSidebar from "../../hooks/useSidebar";
 import useUnreadCounter from "../../hooks/useUnreadCounter";
+import { bookCardTitle, bookCardAuthors } from "../../utils/utils";
 import { showHideAnything, highlightBookRoomCard } from "../../utils/classNameUtils";
 import { useAppSelector } from "../../app/hooks";
 import { selectCurrentBookId } from "../../features/currentBook/currentBookSelectors";
+import { selectUserProfilePremium } from "../../features/userProfile/userProfileSelectors";
 import type { SidebarBookCardProps } from "../../types/props";
 
 const SidebarBookCard = ({ cardStoredBook, removeMode }: SidebarBookCardProps) => {
 
   const currentBookId = useAppSelector(selectCurrentBookId);
+  const isPremiumUser: boolean = useAppSelector(selectUserProfilePremium);
 
   const cardStoredBookId: string = cardStoredBook.id;
   const cardStoredBookTitle: string = cardStoredBook.volumeInfo.title;
@@ -16,9 +19,12 @@ const SidebarBookCard = ({ cardStoredBook, removeMode }: SidebarBookCardProps) =
   const { handleBookCardClick } = useSidebar();
   const { unreadCount, setUnreadCount } = useUnreadCounter(currentBookId);
 
+  if(!isPremiumUser){
+    return null;
+  }
+
   return (
-    <li className="
-          min-h-[50px]">
+    <li className="min-h-[50px] mb-2">
         <button 
           onClick={() => {
             handleBookCardClick(cardStoredBookId, cardStoredBookTitle, cardStoredBookAuthors, removeMode);
@@ -37,10 +43,10 @@ const SidebarBookCard = ({ cardStoredBook, removeMode }: SidebarBookCardProps) =
           `}>
             <section className="flex flex-col items-start justify-center text-left">
               <div className="font-semibold">
-                {cardStoredBookTitle}
+                {bookCardTitle(cardStoredBookTitle)}
               </div>
               <div className="text-sm">
-                {cardStoredBookAuthors.join(", ")}
+                {bookCardAuthors(cardStoredBookAuthors)}
               </div>
             </section>
             <div className={`

@@ -1,9 +1,10 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase-config';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { selectUserProfileUid } from '../features/userProfile/userProfileSelectors';
+import useUserData from './useUserData';
+import { selectUserProfilePremium, selectUserProfileUid } from '../features/userProfile/userProfileSelectors';
 import { clearCurrentBook, setCurrentBook } from "../features/currentBook/currentBookSlice";
 import useMainContentRouter from './useMainContentRouter';
 import type { UserProfileType } from '../types/types';
@@ -14,17 +15,26 @@ const BOOKS_API_URL = import.meta.env.VITE_GOOGLE_BOOKS_API_URL;
 
 const useSettings = () => {
 
+    const [userHistorialBooks, setUserHistorialBooks] = useState<BookItem[]>([]);
+    const [isLoadingHistorial, setIsLoadingHistorial] = useState<boolean>(false);
+
     const { isChat, switchContent } = useMainContentRouter();
+    const { activatePremiumMode, disablePremiumMode} = useUserData();
 
     const dispatch = useAppDispatch();
 
     const userProfileUid: string | null = useAppSelector(selectUserProfileUid);
+    const isPremiumUser: boolean = useAppSelector(selectUserProfilePremium);
 
-    const [userHistorialBooks, setUserHistorialBooks] = useState<BookItem[]>([]);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
+    const changePremiumStatus = (): void => {
+        if(isPremiumUser){
+            disablePremiumMode();  
+        } else {
+            activatePremiumMode();
+        }
+    }
 
-    const handleBookClick = (id: string, title: string, authors: string[]) => {
+    const handleBookClick = (id: string, title: string, authors: string[]): void => {
 
         dispatch(clearCurrentBook());
         dispatch(setCurrentBook({ bookId: id, bookTitle: title, bookAuthors: authors }));
@@ -33,12 +43,7 @@ const useSettings = () => {
         };
     }
 
-    const fetchBooksByIds = async (historialBookIds: string[]): Promise<BookItem[] | undefined> => {
-
-        if (historialBookIds.length === 0) {
-            return;
-        }
-        setError(null);       
+    const fetchBooksByIds = async (historialBookIds: string[]): Promise<BookItem[]> => {
         try {
             const fetchPromises = historialBookIds.map(bookId =>
                 axios.get(`${BOOKS_API_URL}/${bookId}`)
@@ -50,24 +55,19 @@ const useSettings = () => {
 
         } catch (error) { 
             if (axios.isAxiosError(error)) {
-                setError('Failed to fetch one or more stored books.');
-                return;
+                console.error('Failed to fetch one or more stored books.');
+                return [];
             } else {
-                setError('An unexpected error occurred.');
-                return;
+                console.error('An unexpected error occurred:', error);
+                return [];
             }
         }
     };
 
-    const fetchUserChatHistorial = useCallback(async () => {  
+    const fetchHistorialBookIds = async (userProfileUid: string): Promise<string[]> => {  
 
-        const historialBookIds: string[] = [];  
+        const historialBookIds: string[] = [];
 
-        if (!userProfileUid) {
-            console.warn("Settings: No user is authenticated.");
-            return;
-        }
-        setIsLoading(true);
         try {
             const userDocRef = doc(db, USERS_COLLECTION, userProfileUid);
             const docSnap = await getDoc(userDocRef);
@@ -80,29 +80,24 @@ const useSettings = () => {
                 historialBookIds.length = 0;
             }
 
-            const historial = await fetchBooksByIds(historialBookIds);
-
-            if(historial === undefined){
-                throw new Error("Failed loading chat historial.")
-            }
-
-            setUserHistorialBooks(historial);
+            return historialBookIds;
 
         } catch (error) {
             console.error("Error fetching user chat historial:", error);
-        } finally {
-            setIsLoading(false);
-        }
-    }, [])
+            return [];
+        } 
+    }
 
-    useEffect(() => { 
+    const getHistorialBooks = async (): Promise<void> => {
+        if(!userProfileUid) return;
+        setIsLoadingHistorial(true);
+        const historialBookIds: string[] = await fetchHistorialBookIds(userProfileUid);
+        const historialBooks: BookItem[] = await fetchBooksByIds(historialBookIds);
+        setUserHistorialBooks(historialBooks);
+        setIsLoadingHistorial(false);
+    }
 
-        fetchUserChatHistorial();
-
-    }, [fetchUserChatHistorial]);
-
-
-    return { userHistorialBooks, isLoading, error, handleBookClick };
+    return { userHistorialBooks, isLoadingHistorial, handleBookClick, changePremiumStatus, getHistorialBooks };
 };
 
 export default useSettings;

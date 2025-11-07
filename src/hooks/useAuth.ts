@@ -5,7 +5,8 @@ import {
   signInWithEmailAndPassword,
   sendEmailVerification,
   updateProfile,
-  signOut
+  signOut,
+  type UserCredential
 } from 'firebase/auth';
 import { 
   doc,
@@ -43,7 +44,6 @@ const useAuth = () => {
   const [newPasswordConfirmation, setNewPasswordConfirmation] = useState<string>("");
 
   const [loginError, setLoginError] = useState<string | null>(null);
-
   const [loginEmail, setLoginEmail] = useState<string>("");
   const [loginPassword, setLoginPassword] = useState<string>("");
 
@@ -151,20 +151,18 @@ const useAuth = () => {
   const registerNewUser = async (newUser: RegisterUser): Promise<void> => {
 
     try {
-      // Pas 1: Auth (com abans)
       const result = await createUserWithEmailAndPassword(auth, newUser.userEmail, newUser.userPassword);
       await updateProfile(result.user, {
         displayName: newUser.userUsername
       });
 
-      // Pas 2: Firestore (amb un Lot d'Escriptura)
-      const batch = writeBatch(db); // Creem un lot
+      const batch = writeBatch(db);
 
       const userDocRef: DocumentReference = doc(db, USERS_COLLECTION, result.user.uid);
       const dataForFirestore: UserProfileType = newUser.toFirestoreObject();
       const resultUserUid: string = result.user.uid;
       dataForFirestore.uid = resultUserUid;
-      batch.set(userDocRef, dataForFirestore); // Afegim al lot
+      batch.set(userDocRef, dataForFirestore);
 
       const usernameDocRef: DocumentReference = doc(db, USERNAMES_COLLECTION, dataForFirestore.displayName_lowercase);
       batch.set(usernameDocRef, {});
@@ -189,7 +187,10 @@ const useAuth = () => {
     setLoginError(null); 
 
     try {
-      const result = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
+      const result: UserCredential = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
+
+      dispatch(clearCurrentBook());
+      dispatch(clearUserProfile());
 
       const cookieOptions: CookieOptions = {
         path: '/',
@@ -202,6 +203,9 @@ const useAuth = () => {
 
       dispatch(setUserProfileUid({ userProfileUid: result.user.uid }));
       dispatch(setUserProfileUsername({ userProfileUsername: result.user.displayName }));
+
+      dispatch(setIsSearch());
+      dispatch(setOpenSidebar());
 
       navigate("/", { replace: true });
 

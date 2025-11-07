@@ -1,24 +1,34 @@
 import MainContentFrame from "../ui/MainContentFrame";
 import useSettings from "../../hooks/useSettings";
 import useAuth from "../../hooks/useAuth";
-import useMainContentRouter from "../../hooks/useMainContentRouter";
 import { defaultButtonLayout } from "../../utils/classNameUtils";
 
 const Settings = () => {
 
-  const { userHistorialBooks, isLoading, error, handleBookClick } = useSettings();
+  const { userHistorialBooks, 
+          isLoadingHistorial, 
+          handleBookClick, 
+          changePremiumStatus, 
+          getHistorialBooks 
+        } = useSettings();
+
   const { logout } = useAuth();
-  const { switchContent } = useMainContentRouter();
 
   return (
     <MainContentFrame>
-      <div className="h-full w-full text-white font-bold text-lg flex flex-col justify-center items-center">
+      <div className="h-full w-full p-10 text-white">
+        <button
+          className={`${defaultButtonLayout()} max-w-50`}
+          onClick={getHistorialBooks}
+        >
+          Chat Historial
+        </button>
         <section>
-          <div>Chats:</div>
-          {!isLoading && error && <div>{error}</div>}
-          {isLoading && <div>Loading...</div>}
-          {!isLoading && userHistorialBooks.map(room =>
-            <div>
+          <article>
+            <div>Chats:</div>
+            {isLoadingHistorial && <div>Loading...</div>}
+            {userHistorialBooks.map(room =>
+            <div key={room.id}>
               <button onClick={() => {
                 handleBookClick(room.id, room.volumeInfo.title, room.volumeInfo.authors);
               }}>
@@ -26,15 +36,19 @@ const Settings = () => {
               </button>
             </div>
            )}
+          </article>
         </section>
+        <button
+          className={`${defaultButtonLayout()} max-w-50`}
+          onClick={changePremiumStatus}
+        >
+          Change plan
+        </button>
         <button 
           className={`${defaultButtonLayout()} max-w-50`}
-          onClick={() => {
-              switchContent("");
-              logout();
-          }}>
+          onClick={logout}>
           Log Out
-      </button> 
+        </button> 
       </div>
     </MainContentFrame>
   )

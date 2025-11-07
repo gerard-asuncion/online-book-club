@@ -22,7 +22,7 @@ import {
   selectCurrentBookTitle, 
   selectCurrentBookAuthors
 } from '../features/currentBook/currentBookSelectors';
-import { selectUserProfileStoredBooks } from '../features/userProfile/userProfileSelectors';
+import { selectUserProfileStoredBooks, selectUserProfilePremium } from '../features/userProfile/userProfileSelectors';
 import { ChatMessage } from '../classes/ChatMessage';
 import type { DocumentData } from 'firebase/firestore';
 import type { SentMessage, MessageToFirestore, ChatMessageData } from '../types/messageTypes';
@@ -42,12 +42,13 @@ export const useChat = () => {
   const currentUserUid: string | null = useAppSelector(selectUserProfileUid);
   const currentUsername: string | null = useAppSelector(selectUserProfileUsername);
   const userStoredBooks: BookItem[] = useAppSelector(selectUserProfileStoredBooks);
+  const isPremiumUser: boolean = useAppSelector(selectUserProfilePremium);
 
   const currentBookId: string | null = useAppSelector(selectCurrentBookId);
   const currentBookTitle: string | null = useAppSelector(selectCurrentBookTitle);
   const currentBookAuthors: string[] = useAppSelector(selectCurrentBookAuthors);
 
-  const isStored = userStoredBooks.some(book => book.id === currentBookId);
+  const isStored: boolean = userStoredBooks.some(book => book.id === currentBookId);
 
   useEffect(() => {
 
@@ -165,7 +166,7 @@ export const useChat = () => {
 
   const handleAddCurrentBook = async () => { 
     if(!currentBookId) return;
-    addBookToProfile(currentBookId);
+    addBookToProfile(currentBookId, isPremiumUser);
   }
 
   return {

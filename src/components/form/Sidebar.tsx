@@ -4,15 +4,16 @@ import SidebarBookCard from "./SidebarBookCard";
 import { defaultButtonLayout, setCursorPointer } from "../../utils/classNameUtils";
 import { useAppSelector } from "../../app/hooks";
 import { selectCurrentBookTitle } from "../../features/currentBook/currentBookSelectors";
-import { selectUserProfileStoredBooks } from "../../features/userProfile/userProfileSelectors";
+import { selectUserProfileStoredBooks, selectUserProfilePremium } from "../../features/userProfile/userProfileSelectors";
 import { auth } from "../../firebase-config";
 import type { LoadingUserProps } from "../../types/props";
 import type { BookItem } from "../../types/booksTypes";
 
 const Sidebar = ({ isLoadingUser }: LoadingUserProps) => {
 
-    const currentBookTitle = useAppSelector(selectCurrentBookTitle);
-    const storedBooks = useAppSelector(selectUserProfileStoredBooks);
+    const currentBookTitle: string | null = useAppSelector(selectCurrentBookTitle);
+    const storedBooks: BookItem[] = useAppSelector(selectUserProfileStoredBooks);
+    const isPremiumUser: boolean = useAppSelector(selectUserProfilePremium);
 
     const { openChat, hideSidebarInMobile, removeMode, setRemoveMode } = useSidebar();
     const { switchContent } = useMainContentRouter();
@@ -50,15 +51,30 @@ const Sidebar = ({ isLoadingUser }: LoadingUserProps) => {
                     Search books
                 </button>
             </article>
-            <ul className="flex
-                    flex-col
-                    justify-start
-                    gap-2
-                    overflow-y-auto 
-                    scrollbar"
-                >
 
-                {storedBooks.map((storedBook: BookItem, index: number) =>
+            <ul className="overflow-y-auto scrollbar">
+
+                {!isPremiumUser && 
+                    <li className="
+                        min-h-[50px]
+                        bg-default-bg border-2
+                        border-main-color
+                        text-main-color 
+                        h-full
+                        w-full
+                        flex 
+                        justify-between
+                        items-center
+                        px-4
+                        py-2
+                        rounded-2xl
+                        italic
+                    ">
+                        Open settings, update to premium account and start storing books in this sidebar...
+                    </li>
+                }
+
+                {isPremiumUser && storedBooks.map((storedBook: BookItem, index: number) =>
                     <SidebarBookCard 
                         key={index}
                         cardStoredBook={storedBook}
@@ -66,7 +82,7 @@ const Sidebar = ({ isLoadingUser }: LoadingUserProps) => {
                     /> 
                 )}
 
-                <li className="text-main-color text-xs text-center row-span-1 px-4 py-1 h-6">
+                {isPremiumUser && <li className="text-main-color text-xs text-center row-span-1 px-4 py-1 h-6">
                     {!storedBooks.length && 
                         <div>No books stored.</div>
                     }
@@ -87,10 +103,9 @@ const Sidebar = ({ isLoadingUser }: LoadingUserProps) => {
                             >
                                 {removeMode ? "Cancel" : "Remove from sidebar"}
                             </button>
-
                         </section>
                     }
-                </li>
+                </li>}
             </ul>
 
             <article className="grid grid-cols-1 gap-2">

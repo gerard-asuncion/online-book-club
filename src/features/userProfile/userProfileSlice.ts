@@ -9,6 +9,7 @@ const BOOKS_API_URL = import.meta.env.VITE_GOOGLE_BOOKS_API_URL;
 const initialState: UserProfileInitialState = {
   userProfileUid: null,
   userProfileUsername: null,
+  userProfilePremium: false,
   storedBooks: [],
   fetchStoredBooksStatus: 'idle',
   fetchStoredBooksError: null,
@@ -56,9 +57,13 @@ const userProfileSlice = createSlice({
     setUserProfileUsername: (state, action: PayloadAction<{ userProfileUsername: string | null }>) => {
       state.userProfileUsername = action.payload.userProfileUsername;
     },
+    setUserProfilePremium: (state, action: PayloadAction<{ userProfilePremium: boolean }>) => {
+      state.userProfilePremium = action.payload.userProfilePremium;
+    },
     clearUserProfile: (state) => {
       state.userProfileUid = null;
       state.userProfileUsername = null;
+      state.userProfilePremium = false;
       state.storedBooks = [];
       state.fetchStoredBooksStatus = 'idle';
       state.fetchStoredBooksError = null;
@@ -88,6 +93,7 @@ const userProfileSlice = createSlice({
 export const { 
   setUserProfileUid,
   setUserProfileUsername,
+  setUserProfilePremium,
   clearUserProfile,
   clearAllStoredBooks
 } = userProfileSlice.actions;

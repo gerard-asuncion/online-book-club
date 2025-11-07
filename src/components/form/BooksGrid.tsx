@@ -2,12 +2,12 @@ import MainContentFrame from "../ui/MainContentFrame";
 import { 
   defaultButtonLayout, 
   justifyBooksGrid, 
-  showHideAnything,
-  setBooksGridFormLayout 
+  showHideAnything
 } from "../../utils/classNameUtils";
 import useBooksGrid from "../../hooks/useBooksGrid";
+import { useAppSelector } from "../../app/hooks";
+import { selectUserProfilePremium } from '../../features/userProfile/userProfileSelectors';
 import type { BookItem } from "../../types/booksTypes";
-
 
 const BooksGrid = () => {
 
@@ -25,6 +25,8 @@ const BooksGrid = () => {
     handleVolumeSelection,
   } = useBooksGrid();
 
+  const isPremiumUser: boolean = useAppSelector(selectUserProfilePremium);
+
   return (
     <MainContentFrame>
       <section className={`${justifyBooksGrid(!displayBooks)} flex flex-col items-center h-full w-full`}>
@@ -32,14 +34,15 @@ const BooksGrid = () => {
           <form 
             onSubmit={(e) => {handleBooksSearch(e, query);}}
             className={`
-              ${setBooksGridFormLayout(displayBooks)} 
               grid
               gap-6
               max-w-xs
-              md:max-w-xl  
+              md:max-w-xl
               shrink-0
               w-full
               place-items-center
+              grid-cols-1
+              ${isPremiumUser ? 'md:grid-cols-4' : 'md:grid-cols-3'}
             `}
           >
             <input 
@@ -48,42 +51,44 @@ const BooksGrid = () => {
               id="searchInput"
               onChange={(e) => setQuery(e.target.value)}
               placeholder="search a book..."
-              className="
+              className={`
+                w-full
+                ${isPremiumUser ? 'md:col-span-3 md:row-span-1' : 'md:col-span-2 md:row-span-1'}
                 max-h-10
-                md:w-100
-                col-span-3
-                row-span-1
                 p-4
                 rounded-full 
                 text-center
                 text-sm
                 text-black
                 bg-white
-                focus:outline-none"             
+                focus:outline-none
+              `}            
             />
             <button 
                 type="submit"
-                className={`${defaultButtonLayout()} max-h-10 text-sm col-span-1 row-span-1`}>
+                className={`${defaultButtonLayout()} w-full md:w-auto max-h-10 text-sm md:col-span-1 md:row-span-1`}>
               Search
             </button>
-            <div className="flex justify-center items-center gap-2 col-span-4 row-span-1">
-              <input 
-                type="checkbox"
-                className="accent-main-color"
-                id="activeRoomsCheckbox"
-                name="activeRoomsCheckbox"
-                checked={checkboxState} 
-                onChange={(e) => {
-                  autoSaveBook(e.target.checked);
-                }}
-              />
-              <label 
-                htmlFor="activeRoomsCheckbox"
-                className="text-white text-sm"
-              >
-                Automatically store in sidebar
-              </label>
-            </div>
+            {isPremiumUser && 
+              <div className="flex justify-center items-center gap-2 md:col-span-4 md:row-span-1">
+                <input 
+                  type="checkbox"
+                  className="accent-main-color"
+                  id="activeRoomsCheckbox"
+                  name="activeRoomsCheckbox"
+                  checked={checkboxState} 
+                  onChange={(e) => {
+                    autoSaveBook(e.target.checked);
+                  }}
+                />
+                <label 
+                  htmlFor="activeRoomsCheckbox"
+                  className="text-white text-sm"
+                >
+                  Automatically store in sidebar
+                </label>
+              </div>
+            }
           </form>
         </article>
         

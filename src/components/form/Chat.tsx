@@ -10,11 +10,13 @@ import { useAppSelector } from '../../app/hooks';
 import { selectCurrentBookTitle } from '../../features/currentBook/currentBookSelectors';
 import { selectIsMobile } from '../../features/responsive/responsiveSelectors';
 import { selectUserProfileUid } from '../../features/userProfile/userProfileSelectors';
+import { selectUserProfilePremium } from '../../features/userProfile/userProfileSelectors';
 
 const Chat = () => {
 
   const currentUserUid: string | null = useAppSelector(selectUserProfileUid);
   const currentBookTitle: string | null = useAppSelector(selectCurrentBookTitle);
+  const isPremiumUser: boolean = useAppSelector(selectUserProfilePremium);
   const isMobile: boolean = useAppSelector(selectIsMobile);
  
   const { 
@@ -42,21 +44,16 @@ const Chat = () => {
         <div className='flex justify-between items-center w-full px-4 sm:px-12 py-1 lg:py-5'>
           <h1 className='
             text-white
-            text-sm
-            md:text-base'>Room: {currentBookTitle}</h1>
-          {!isStored && 
+            text-xs
+            md:text-sm'>Book: {currentBookTitle}</h1>
+          {isPremiumUser && !isStored && 
             <button
               className={`
                 text-main-color 
-                border-default-bg
                 hover:text-white 
-                hover:border-main-color
                 cursor-pointer
                 text-xs 
-                md:text-sm
                 p-2
-                border
-                rounded-md
                 transition-color
                 ease-in
                 active:text-white
