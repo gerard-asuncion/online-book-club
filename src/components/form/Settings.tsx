@@ -12,12 +12,13 @@ const Settings = () => {
 
   return (
     <MainContentFrame>
-      <div className="h-full w-full text-white font-bold text-lg flex flex-col justify-center items-center">
+      <div className="h-full w-full p-10 text-white">
         <section>
           <div>Chats:</div>
-          {!isLoading && error && <div>{error}</div>}
-          {isLoading && <div>Loading...</div>}
-          {!isLoading && userHistorialBooks.map(room =>
+          <article>
+            {!isLoading && error && <div>{error}</div>}
+            {isLoading && <div>Loading...</div>}
+            {!isLoading && userHistorialBooks.map(room =>
             <div>
               <button onClick={() => {
                 handleBookClick(room.id, room.volumeInfo.title, room.volumeInfo.authors);
@@ -26,7 +27,13 @@ const Settings = () => {
               </button>
             </div>
            )}
+          </article>
         </section>
+        <button
+          className={`${defaultButtonLayout()} max-w-50`}
+        >
+          Change plan
+        </button>
         <button 
           className={`${defaultButtonLayout()} max-w-50`}
           onClick={() => {
@@ -34,7 +41,12 @@ const Settings = () => {
               logout();
           }}>
           Log Out
-      </button> 
+        </button> 
+        <button
+          className={`${defaultButtonLayout()} max-w-50`}
+        >
+          Delete account
+        </button>
       </div>
     </MainContentFrame>
   )

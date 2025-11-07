@@ -1,20 +1,21 @@
 import useSidebar from "../../hooks/useSidebar";
 import useMainContentRouter from "../../hooks/useMainContentRouter";
 import SidebarBookCard from "./SidebarBookCard";
-import { defaultButtonLayout, setCursorPointer } from "../../utils/classNameUtils";
+import { defaultButtonLayout, highlightBookRoomCard, setCursorPointer } from "../../utils/classNameUtils";
 import { useAppSelector } from "../../app/hooks";
 import { selectCurrentBookTitle } from "../../features/currentBook/currentBookSelectors";
-import { selectUserProfileStoredBooks } from "../../features/userProfile/userProfileSelectors";
+import { selectUserProfileStoredBooks, selectUserProfilePremium } from "../../features/userProfile/userProfileSelectors";
 import { auth } from "../../firebase-config";
 import type { LoadingUserProps } from "../../types/props";
 import type { BookItem } from "../../types/booksTypes";
 
 const Sidebar = ({ isLoadingUser }: LoadingUserProps) => {
 
-    const currentBookTitle = useAppSelector(selectCurrentBookTitle);
-    const storedBooks = useAppSelector(selectUserProfileStoredBooks);
+    const currentBookTitle: string | null = useAppSelector(selectCurrentBookTitle);
+    const storedBooks: BookItem[] = useAppSelector(selectUserProfileStoredBooks);
+    const isPremiumUser: boolean = useAppSelector(selectUserProfilePremium);
 
-    const { openChat, hideSidebarInMobile, removeMode, setRemoveMode } = useSidebar();
+    const { openChat, hideSidebarInMobile, removeMode, setRemoveMode, activatePremiumMode } = useSidebar();
     const { switchContent } = useMainContentRouter();
 
     return(
@@ -50,6 +51,7 @@ const Sidebar = ({ isLoadingUser }: LoadingUserProps) => {
                     Search books
                 </button>
             </article>
+
             <ul className="flex
                     flex-col
                     justify-start
@@ -58,7 +60,28 @@ const Sidebar = ({ isLoadingUser }: LoadingUserProps) => {
                     scrollbar"
                 >
 
-                {storedBooks.map((storedBook: BookItem, index: number) =>
+                {!isPremiumUser && 
+                    <li className="min-h-[50px]">
+                        <button 
+                            className={`
+                                ${highlightBookRoomCard(null, "string", false)}
+                                h-full
+                                w-full
+                                flex 
+                                justify-between
+                                items-center
+                                px-4
+                                py-2
+                                rounded-lg
+                            `}
+                            onClick={activatePremiumMode}
+                        >
+                            Update to premium account and start storing books in this sidebar...
+                        </button>
+                    </li>
+                }
+
+                {isPremiumUser && storedBooks.map((storedBook: BookItem, index: number) =>
                     <SidebarBookCard 
                         key={index}
                         cardStoredBook={storedBook}
@@ -66,7 +89,7 @@ const Sidebar = ({ isLoadingUser }: LoadingUserProps) => {
                     /> 
                 )}
 
-                <li className="text-main-color text-xs text-center row-span-1 px-4 py-1 h-6">
+                {isPremiumUser && <li className="text-main-color text-xs text-center row-span-1 px-4 py-1 h-6">
                     {!storedBooks.length && 
                         <div>No books stored.</div>
                     }
@@ -87,10 +110,9 @@ const Sidebar = ({ isLoadingUser }: LoadingUserProps) => {
                             >
                                 {removeMode ? "Cancel" : "Remove from sidebar"}
                             </button>
-
                         </section>
                     }
-                </li>
+                </li>}
             </ul>
 
             <article className="grid grid-cols-1 gap-2">

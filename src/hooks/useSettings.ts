@@ -3,7 +3,8 @@ import axios from 'axios';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase-config';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { selectUserProfileUid } from '../features/userProfile/userProfileSelectors';
+import useUserData from './useUserData';
+import { selectUserProfilePremium, selectUserProfileUid } from '../features/userProfile/userProfileSelectors';
 import { clearCurrentBook, setCurrentBook } from "../features/currentBook/currentBookSlice";
 import useMainContentRouter from './useMainContentRouter';
 import type { UserProfileType } from '../types/types';
@@ -19,12 +20,13 @@ const useSettings = () => {
     const dispatch = useAppDispatch();
 
     const userProfileUid: string | null = useAppSelector(selectUserProfileUid);
+    const isPremiumUser: boolean = useAppSelector(selectUserProfilePremium);
 
     const [userHistorialBooks, setUserHistorialBooks] = useState<BookItem[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
-    const handleBookClick = (id: string, title: string, authors: string[]) => {
+    const handleBookClick = (id: string, title: string, authors: string[]): void => {
 
         dispatch(clearCurrentBook());
         dispatch(setCurrentBook({ bookId: id, bookTitle: title, bookAuthors: authors }));

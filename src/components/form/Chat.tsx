@@ -10,11 +10,13 @@ import { useAppSelector } from '../../app/hooks';
 import { selectCurrentBookTitle } from '../../features/currentBook/currentBookSelectors';
 import { selectIsMobile } from '../../features/responsive/responsiveSelectors';
 import { selectUserProfileUid } from '../../features/userProfile/userProfileSelectors';
+import { selectUserProfilePremium } from '../../features/userProfile/userProfileSelectors';
 
 const Chat = () => {
 
   const currentUserUid: string | null = useAppSelector(selectUserProfileUid);
   const currentBookTitle: string | null = useAppSelector(selectCurrentBookTitle);
+  const isPremiumUser: boolean = useAppSelector(selectUserProfilePremium);
   const isMobile: boolean = useAppSelector(selectIsMobile);
  
   const { 
@@ -44,7 +46,7 @@ const Chat = () => {
             text-white
             text-sm
             md:text-base'>Room: {currentBookTitle}</h1>
-          {!isStored && 
+          {isPremiumUser && !isStored && 
             <button
               className={`
                 text-main-color 

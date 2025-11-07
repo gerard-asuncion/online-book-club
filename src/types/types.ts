@@ -8,7 +8,8 @@ export interface UserProfileType {
     displayName_lowercase: string,
     storedBookIds: string[],
     userChatHistorial: string[],
-    createdAt: FieldValue | Timestamp;
+    createdAt: FieldValue | Timestamp,
+    isPremiumUser: boolean;
 }
 
 export interface CookieOptions {

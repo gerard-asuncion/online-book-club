@@ -7,6 +7,9 @@ export const selectUserProfileUid = (state: RootState): string | null =>
 export const selectUserProfileUsername = (state: RootState): string | null => 
     state.userProfile.userProfileUsername;
 
+export const selectUserProfilePremium = (state: RootState): boolean => 
+    state.userProfile.userProfilePremium;
+
 export const selectUserProfileStoredBooks = (state: RootState): BookItem[]  => 
     state.userProfile.storedBooks;
 

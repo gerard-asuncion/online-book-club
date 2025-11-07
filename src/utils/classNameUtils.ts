@@ -54,9 +54,6 @@ export const highlightBookRoomCard = (openBookRoom: string | null, bookRoomName:
         : "bg-default-bg border-2 border-white text-white"
     }
 }
-    
-export const setBooksGridFormLayout = (isOpenGrid: boolean) : string =>
-    isOpenGrid ? "grid-cols-4 grid-rows-1" : "grid-cols-1 grid-rows-3"
 
 export const setCursorPointer = (active: string | null): string =>
     active ? "cursor-pointer" : ""

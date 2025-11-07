@@ -5,7 +5,7 @@ export class RegisterUser {
 	#userUsername: string;
     #userEmail: string;
     #userPassword: string;
-	#userPremium: boolean;
+	#isPremiumUser: boolean;
 	#createdAt: FieldValue;
 	#uid: string | null;
 
@@ -15,12 +15,12 @@ export class RegisterUser {
 		userUsername: string,
 		userEmail: string,
 		userPassword: string,
-		userPremium: boolean = false
+		isPremiumUser: boolean = false
 	) {
 		this.#userUsername = userUsername;
         this.#userEmail = userEmail;
         this.#userPassword = userPassword;
-		this.#userPremium = userPremium;
+		this.#isPremiumUser = isPremiumUser;
 		this.#createdAt = serverTimestamp();
 		this.#uid = null;
     }
@@ -38,7 +38,7 @@ export class RegisterUser {
             storedBookIds: RegisterUser.defaultBooks,
 			userChatHistorial: [],
             createdAt: this.#createdAt,
-			isPremium: this.#userPremium
+			isPremiumUser: this.#isPremiumUser
         };
 	}
 }
