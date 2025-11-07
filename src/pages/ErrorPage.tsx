@@ -7,7 +7,7 @@ const ErrorPage = () => {
   
   const navigate = useNavigate(); 
 
-  const handleReturn = () => {
+  const handleReturn = (): void => {
     navigate('/', { replace: true }); 
   };
 

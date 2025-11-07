@@ -4,7 +4,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import type { UserProfileInitialState } from '../../types/redux';
 import type { BookItem } from '../../types/booksTypes';
 
-const BOOKS_API_URL = import.meta.env.VITE_GOOGLE_BOOKS_API_URL;
+const BOOKS_API_URL: string = import.meta.env.VITE_GOOGLE_BOOKS_API_URL;
 
 const initialState: UserProfileInitialState = {
   userProfileUid: null,

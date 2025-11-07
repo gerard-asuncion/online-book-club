@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, type NavigateFunction } from 'react-router-dom';
 import { 
   createUserWithEmailAndPassword, 
   signInWithEmailAndPassword,
@@ -11,8 +11,11 @@ import {
 import { 
   doc,
   DocumentReference,
+  DocumentSnapshot,
   getDoc,
-  writeBatch
+  writeBatch,
+  type DocumentData,
+  type WriteBatch
 } from 'firebase/firestore';
 import { auth, db } from '../firebase-config';
 import Cookies from 'universal-cookie';
@@ -26,14 +29,14 @@ import { ValidationError } from "../classes/ValidationError"
 import { RegisterUser } from '../classes/RegisterUser';
 import type { CookieOptions, ErrorType, UserProfileType } from '../types/types';
 
-const USERS_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERS;
-const USERNAMES_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERNAMES;
+const USERS_COLLECTION: string = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERS;
+const USERNAMES_COLLECTION: string = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERNAMES;
 
 const cookies: Cookies = new Cookies();
 
 const useAuth = () => {
 
-  const navigate = useNavigate();
+  const navigate: NavigateFunction = useNavigate();
   const dispatch = useAppDispatch();
 
   const [registrationErrors, setRegistrationErrors] = useState<ErrorType[]>([]);
@@ -58,22 +61,23 @@ const useAuth = () => {
   }
 
   const isUsernameFormatValid = (username: string): boolean => {
-    const regex = /^[a-zA-Z0-9]+$/;
+    const regex: RegExp = /^[a-zA-Z0-9]+$/;
     return regex.test(username);
   };
 
   const isEmailFormatValid = (email: string): boolean => {
-    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const regex: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return regex.test(email);
   };
 
   const checkAvailableUsername = async (newUsername: string): Promise<boolean> => {
 
-    const newUsernameLowerCase = newUsername.toLowerCase();    
-    const usernameDocRef = doc(db, USERNAMES_COLLECTION, newUsernameLowerCase);
+    const newUsernameLowerCase: string = newUsername.toLowerCase();    
+    const usernameDocRef: DocumentReference<DocumentData, DocumentData> = 
+      doc(db, USERNAMES_COLLECTION, newUsernameLowerCase);
 
     try {
-      const docSnap = await getDoc(usernameDocRef);
+      const docSnap: DocumentSnapshot<DocumentData, DocumentData> = await getDoc(usernameDocRef);
       return !docSnap.exists();
 
     } catch (error) {
@@ -111,7 +115,7 @@ const useAuth = () => {
         message: "Confirmation password doesn't match."
       });
 
-      const isAvailable = await checkAvailableUsername(newUsername);
+      const isAvailable: boolean = await checkAvailableUsername(newUsername);
 
       if(!isAvailable) validationErrors.push({
         input: "Username",
@@ -151,12 +155,12 @@ const useAuth = () => {
   const registerNewUser = async (newUser: RegisterUser): Promise<void> => {
 
     try {
-      const result = await createUserWithEmailAndPassword(auth, newUser.userEmail, newUser.userPassword);
+      const result: UserCredential = await createUserWithEmailAndPassword(auth, newUser.userEmail, newUser.userPassword);
       await updateProfile(result.user, {
         displayName: newUser.userUsername
       });
 
-      const batch = writeBatch(db);
+      const batch: WriteBatch = writeBatch(db);
 
       const userDocRef: DocumentReference = doc(db, USERS_COLLECTION, result.user.uid);
       const dataForFirestore: UserProfileType = newUser.toFirestoreObject();
@@ -164,8 +168,10 @@ const useAuth = () => {
       dataForFirestore.uid = resultUserUid;
       batch.set(userDocRef, dataForFirestore);
 
-      const usernameDocRef: DocumentReference = doc(db, USERNAMES_COLLECTION, dataForFirestore.displayName_lowercase);
-      batch.set(usernameDocRef, {});
+      const usernameDocRef: DocumentReference<DocumentData, DocumentData> = 
+        doc(db, USERNAMES_COLLECTION, dataForFirestore.displayName_lowercase);
+      
+        batch.set(usernameDocRef, {});
 
       await batch.commit();
 

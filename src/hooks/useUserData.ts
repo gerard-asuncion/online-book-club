@@ -1,4 +1,4 @@
-import { doc, getDoc, updateDoc, arrayRemove, arrayUnion } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, arrayRemove, arrayUnion, DocumentReference, type DocumentData, DocumentSnapshot } from 'firebase/firestore';
 import { auth, db } from '../firebase-config';
 import type { UserProfileType } from '../types/types';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
@@ -24,8 +24,8 @@ const useUserData = () => {
         try {
             if(!userUid) throw new Error("User ID not found.");
 
-            const userDocRef = doc(db, USERS_COLLECTION, userUid);
-            const docSnap = await getDoc(userDocRef);
+            const userDocRef: DocumentReference<DocumentData, DocumentData> = doc(db, USERS_COLLECTION, userUid);
+            const docSnap: DocumentSnapshot<DocumentData, DocumentData> = await getDoc(userDocRef);
 
             if(!docSnap.exists()) throw new Error("Unable to find user in database.");
 
@@ -39,7 +39,7 @@ const useUserData = () => {
         }
     }
 
-    const storeBooksById = async (profileData: UserProfileType | null) => {    
+    const storeBooksById = async (profileData: UserProfileType | null): Promise<void> => {    
         try {
             if(!profileData) throw new Error("Profile data could not be retrieved.");
 
@@ -71,7 +71,7 @@ const useUserData = () => {
         if(userStoredBooks.length >= 3) return alert("You can't store more than 3 books. Please, remove some. In 'settings' you can recover any chat where you have written.");
         if(!isPremiumUser) return alert("Only premium users can store books. Please, upgrade your account.");
         try {
-            const userDocRef = doc(db, USERS_COLLECTION, userUid);
+            const userDocRef: DocumentReference<DocumentData, DocumentData> = doc(db, USERS_COLLECTION, userUid);
             await updateDoc(userDocRef, {
                 storedBookIds: arrayUnion(bookIdToAdd)
             });
@@ -93,7 +93,7 @@ const useUserData = () => {
         if(!isPremiumUser) return;
 
         try {
-            const userDocRef = doc(db, USERS_COLLECTION, userUid);
+            const userDocRef: DocumentReference<DocumentData, DocumentData> = doc(db, USERS_COLLECTION, userUid);
             await updateDoc(userDocRef, {
                 storedBookIds: arrayRemove(bookIdToRemove) //
             });
@@ -108,7 +108,7 @@ const useUserData = () => {
     const activatePremiumMode = async (): Promise<void> => {
         if(isPremiumUser) return;
         if(userUid){
-            const userDocRef = doc(db, USERS_COLLECTION, userUid);
+            const userDocRef: DocumentReference<DocumentData, DocumentData> = doc(db, USERS_COLLECTION, userUid);
             await updateDoc(userDocRef, {
                 isPremiumUser: true
             });
@@ -120,7 +120,7 @@ const useUserData = () => {
     const disablePremiumMode = async (): Promise<void> => {
         if(!isPremiumUser) return;
         if(userUid){
-            const userDocRef = doc(db, USERS_COLLECTION, userUid);
+            const userDocRef: DocumentReference<DocumentData, DocumentData> = doc(db, USERS_COLLECTION, userUid);
             await updateDoc(userDocRef, {
                 isPremiumUser: false
             });
@@ -131,7 +131,6 @@ const useUserData = () => {
 
     const autoUpdateUserData = async (): Promise<void> => {
         const profileData: UserProfileType | null = await getProfileData();
-        console.log("Auto-updating user data:", profileData);
         storeIsPremiumUser(profileData);
         storeBooksById(profileData);
     }

@@ -9,9 +9,9 @@ const useResponsive = () => {
     const dispatch = useAppDispatch();
     const isMobile: boolean = useAppSelector(selectIsMobile);
 
-    const handleResize = useCallback(() => {
+    const handleResize = useCallback((): void => {
 
-        const currentIsMobile = window.innerWidth < mdBreakpoint;
+        const currentIsMobile: boolean = window.innerWidth < mdBreakpoint;
 
             if (currentIsMobile) {
                 dispatch(setIsMobile());

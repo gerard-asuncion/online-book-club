@@ -11,13 +11,13 @@ import { selectUserProfilePremium } from "../features/userProfile/userProfileSel
 const useSidebar = () => {
 
     const { isChat, switchContent } = useMainContentRouter();
-    const { removeBookFromProfile, activatePremiumModeAndLogout } = useUserData();
+    const { removeBookFromProfile } = useUserData();
 
     const dispatch = useAppDispatch();
 
     const isPremiumUser: boolean = useAppSelector(selectUserProfilePremium);
-    const isOpenSidebar = useAppSelector(selectOpenSidebar);
-    const isMobile = useAppSelector(selectIsMobile);
+    const isOpenSidebar: boolean = useAppSelector(selectOpenSidebar);
+    const isMobile: boolean = useAppSelector(selectIsMobile);
 
     const [removeMode, setRemoveMode] = useState<boolean>(false);
 
@@ -36,13 +36,13 @@ const useSidebar = () => {
         }
     }
 
-    const openChat = (currentBookTitle: string | null) => {
+    const openChat = (currentBookTitle: string | null): void => {
         if(!isChat && currentBookTitle){
             switchContent("chatRoom");
         };
     }
 
-    const handleBookCardClick = (id: string, title: string, authors: string[], removeMode: boolean) => {
+    const handleBookCardClick = (id: string, title: string, authors: string[], removeMode: boolean) : void => {
 
         if(removeMode){      
             removeBookFromProfile(id, isPremiumUser);
@@ -64,8 +64,7 @@ const useSidebar = () => {
         isOpenSidebar,
         showSidebar,
         hideSidebarInMobile,
-        handleBookCardClick,
-        activatePremiumModeAndLogout
+        handleBookCardClick
     }
 }
 
