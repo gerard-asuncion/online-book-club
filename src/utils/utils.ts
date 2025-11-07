@@ -9,3 +9,13 @@ export const detectDeletedUser = (username: string | null): string => {
         return username;
     }
 }
+
+export const bookCardTitle = (title : string | undefined): string => {
+    if(!title) return "Unknown Title";
+    return title;
+}
+
+export const bookCardAuthors = (authorsArr : string[] | undefined): string => {
+    if(!authorsArr || authorsArr.length === 0) return "Unknown Author";
+    return authorsArr.join(", ");
+}

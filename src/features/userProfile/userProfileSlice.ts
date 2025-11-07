@@ -63,6 +63,7 @@ const userProfileSlice = createSlice({
     clearUserProfile: (state) => {
       state.userProfileUid = null;
       state.userProfileUsername = null;
+      state.userProfilePremium = false;
       state.storedBooks = [];
       state.fetchStoredBooksStatus = 'idle';
       state.fetchStoredBooksError = null;

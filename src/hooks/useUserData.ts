@@ -1,16 +1,10 @@
-import { useState, useEffect } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc, updateDoc, arrayRemove, arrayUnion } from 'firebase/firestore';
 import { auth, db } from '../firebase-config';
-import type { User } from 'firebase/auth';
 import type { UserProfileType } from '../types/types';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { 
-    setUserProfileUid,
-    setUserProfileUsername,
     setUserProfilePremium,
     fetchStoredBooks,
-    clearUserProfile, 
     clearAllStoredBooks
 } from '../features/userProfile/userProfileSlice';
 import type { BookItem } from '../types/booksTypes';
@@ -25,8 +19,6 @@ const useUserData = () => {
     const userUid: string | undefined = auth.currentUser?.uid;
     const userStoredBooks: BookItem[] = useAppSelector(selectUserProfileStoredBooks);
     const isPremiumUser: boolean = useAppSelector(selectUserProfilePremium);
-
-    const [isLoadingUser, setIsLoadingUser] = useState<boolean>(true);
 
     const getProfileData = async (): Promise<UserProfileType | null> => {
         try {
@@ -50,11 +42,7 @@ const useUserData = () => {
     const storeBooksById = async (profileData: UserProfileType | null) => {    
         try {
             if(!profileData) throw new Error("Profile data could not be retrieved.");
-            if(!isPremiumUser){
-                console.log("User is not premium, clearing stored books.");
-                dispatch(clearAllStoredBooks());
-                return;
-            }
+
             const bookIds: string[] = profileData.storedBookIds || [];
 
             bookIds.length > 0
@@ -88,7 +76,7 @@ const useUserData = () => {
                 storedBookIds: arrayUnion(bookIdToAdd)
             });
             const profileData: UserProfileType | null = await getProfileData();
-            storeBooksById(profileData);  
+            storeBooksById(profileData);
         } catch (error) {
             console.error("Error adding book to profile:", error);
         }               
@@ -126,6 +114,7 @@ const useUserData = () => {
             });
         }
         dispatch(setUserProfilePremium({ userProfilePremium: true }));
+        alert("Premium mode activated.");
     }
 
     const disablePremiumMode = async (): Promise<void> => {
@@ -137,35 +126,25 @@ const useUserData = () => {
             });
         }  
         dispatch(setUserProfilePremium({ userProfilePremium: false }));
+        alert("Premium mode deactivated.");
     }
 
-    useEffect(() => {
-
-        const unsubscribe = onAuthStateChanged(auth, async (user: User | null) => {       
-            setIsLoadingUser(true);
-
-            if (user) {
-                dispatch(setUserProfileUid({ userProfileUid: user.uid }));
-                dispatch(setUserProfileUsername({ userProfileUsername: user.displayName }));
-                const profileData: UserProfileType | null = await getProfileData();
-                storeIsPremiumUser(profileData);
-                storeBooksById(profileData);
-            } else {
-                dispatch(clearUserProfile());
-            }       
-            setIsLoadingUser(false);
-        });
-
-        return () => unsubscribe();
-        
-    }, [dispatch]);
+    const autoUpdateUserData = async (): Promise<void> => {
+        const profileData: UserProfileType | null = await getProfileData();
+        console.log("Auto-updating user data:", profileData);
+        storeIsPremiumUser(profileData);
+        storeBooksById(profileData);
+    }
 
     return { 
-        isLoadingUser, 
         addBookToProfile, 
-        removeBookFromProfile, 
-        activatePremiumMode, 
-        disablePremiumMode 
+        removeBookFromProfile,
+        getProfileData,
+        storeBooksById, 
+        storeIsPremiumUser,
+        activatePremiumMode,
+        disablePremiumMode,
+        autoUpdateUserData
     };
 };
 

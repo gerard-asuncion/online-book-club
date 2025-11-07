@@ -11,7 +11,7 @@ import { selectUserProfilePremium } from "../features/userProfile/userProfileSel
 const useSidebar = () => {
 
     const { isChat, switchContent } = useMainContentRouter();
-    const { removeBookFromProfile, activatePremiumMode } = useUserData();
+    const { removeBookFromProfile, activatePremiumModeAndLogout } = useUserData();
 
     const dispatch = useAppDispatch();
 
@@ -65,7 +65,7 @@ const useSidebar = () => {
         showSidebar,
         hideSidebarInMobile,
         handleBookCardClick,
-        activatePremiumMode
+        activatePremiumModeAndLogout
     }
 }
 

@@ -5,7 +5,8 @@ import {
   signInWithEmailAndPassword,
   sendEmailVerification,
   updateProfile,
-  signOut
+  signOut,
+  type UserCredential
 } from 'firebase/auth';
 import { 
   doc,
@@ -43,7 +44,6 @@ const useAuth = () => {
   const [newPasswordConfirmation, setNewPasswordConfirmation] = useState<string>("");
 
   const [loginError, setLoginError] = useState<string | null>(null);
-
   const [loginEmail, setLoginEmail] = useState<string>("");
   const [loginPassword, setLoginPassword] = useState<string>("");
 
@@ -187,7 +187,10 @@ const useAuth = () => {
     setLoginError(null); 
 
     try {
-      const result = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
+      const result: UserCredential = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
+
+      dispatch(clearCurrentBook());
+      dispatch(clearUserProfile());
 
       const cookieOptions: CookieOptions = {
         path: '/',
@@ -200,6 +203,9 @@ const useAuth = () => {
 
       dispatch(setUserProfileUid({ userProfileUid: result.user.uid }));
       dispatch(setUserProfileUsername({ userProfileUsername: result.user.displayName }));
+
+      dispatch(setIsSearch());
+      dispatch(setOpenSidebar());
 
       navigate("/", { replace: true });
 

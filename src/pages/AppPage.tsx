@@ -1,18 +1,26 @@
+import { useEffect } from "react";
+import { auth } from "../firebase-config";
 import Header from "../components/ui/Header";
 import Sidebar from "../components/form/Sidebar";
 import MainContentRouter from "../components/ui/MainConentRouter";
 import ScreenFrame from "../components/ui/ScreenFrame";
-import useUserData from "../hooks/useUserData";
 import useSidebar from "../hooks/useSidebar";
 import useResponsive from "../hooks/useResponsive";
+import useUserData from "../hooks/useUserData";
 import { changeWindowLayout, changeSidebarLayout } from "../utils/classNameUtils";
 
 function AppPage() {
 
   const { isOpenSidebar } = useSidebar();
-  const { isLoadingUser } = useUserData();
+  const { autoUpdateUserData } = useUserData();
+
+  const isLoadingUser = false;
 
   useResponsive();
+
+  useEffect(() => {
+        autoUpdateUserData();
+    }, [auth.currentUser]);
 
   return (
     <ScreenFrame page="full">

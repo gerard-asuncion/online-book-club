@@ -13,7 +13,6 @@ export const styleMessages = (userId: string | null, messageId: string | null): 
 
 export const displayUserName = (userId: string | null, messageId: string | null, username: string | null): string => {
     if(!username) {
-        console.log("Message ID is null or undefined");
         return "text-gray-400";
     }else {
         return userId === messageId

@@ -1,7 +1,7 @@
 import useSidebar from "../../hooks/useSidebar";
 import useMainContentRouter from "../../hooks/useMainContentRouter";
 import SidebarBookCard from "./SidebarBookCard";
-import { defaultButtonLayout, highlightBookRoomCard, setCursorPointer } from "../../utils/classNameUtils";
+import { defaultButtonLayout, setCursorPointer } from "../../utils/classNameUtils";
 import { useAppSelector } from "../../app/hooks";
 import { selectCurrentBookTitle } from "../../features/currentBook/currentBookSelectors";
 import { selectUserProfileStoredBooks, selectUserProfilePremium } from "../../features/userProfile/userProfileSelectors";
@@ -15,7 +15,7 @@ const Sidebar = ({ isLoadingUser }: LoadingUserProps) => {
     const storedBooks: BookItem[] = useAppSelector(selectUserProfileStoredBooks);
     const isPremiumUser: boolean = useAppSelector(selectUserProfilePremium);
 
-    const { openChat, hideSidebarInMobile, removeMode, setRemoveMode, activatePremiumMode } = useSidebar();
+    const { openChat, hideSidebarInMobile, removeMode, setRemoveMode } = useSidebar();
     const { switchContent } = useMainContentRouter();
 
     return(
@@ -52,32 +52,25 @@ const Sidebar = ({ isLoadingUser }: LoadingUserProps) => {
                 </button>
             </article>
 
-            <ul className="flex
-                    flex-col
-                    justify-start
-                    gap-2
-                    overflow-y-auto 
-                    scrollbar"
-                >
+            <ul className="overflow-y-auto scrollbar">
 
                 {!isPremiumUser && 
-                    <li className="min-h-[50px]">
-                        <button 
-                            className={`
-                                ${highlightBookRoomCard(null, "string", false)}
-                                h-full
-                                w-full
-                                flex 
-                                justify-between
-                                items-center
-                                px-4
-                                py-2
-                                rounded-lg
-                            `}
-                            onClick={activatePremiumMode}
-                        >
-                            Update to premium account and start storing books in this sidebar...
-                        </button>
+                    <li className="
+                        min-h-[50px]
+                        bg-default-bg border-2
+                        border-main-color
+                        text-main-color 
+                        h-full
+                        w-full
+                        flex 
+                        justify-between
+                        items-center
+                        px-4
+                        py-2
+                        rounded-2xl
+                        italic
+                    ">
+                        Open settings, update to premium account and start storing books in this sidebar...
                     </li>
                 }
 
