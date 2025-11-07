@@ -1,8 +1,11 @@
 import type { RootState } from '../../app/store';
-import type { BookItem } from '../../types/books';
+import type { BookItem } from '../../types/booksTypes';
 
 export const selectUserProfileUid = (state: RootState): string | null => 
     state.userProfile.userProfileUid;
+
+export const selectUserProfileUsername = (state: RootState): string | null => 
+    state.userProfile.userProfileUsername;
 
 export const selectUserProfileStoredBooks = (state: RootState): BookItem[]  => 
     state.userProfile.storedBooks;

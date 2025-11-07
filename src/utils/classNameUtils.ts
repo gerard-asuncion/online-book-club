@@ -1,17 +1,17 @@
 export const showHideAnything = (show: boolean | number): string =>
     show ? "" : "hidden";
 
-export const alineateMessages = (userId: string | null, messageId: string): string =>
+export const alineateMessages = (userId: string | null, messageId: string | null): string =>
     userId === messageId
     ? "justify-end"
     : "justify-start"
 
-export const styleMessages = (userId: string | null, messageId: string): string =>
+export const styleMessages = (userId: string | null, messageId: string | null): string =>
     userId === messageId
     ? "border-main-color border-2"
     : "border-secondary-color border-2 bg-secondary-color"
 
-export const displayUserName = (userId: string | null, messageId: string): string =>
+export const displayUserName = (userId: string | null, messageId: string | null): string =>
     userId === messageId
     ? "invisible"
     : ""

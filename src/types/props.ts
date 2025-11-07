@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { BookItem } from "./books";
+import type { BookItem } from "./booksTypes";
 
 export interface OnlyReactNodeChildrenProps {
     children: ReactNode;

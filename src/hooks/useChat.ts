@@ -3,7 +3,6 @@ import {
   addDoc,
   updateDoc,
   getDocs,
-  serverTimestamp, 
   onSnapshot,
   query,
   where,
@@ -17,16 +16,17 @@ import {
 import { auth, db } from '../firebase-config';
 import { useAppSelector } from '../app/hooks';
 import useUserData from './useUserData';
-import { selectUserProfileUid } from '../features/userProfile/userProfileSelectors';
+import { selectUserProfileUid, selectUserProfileUsername } from '../features/userProfile/userProfileSelectors';
 import { 
   selectCurrentBookId, 
   selectCurrentBookTitle, 
   selectCurrentBookAuthors
 } from '../features/currentBook/currentBookSelectors';
 import { selectUserProfileStoredBooks } from '../features/userProfile/userProfileSelectors';
+import { ChatMessage } from '../classes/ChatMessage';
 import type { DocumentData } from 'firebase/firestore';
-import type { Message } from '../types/types';
-import type { BookItem } from '../types/books';
+import type { SentMessage, MessageToFirestore, ChatMessageData } from '../types/messageTypes';
+import type { BookItem } from '../types/booksTypes';
 
 const MESSAGES_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION_MESSAGES;
 const USERS_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERS;
@@ -34,13 +34,13 @@ const messagesRef: CollectionReference<DocumentData> = collection(db, MESSAGES_C
 
 export const useChat = () => {
 
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<SentMessage[]>([]);
   const [newMessage, setNewMessage] = useState<string>("");
 
   const { addBookToProfile } = useUserData();
 
   const currentUserUid: string | null = useAppSelector(selectUserProfileUid);
-
+  const currentUsername: string | null = useAppSelector(selectUserProfileUsername);
   const userStoredBooks: BookItem[] = useAppSelector(selectUserProfileStoredBooks);
 
   const currentBookId: string | null = useAppSelector(selectCurrentBookId);
@@ -62,9 +62,9 @@ export const useChat = () => {
     );
 
     const unsubscribe = onSnapshot(queryMessages, (snapshot) => {
-      const arrMessages: Message[] = [];
+      const arrMessages: SentMessage[] = [];
       snapshot.forEach((doc) => {
-        arrMessages.push({ ...doc.data() as Omit<Message, 'id'>, id: doc.id });
+        arrMessages.push({ ...doc.data() as Omit<SentMessage, 'id'>, id: doc.id });
       });
       setMessages(arrMessages);
     });
@@ -79,21 +79,15 @@ export const useChat = () => {
       console.error("Error: L'usuari no està autenticat.");
       return;
     }
-
     if (!currentRoom) {
       console.error("Error: El missatge no conté l'id de l'usuari.");
       return;
     }
-
     try {
-
       const userDocRef = doc(db, USERS_COLLECTION, currentUserUid);
-
       await updateDoc(userDocRef, {
         userChatHistorial: arrayUnion(currentRoom) 
       });
-
-      console.log("Historial de xat actualitzat a Firestore!");
 
     } catch (error) {
       console.error("Error en actualitzar l'historial de xat:", error);
@@ -101,20 +95,38 @@ export const useChat = () => {
   }
 
   const handleSubmitMessage = async (e: React.FormEvent) => {
-    
     e.preventDefault();
     
     if(newMessage.trim() === '' || !auth.currentUser) return;
 
-    await addDoc(messagesRef, {
+    const messageData: ChatMessageData = {
       text: newMessage,
-      createdAt: serverTimestamp(),
-      user: auth.currentUser.displayName,
-      userId: auth.currentUser.uid,
+      username: currentUsername,
+      userId: currentUserUid,
       room: currentBookId,
       bookTitle: currentBookTitle,
-      bookAuthors: currentBookAuthors,
-      seenBy: [ auth.currentUser.uid ]
+      bookAuthors: currentBookAuthors
+    };
+
+    const newChatMessage: ChatMessage = new ChatMessage(
+                                          messageData.text, 
+                                          messageData.username, 
+                                          messageData.userId, 
+                                          messageData.room, 
+                                          messageData.bookTitle, 
+                                          messageData.bookAuthors
+                                        );
+    const dataToFirestore: MessageToFirestore = newChatMessage.toFirestoreObject();
+
+    await addDoc(messagesRef, {
+      text: dataToFirestore.text,
+      createdAt: dataToFirestore.createdAt,
+      username: dataToFirestore.username,
+      userId: dataToFirestore.userId,
+      room: dataToFirestore.room,
+      bookTitle: dataToFirestore.bookTitle,
+      bookAuthors: dataToFirestore.bookAuthors,
+      seenBy: dataToFirestore.seenBy
     });
 
     setNewMessage('');
@@ -134,11 +146,9 @@ export const useChat = () => {
     if (!(currentUserUid && currentBookId)) return;
 
     const queryRoom = query(messagesRef, where("room", "==", currentBookId));
-
     const batch = writeBatch(db);
 
     try {
-
       const querySnapshot = await getDocs(queryRoom);
 
       querySnapshot.forEach((document) => {
@@ -146,10 +156,8 @@ export const useChat = () => {
         batch.update(messageDocRef, {
           seenBy: arrayUnion(currentUserUid)
         });
-      });
-    
+      });   
       await batch.commit();
-
     } catch (error) {
       console.error("Error en marcar missatges com a llegits (batch): ", error, 4000);
     }

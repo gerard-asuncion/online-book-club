@@ -7,6 +7,7 @@ import {
   updateProfile,
   signInWithPopup, 
   signOut,
+  type UserProfile,
 } from 'firebase/auth';
 import { 
   doc,
@@ -22,7 +23,7 @@ import { auth, db, provider } from '../firebase-config';
 import Cookies from 'universal-cookie';
 import { useAppDispatch } from '../app/hooks';
 import { setIsAuth, clearAuth } from '../features/auth/authSlice';
-import { setUserProfileUid, clearUserProfile } from '../features/userProfile/userProfileSlice';
+import { setUserProfileUid, setUserProfileUsername, clearUserProfile } from '../features/userProfile/userProfileSlice';
 import { clearCurrentBook } from '../features/currentBook/currentBookSlice';
 import { setIsSearch } from '../features/mainContentRoute/mainContentRouteSlice';
 import { setOpenSidebar } from '../features/responsive/responsiveSlice';
@@ -133,7 +134,7 @@ const useAuth = () => {
       
       if(registrationErrors.length > 0) setRegistrationErrors([]);
 
-      const newUser = new RegisterUser(newUsername, newUserEmail, newUserPassword);
+      const newUser: RegisterUser = new RegisterUser(newUsername, newUserEmail, newUserPassword);
 
       registerNewUser(newUser);
 
@@ -166,7 +167,7 @@ const useAuth = () => {
   
       const userDocRef = doc(db, USERS_COLLECTION, result.user.uid);
 
-      const dataForFirestore = newUser.toFirestoreObject();
+      const dataForFirestore: UserProfile = newUser.toFirestoreObject();
       dataForFirestore.uid = result.user.uid;
 
       await setDoc(userDocRef, dataForFirestore);
@@ -201,6 +202,7 @@ const useAuth = () => {
       dispatch(setIsAuth());
 
       dispatch(setUserProfileUid({ userProfileUid: result.user.uid }));
+      dispatch(setUserProfileUsername({ userProfileUsername: result.user.displayName }));
 
       navigate("/", { replace: true });
 

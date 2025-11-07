@@ -1,5 +1,4 @@
-import type { Message } from "./types";
-import type { BookItem } from "./books";
+import type { BookItem } from "./booksTypes";
 
 export interface AuthSliceInitialState {
     isAuth: boolean;
@@ -24,10 +23,6 @@ export interface ResponsiveInitialState {
     openSidebar: boolean;
 }
 
-export interface MessagesInitialState {
-    messages: Message[];
-}
-
 export interface GoogleBooksSliceInitialState {
     volumes: BookItem[],
     status: 'idle' | 'loading' | 'succeeded' | 'failed' | 'loading-more';
@@ -37,6 +32,7 @@ export interface GoogleBooksSliceInitialState {
 
 export interface UserProfileInitialState {
     userProfileUid: string | null,
+    userProfileUsername: string | null,
     storedBooks: BookItem[],
     fetchStoredBooksStatus: 'idle' | 'loading' | 'succeeded' | 'failed',
     fetchStoredBooksError: string | null;
