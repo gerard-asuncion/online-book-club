@@ -1,4 +1,3 @@
-import { useState } from "react";
 import ScreenFrame from "../components/ui/ScreenFrame";
 import Header from "../components/ui/Header";
 import useAuth from "../hooks/useAuth";
@@ -8,12 +7,6 @@ import useResponsive from "../hooks/useResponsive";
 const RegisterPage = () => {
 
   const { isMobile } = useResponsive();
-
-  const [checkboxState, setCheckboxState] = useState<boolean>(false);
-
-  const testCheckbox = (checked: boolean): void => {
-    setCheckboxState(checked);
-  }
 
   const { 
     registrationErrors,
@@ -26,7 +19,9 @@ const RegisterPage = () => {
     setNewUserPassword,
     setNewPasswordConfirmation,
     submitRegisterForm, 
-    navigateToLogin 
+    navigateToLogin,
+    checkboxState,
+    premiumRegister
   } = useAuth();
   
   return (
@@ -114,18 +109,18 @@ const RegisterPage = () => {
                 <input 
                   type="checkbox"
                   className="accent-main-color"
-                  id="registerAdminCheckbox"
-                  name="registerAdminCheckbox"
+                  id="registerPremiumCheckbox"
+                  name="registerPremiumCheckbox"
                   checked={checkboxState} 
                   onChange={(e) => {
-                      testCheckbox(e.target.checked);
+                      premiumRegister(e.target.checked);
                   }}
                 />
                 <label 
                   htmlFor="registerAdminCheckbox"
                   className="text-white text-sm"
                 >
-                  Admin user
+                  Premium user
                 </label>
               </div>
               <div className={`

@@ -52,7 +52,7 @@ const Auth = () => {
                         />
                         
                             {loginError && (
-                                <div className="text-red-500 text-xs text-center p-2 rounded-md">
+                                <div className="text-main-color text-xs text-center p-2 rounded-md">
                                     {loginError}
                                 </div>
                             )}
