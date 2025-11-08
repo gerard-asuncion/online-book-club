@@ -126,7 +126,7 @@ const Sidebar = ({ isLoadingUser }: LoadingUserProps) => {
                             hideSidebarInMobile();
                             switchContent("userSettings");
                         }}>
-                        Settings
+                        User settings
                     </button>
                 </div>
                 <div className="row-span-1">
