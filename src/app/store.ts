@@ -16,7 +16,7 @@ import userProfileReducer from '../features/userProfile/userProfileSlice';
 import mainContentRouteReducer from '../features/mainContentRoute/mainContentRouteSlice';
 import currentBookReducer from '../features/currentBook/currentBookSlice';
 import responsiveReducer from '../features/responsive/responsiveSlice';
-import googleBooksReducer from '../features/books/googleBooksSlice';
+import googleBooksReducer from '../features/googleBooks/googleBooksSlice';
 
 const rootReducer = combineReducers({
     auth: authReducer,

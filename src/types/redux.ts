@@ -6,6 +6,7 @@ export interface AuthSliceInitialState {
 
 export interface MainContentRouteInitialState {
     isChat: boolean,
+    isChatHistorial: boolean,
     isSettings: boolean,
     isSearch: boolean,
     isAbout: boolean;

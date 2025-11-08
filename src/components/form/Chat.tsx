@@ -10,7 +10,6 @@ import { useAppSelector } from '../../app/hooks';
 import { selectCurrentBookTitle } from '../../features/currentBook/currentBookSelectors';
 import { selectIsMobile } from '../../features/responsive/responsiveSelectors';
 import { auth } from '../../firebase-config';
-import { selectUserProfileUid } from '../../features/userProfile/userProfileSelectors';
 import { selectUserProfilePremium } from '../../features/userProfile/userProfileSelectors';
 
 const Chat = () => {

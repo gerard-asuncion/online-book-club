@@ -14,7 +14,7 @@ import {
 import { auth, db } from '../firebase-config';
 import { useAppSelector, useAppDispatch } from '../app/hooks';
 import { clearCurrentBook, setCurrentBook } from "../features/currentBook/currentBookSlice";
-import { selectUserProfileUid, selectUserProfilePremium } from '../features/userProfile/userProfileSelectors';
+import { selectUserProfilePremium } from '../features/userProfile/userProfileSelectors';
 
 const MESSAGES_COLLECTION: string = import.meta.env.VITE_FIREBASE_DB_COLLECTION_MESSAGES;
 const messagesRef: CollectionReference<DocumentData> = collection(db, MESSAGES_COLLECTION);
