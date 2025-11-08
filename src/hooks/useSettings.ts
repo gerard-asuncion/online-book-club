@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { doc, DocumentReference, DocumentSnapshot, getDoc, type DocumentData } from 'firebase/firestore';
-import { db } from '../firebase-config';
+import { db, auth } from '../firebase-config';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import useUserData from './useUserData';
 import { selectUserProfilePremium, selectUserProfileUid } from '../features/userProfile/userProfileSelectors';
@@ -23,7 +23,9 @@ const useSettings = () => {
 
     const dispatch = useAppDispatch();
 
-    const userProfileUid: string | null = useAppSelector(selectUserProfileUid);
+    const userProfileUid: string | undefined = auth.currentUser?.uid;
+
+    // const userProfileUid: string | null = useAppSelector(selectUserProfileUid);
     const isPremiumUser: boolean = useAppSelector(selectUserProfilePremium);
 
     const changePremiumStatus = (): void => {

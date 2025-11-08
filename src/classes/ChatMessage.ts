@@ -4,29 +4,29 @@ import type { FieldValue } from 'firebase/firestore';
 export class ChatMessage {
     
     #text: string;
-    #username: string | null;
-    #userId: string | null;
+    #username: string | null | undefined;
+    #userUid: string | undefined;
     #room: string |null;
     #bookTitle: string | null;
     #bookAuthors: string[];
-    #seenBy: (string | null)[];
+    #seenBy: (string | undefined)[];
     #createdAt: FieldValue;
 
     constructor(
         messageText: string,
-        username: string | null,
-        userId: string | null,
+        username: string | null | undefined,
+        userUid: string | undefined,
         bookId: string | null,
         bookTitle: string | null,
         bookAuthors: string[]
     ) {
         this.#text = messageText;
         this.#username = username ?? "unknown_user"
-        this.#userId = userId;
+        this.#userUid = userUid;
         this.#room = bookId;
         this.#bookTitle = bookTitle;
         this.#bookAuthors = bookAuthors;
-        this.#seenBy = [ this.#userId ];
+        this.#seenBy = [ this.#userUid ];
         this.#createdAt = serverTimestamp();
     }
 
@@ -35,7 +35,7 @@ export class ChatMessage {
             text: this.#text,
             createdAt: this.#createdAt,
             username: this.#username,
-            userId: this.#userId,
+            userUid: this.#userUid,
             room: this.#room,
             bookTitle: this.#bookTitle,
             bookAuthors: this.#bookAuthors,
