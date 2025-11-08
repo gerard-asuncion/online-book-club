@@ -6,34 +6,40 @@ const ChatHistorial = () => {
 
     const { 
         userHistorialBooks, 
+        setUserHistorialBooks,
         isLoadingHistorial, 
         handleBookClick,
         getHistorialBooks,
     } = useChatHistorial();
 
     useEffect(() => {
+        setUserHistorialBooks([]);
         getHistorialBooks();
     }, []);
   
     return (
         <MainContentFrame>
         <section className="h-full w-full p-10 text-white">
-            <h2>Chat Historial</h2>          
-            <article>
-            <div>
-                <div>Chats:</div>
+            <div className="flex justify-center items-center font-xl text-main-color font-bold p-4 my-5">
+                Chat Historial
+            </div>          
+            <ul className="flex flex-col justify-start items-center gap-5">
                 {isLoadingHistorial && <div>Loading...</div>}
                 {userHistorialBooks.map(room =>
-                <div key={room.id}>
-                <button onClick={() => {
-                    handleBookClick(room.id, room.volumeInfo.title, room.volumeInfo.authors);
-                }}>
-                    {room.volumeInfo.title}
-                </button>
-                </div>
+                    <li
+                        key={room.id}
+                        className=""
+                    >
+                        <button
+                            className="hover:text-main-color cursor-pointer"
+                            onClick={() => {
+                                handleBookClick(room.id, room.volumeInfo.title, room.volumeInfo.authors);
+                            }}>
+                            {room.volumeInfo.title}
+                        </button>
+                    </li>
             )}
-            </div>
-            </article>
+            </ul>
         </section>
         </MainContentFrame>
     )
