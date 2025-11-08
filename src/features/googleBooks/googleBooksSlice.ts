@@ -84,9 +84,6 @@ export const fetchBooksByIds = createAsyncThunk<
   async (allRoomIds: string[], { rejectWithValue }) => {   
 
     const validRoomIds = allRoomIds.filter(Boolean);
-
-    console.log(validRoomIds)
-
     if (validRoomIds.length === 0) return [];
 
     try {
