@@ -4,11 +4,12 @@ import Settings from "../form/Settings";
 import BooksGrid from "../form/BooksGrid";
 import MainContentFrame from "./MainContentFrame";
 import useMainContentRouter from "../../hooks/useMainContentRouter";
+import ActiveBooksGrid from "../form/activeBooksGrid";
 import AboutSection from "./AboutSection";
 
 const MainContentRouter = () => {
 
-  const { isChat, isChatHistorial, isSettings, isSearch, isAbout } = useMainContentRouter();
+  const { isChat, isChatHistorial, isSettings, isSearch, isActiveSearch, isAbout } = useMainContentRouter();
 
   if(isChat){
     return (
@@ -26,6 +27,11 @@ const MainContentRouter = () => {
     return (
       <BooksGrid />
     )
+  } else if(isActiveSearch){
+    return (
+      <ActiveBooksGrid />
+    )
+
   } else if(isAbout){
     return (
       <AboutSection />

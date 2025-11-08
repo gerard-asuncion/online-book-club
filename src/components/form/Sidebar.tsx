@@ -20,10 +20,9 @@ const Sidebar = ({ isLoadingUser }: LoadingUserProps) => {
 
     return(
 
-        <section className="h-full grid grid-cols-1 grid-rows-[auto_auto_1fr_auto] px-2 py-6 gap-6">
-   
+        <section className="h-full grid grid-cols-1 grid-rows-[auto_auto_1fr_auto] px-2 py-5 gap-6">
             <article>
-                <div className="pb-4">
+                <div className="pb-2">
                     <p className="text-gray-400 text-sm">Username:</p>
                     {isLoadingUser && <p className="text-white">Loading username...</p>}
                     {!isLoadingUser && <p className="text-white font-semibold">{auth.currentUser?.displayName}</p>}
@@ -41,14 +40,25 @@ const Sidebar = ({ isLoadingUser }: LoadingUserProps) => {
                         </div>}
             </article>
 
-            <article>
-                <button 
+            <article className="grid grid-cols-2 grid-rows-1 gap-2">
+                <div className="text-main-color text-sm col-span-2">
+                    Search books...
+                </div>
+                <button
                     onClick={() => {
                         hideSidebarInMobile();
                         switchContent("bookSearch");
                     }}
                     className={`${defaultButtonLayout()}`}>
-                    Search books
+                    All
+                </button>
+                <button 
+                    onClick={() => {
+                        hideSidebarInMobile();
+                        switchContent("activeBookSearch");
+                    }}
+                    className={`${defaultButtonLayout()}`}>
+                    Active
                 </button>
             </article>
 

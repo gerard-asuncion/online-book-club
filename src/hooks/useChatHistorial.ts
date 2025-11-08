@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { clearCurrentBook, setCurrentBook } from "../features/currentBook/currentBookSlice";
+import { selectGoogleBooksVolumesById } from "../features/googleBooks/googleBooksSelectors";
 import useMainContentRouter from "./useMainContentRouter";
-import axios from 'axios';
 import { doc, DocumentReference, DocumentSnapshot, getDoc, type DocumentData } from 'firebase/firestore';
 import { auth, db } from '../firebase-config';
-import { useAppDispatch } from '../app/hooks';
+import { fetchBooksByIds } from '../features/googleBooks/googleBooksSlice';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import type { UserProfileType } from '../types/types';
 import type { BookItem } from '../types/booksTypes';
 
 const USERS_COLLECTION: string = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERS;
-const BOOKS_API_URL: string = import.meta.env.VITE_GOOGLE_BOOKS_API_URL;
 
 const useChatHistorial = () => {
 
@@ -17,9 +17,10 @@ const useChatHistorial = () => {
 
     const dispatch = useAppDispatch();
 
+    const userHistorialBooks: BookItem[] = useAppSelector(selectGoogleBooksVolumesById)  
+
     const { isChat, switchContent } = useMainContentRouter();
     
-    const [userHistorialBooks, setUserHistorialBooks] = useState<BookItem[]>([]);
     const [isLoadingHistorial, setIsLoadingHistorial] = useState<boolean>(false);
 
     const handleBookClick = (id: string, title: string, authors: string[]): void => {
@@ -30,27 +31,6 @@ const useChatHistorial = () => {
             switchContent("chatRoom");
         };
     }
-
-    const fetchBooksByIds = async (historialBookIds: string[]): Promise<BookItem[]> => {
-        try {
-            const fetchPromises = historialBookIds.map(bookId =>
-                axios.get(`${BOOKS_API_URL}/${bookId}`)
-            );
-            const responses = await Promise.all(fetchPromises);           
-            const historialBooksData: BookItem[] = responses.map(response => response.data as BookItem);
-
-            return historialBooksData;
-
-        } catch (error) { 
-            if (axios.isAxiosError(error)) {
-                console.error('Failed to fetch one or more stored books.');
-                return [];
-            } else {
-                console.error('An unexpected error occurred:', error);
-                return [];
-            }
-        }
-    };
 
     const fetchHistorialBookIds = async (userProfileUid: string): Promise<string[]> => {  
 
@@ -82,12 +62,11 @@ const useChatHistorial = () => {
         if(!userProfileUid) return;
         setIsLoadingHistorial(true);
         const historialBookIds: string[] = await fetchHistorialBookIds(userProfileUid);
-        const historialBooks: BookItem[] = await fetchBooksByIds(historialBookIds);
-        setUserHistorialBooks(historialBooks);
+        dispatch(fetchBooksByIds(historialBookIds));
         setIsLoadingHistorial(false);
     }
 
-    return { userHistorialBooks, setUserHistorialBooks, isLoadingHistorial, getHistorialBooks, handleBookClick };
+    return { userHistorialBooks, isLoadingHistorial, getHistorialBooks, handleBookClick };
 }
 
 export default useChatHistorial;

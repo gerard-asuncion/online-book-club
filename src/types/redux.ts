@@ -9,6 +9,7 @@ export interface MainContentRouteInitialState {
     isChatHistorial: boolean,
     isSettings: boolean,
     isSearch: boolean,
+    isActiveSearch: boolean,
     isAbout: boolean;
 }
 
@@ -26,6 +27,7 @@ export interface ResponsiveInitialState {
 
 export interface GoogleBooksSliceInitialState {
     volumes: BookItem[],
+    volumesById: BookItem[],
     status: 'idle' | 'loading' | 'succeeded' | 'failed' | 'loading-more';
     error: string | null,
     currentQuery: string;

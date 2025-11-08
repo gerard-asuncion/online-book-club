@@ -18,7 +18,7 @@ const BooksGrid = () => {
     booksVolumes, 
     booksStatus,
     booksError,
-    checkboxState,
+    storeCheckboxState,
     autoSaveBook,
     handleBooksSearch,
     handleLoadMoreBooks,
@@ -70,22 +70,22 @@ const BooksGrid = () => {
               Search
             </button>
             {isPremiumUser && 
-              <div className="flex justify-center items-center gap-2 md:col-span-4 md:row-span-1">
+              <div className="flex justify-center items-center gap-2">
                 <input 
                   type="checkbox"
                   className="accent-main-color"
-                  id="activeRoomsCheckbox"
-                  name="activeRoomsCheckbox"
-                  checked={checkboxState} 
+                  id="storeInSidebarCheckbox"
+                  name="storeInSidebarCheckbox"
+                  checked={storeCheckboxState} 
                   onChange={(e) => {
                     autoSaveBook(e.target.checked);
                   }}
                 />
                 <label 
-                  htmlFor="activeRoomsCheckbox"
+                  htmlFor="storeInSidebarCheckbox"
                   className="text-white text-sm"
                 >
-                  Automatically store in sidebar
+                  Store in sidebar
                 </label>
               </div>
             }
