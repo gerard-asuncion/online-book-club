@@ -130,6 +130,7 @@ const useUserData = () => {
     }
 
     const autoUpdateUserData = async (): Promise<void> => {
+        if(!userUid) return;
         const profileData: UserProfileType | null = await getProfileData();
         storeIsPremiumUser(profileData);
         storeBooksById(profileData);
