@@ -4,4 +4,5 @@ export const selectIsChat = (state: RootState): boolean => state.mainContentRout
 export const selectIsChatHistorial = (state: RootState): boolean => state.mainContentRoute.isChatHistorial;
 export const selectIsSettings = (state: RootState): boolean => state.mainContentRoute.isSettings;
 export const selectIsSearch = (state: RootState): boolean => state.mainContentRoute.isSearch;
+export const selectIsActiveSearch = (state: RootState): boolean => state.mainContentRoute.isActiveSearch;
 export const selectIsAbout = (state: RootState): boolean => state.mainContentRoute.isAbout;

@@ -59,6 +59,7 @@ export const setCursorPointer = (active: string | null): string =>
 
 export const defaultButtonLayout = (): string =>
         `w-full
+        max-h-10
         text-white
         text-sm
         font-semibold

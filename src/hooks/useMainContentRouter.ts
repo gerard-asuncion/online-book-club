@@ -1,6 +1,21 @@
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { selectIsAbout, selectIsChat, selectIsChatHistorial, selectIsSettings, selectIsSearch } from "../features/mainContentRoute/mainContentRouteSelectors";
-import { setIsAbout, setIsChat, setIsChatHistorial, setIsSettings, setIsSearch, clearMainContentRoute } from "../features/mainContentRoute/mainContentRouteSlice";
+import { 
+    selectIsAbout, 
+    selectIsChat, 
+    selectIsChatHistorial, 
+    selectIsSettings, 
+    selectIsSearch,
+    selectIsActiveSearch
+} from "../features/mainContentRoute/mainContentRouteSelectors";
+import { 
+    setIsAbout, 
+    setIsChat, 
+    setIsChatHistorial, 
+    setIsSettings, 
+    setIsSearch, 
+    setIsActiveSearch,
+    clearMainContentRoute
+} from "../features/mainContentRoute/mainContentRouteSlice";
 
 const useMainContentRouter = () => {
 
@@ -10,6 +25,7 @@ const useMainContentRouter = () => {
     const isChatHistorial: boolean = useAppSelector(selectIsChatHistorial);
     const isSettings: boolean = useAppSelector(selectIsSettings);
     const isSearch: boolean = useAppSelector(selectIsSearch);
+    const isActiveSearch: boolean = useAppSelector(selectIsActiveSearch);
     const isAbout: boolean = useAppSelector(selectIsAbout);
 
     const switchContent = (content: string) => {
@@ -25,6 +41,9 @@ const useMainContentRouter = () => {
                 break;
             case "bookSearch":
                 dispatch(setIsSearch());
+                break;
+            case "activeBookSearch":
+                dispatch(setIsActiveSearch());
                 break;
             case "chatHistorial":
                 dispatch(setIsChatHistorial());
@@ -42,6 +61,7 @@ const useMainContentRouter = () => {
         isChatHistorial,
         isSettings,
         isSearch,
+        isActiveSearch,
         isAbout,
         switchContent
     }

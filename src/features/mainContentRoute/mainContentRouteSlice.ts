@@ -6,6 +6,7 @@ const initialState: MainContentRouteInitialState = {
     isChatHistorial: false,
     isSettings: false,
     isSearch: false,
+    isActiveSearch: false,
     isAbout: false
 }
 
@@ -19,6 +20,7 @@ const mainContentRouteSlice = createSlice({
       state.isChatHistorial = false;
       state.isSettings = false;
       state.isSearch = false;
+      state.isActiveSearch = false;
       state.isAbout = false;
     },
     setIsChatHistorial: (state) => {
@@ -26,6 +28,7 @@ const mainContentRouteSlice = createSlice({
       state.isChatHistorial = true;
       state.isSettings = false;
       state.isSearch = false;
+      state.isActiveSearch = false;
       state.isAbout = false;
     },
     setIsSettings: (state) => {
@@ -33,6 +36,7 @@ const mainContentRouteSlice = createSlice({
       state.isChatHistorial = false;
       state.isSettings = true;
       state.isSearch = false;
+      state.isActiveSearch = false;
       state.isAbout = false;
     },
     setIsSearch: (state) => {
@@ -40,6 +44,15 @@ const mainContentRouteSlice = createSlice({
       state.isChatHistorial = false;
       state.isSettings = false;
       state.isSearch = true;
+      state.isActiveSearch = false;
+      state.isAbout = false;
+    },
+    setIsActiveSearch: (state) => {
+      state.isChat = false;
+      state.isChatHistorial = false;
+      state.isSettings = false;
+      state.isSearch = false;
+      state.isActiveSearch = true;
       state.isAbout = false;
     },
      setIsAbout: (state) => {
@@ -47,6 +60,7 @@ const mainContentRouteSlice = createSlice({
       state.isChatHistorial = false;
       state.isSettings = false;
       state.isSearch = false;
+      state.isActiveSearch = false;
       state.isAbout = true;
     },
     clearMainContentRoute: (state) => {
@@ -54,6 +68,7 @@ const mainContentRouteSlice = createSlice({
       state.isChatHistorial = false;
       state.isSettings = false;
       state.isSearch = false;
+      state.isActiveSearch = false;
       state.isAbout = false;
     }
   },
@@ -64,6 +79,7 @@ export const {
   setIsChatHistorial,
   setIsSettings, 
   setIsSearch,
+  setIsActiveSearch,
   setIsAbout,
   clearMainContentRoute
   } = mainContentRouteSlice.actions;

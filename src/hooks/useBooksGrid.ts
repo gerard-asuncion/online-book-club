@@ -18,7 +18,7 @@ const useBooksGrid = () => {
 
   const [query, setQuery] = useState<string>("");
   const [displayBooks, setDisplayBooks] = useState<boolean>(false);
-  const [checkboxState, setCheckboxState] = useState<boolean>(false);
+  const [storeCheckboxState, setStoreCheckboxState] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
 
@@ -28,10 +28,9 @@ const useBooksGrid = () => {
 
   const handleBooksSearch = (e: React.FormEvent, query: string): void => {
     e.preventDefault();
-    if (query.trim()) {
-      dispatch(clearGoogleBooksSearch());
-      dispatch(fetchGoogleBooks(query));
-    }
+    if(!query.trim()) return;
+    dispatch(clearGoogleBooksSearch());
+    dispatch(fetchGoogleBooks(query));
     setDisplayBooks(true);
   };
 
@@ -40,7 +39,7 @@ const useBooksGrid = () => {
   };
 
   const autoSaveBook = (checked: boolean): void => {
-    setCheckboxState(checked);
+    setStoreCheckboxState(checked);
   }
 
   const handleVolumeSelection = async (volumeId: string, volumeTitle: string, volumeAuthors: string[]): Promise<void> => {
@@ -50,7 +49,7 @@ const useBooksGrid = () => {
     }
     dispatch(clearCurrentBook());
     dispatch(setCurrentBook({bookId: volumeId, bookTitle: volumeTitle, bookAuthors: volumeAuthors}));
-    if(checkboxState){
+    if(storeCheckboxState){
       addBookToProfile(volumeId);
     };
     if(!isChat){
@@ -67,7 +66,7 @@ const useBooksGrid = () => {
     booksVolumes, 
     booksStatus, 
     booksError,
-    checkboxState,
+    storeCheckboxState,
     autoSaveBook,
     handleBooksSearch, 
     handleLoadMoreBooks,

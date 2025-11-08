@@ -6,14 +6,12 @@ const ChatHistorial = () => {
 
     const { 
         userHistorialBooks, 
-        setUserHistorialBooks,
         isLoadingHistorial, 
         handleBookClick,
         getHistorialBooks,
     } = useChatHistorial();
 
     useEffect(() => {
-        setUserHistorialBooks([]);
         getHistorialBooks();
     }, []);
   
