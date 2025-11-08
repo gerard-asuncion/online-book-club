@@ -61,7 +61,7 @@ const useBooksGrid = () => {
 
   return { 
     query, 
-    setQuery, 
+    setQuery,
     displayBooks, 
     booksVolumes, 
     booksStatus, 

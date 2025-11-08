@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import MainContentFrame from "../ui/MainContentFrame"
 import useActiveBooksGrid from "../../hooks/useActiveBooksGrid";
 import { 
@@ -11,14 +11,19 @@ import useBooksGrid from "../../hooks/useBooksGrid";
 
 const ActiveBooksGrid = () => {
 
-  const { allActiveBooks, getActiveBooks } = useActiveBooksGrid();
+  const { 
+    allActiveBooksStatus, 
+    allActiveBooksError, 
+    getActiveBooks, 
+    search, 
+    setSearch, 
+    handleActiveBooksSearch, 
+    showResults
+  } = useActiveBooksGrid();
+
   const { handleVolumeSelection } = useBooksGrid();
 
-  const [query, setQuery] = useState<string>("")
-  const handleBooksSearch = (e: React.FormEvent, query: string) => {
-    e.preventDefault();
-    if(!query.trim()) return;
-  }
+  const results: BookItem[] = showResults()
 
   useEffect(() => {
     getActiveBooks();
@@ -28,7 +33,7 @@ const ActiveBooksGrid = () => {
     <MainContentFrame>
       <section className={`${justifyBooksGrid(false)} flex flex-col items-center h-full w-full`}>
         <form 
-          onSubmit={(e) => {handleBooksSearch(e, query);}}
+          onSubmit={(e) => {handleActiveBooksSearch(e, search);}}
           className={`
             p-15
             flex
@@ -42,7 +47,7 @@ const ActiveBooksGrid = () => {
             type="text" 
             name="searchInput" 
             id="searchInput"
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => setSearch(e.target.value)}
             placeholder="search a book..."
             className={`
               w-full
@@ -80,7 +85,9 @@ const ActiveBooksGrid = () => {
             scrollbar
           `}>
             <ul className="grid grid-cols-2 md:grid-cols-5">
-              {allActiveBooks.map((book: BookItem) => (
+              {allActiveBooksStatus === "loading" && <li>Loading...</li>}
+              {allActiveBooksError && <li>{allActiveBooksError}</li>}
+              {results.map((book: BookItem) => (
                 <li 
                   className="col-span-1 mb-10 flex flex-col items-center"
                   key={book.id}
@@ -108,20 +115,6 @@ const ActiveBooksGrid = () => {
                 </li>
               ))}
             </ul>
-            {/* {booksStatus === "loading" && <div className="text-white">Loading...</div>}
-            {booksError && <div className="text-white">{booksError}</div>}
-            {booksStatus === 'succeeded' && booksVolumes.length > 0 && (
-              <div className="flex justify-center col-span-full w-full mb-15">
-                <button
-                  type="button"
-                  onClick={handleLoadMoreBooks}
-                  className={`${defaultButtonLayout()} max-w-40 text-sm`}
-                >
-                  Load more
-                </button>
-              </div>
-            )}
-            {booksStatus === "loading-more" && <div className="text-white mb-20">Loading more books...</div>} */}
         </article>
       </section>
     </MainContentFrame>

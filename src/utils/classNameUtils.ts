@@ -57,22 +57,10 @@ export const highlightBookRoomCard = (openBookRoom: string | null, bookRoomName:
 export const setCursorPointer = (active: string | null): string =>
     active ? "cursor-pointer" : ""
 
-export const defaultButtonLayout = (): string =>
-        `w-full
-        max-h-10
-        text-white
-        text-sm
-        font-semibold
-        flex items-center justify-center 
-        py-3 px-4 
-        border-2
-        border-main-color
-        rounded-lg  
-        transition-colors 
-        cursor-pointer
-        transition-colors 
-        ease-in-out
-        duration-200
-        active:bg-main-color
-        md:hover:bg-main-color`
-    
+export const defaultButtonLayout = (active: boolean = true): string => {
+    if(active){
+        return "w-full max-h-10 text-white text-sm font-semibold flex items-center justify-center py-3 px-4 border-2 border-main-color rounded-lg cursor-pointer transition-colors ease-in-out duration-200 active:bg-main-color md:hover:bg-main-color"
+    }else {
+        return "w-full max-h-10 text-gray-500 text-sm font-semibold flex items-center justify-center py-3 px-4 border-2 border-gray-500 rounded-lg"
+    }
+}

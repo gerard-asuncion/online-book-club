@@ -9,7 +9,6 @@ const BOOKS_API_URL: string = import.meta.env.VITE_GOOGLE_BOOKS_API_URL;
 
 const initialState: GoogleBooksSliceInitialState = {
   volumes:[],
-  volumesById: [],
   status: 'idle', 
   error: null,
   currentQuery: ''
@@ -118,7 +117,6 @@ const googleBooksSlice = createSlice({
   reducers: {
     clearGoogleBooksSearch: (state) => {
       state.volumes = [];
-      state.volumesById = [];
       state.status = 'idle';
       state.error = null;
       state.currentQuery = '';
@@ -158,7 +156,7 @@ const googleBooksSlice = createSlice({
       })
       .addCase(fetchBooksByIds.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.volumesById = action.payload as BookItem[] 
+        state.volumes = action.payload as BookItem[] 
       })
       .addCase(fetchBooksByIds.rejected, (state, action) => {
         state.status = 'failed';

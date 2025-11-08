@@ -20,9 +20,9 @@ const Sidebar = ({ isLoadingUser }: LoadingUserProps) => {
 
     return(
 
-        <section className="h-full grid grid-cols-1 grid-rows-[auto_auto_1fr_auto] px-2 py-5 gap-6">
-            <article>
-                <div className="pb-2">
+        <section className="h-full grid grid-cols-1 grid-rows-[auto_1fr_auto] px-2 py-5 gap-6">
+            <article className="flex flex-col gap-3">
+                <div className="">
                     <p className="text-gray-400 text-sm">Username:</p>
                     {isLoadingUser && <p className="text-white">Loading username...</p>}
                     {!isLoadingUser && <p className="text-white font-semibold">{auth.currentUser?.displayName}</p>}
@@ -38,28 +38,27 @@ const Sidebar = ({ isLoadingUser }: LoadingUserProps) => {
                                 <div>{currentBookTitle}</div>
                             </button>
                         </div>}
-            </article>
-
-            <article className="grid grid-cols-2 grid-rows-1 gap-2">
-                <div className="text-main-color text-sm col-span-2">
-                    Search books...
+                <div className="grid grid-cols-2 grid-rows-1 gap-2">
+                    <div className="text-main-color text-sm col-span-2">
+                        Search books...
+                    </div>
+                    <button
+                        onClick={() => {
+                            hideSidebarInMobile();
+                            switchContent("bookSearch");
+                        }}
+                        className={`${defaultButtonLayout()}`}>
+                        All
+                    </button>
+                    <button 
+                        onClick={() => {
+                            hideSidebarInMobile();
+                            switchContent("activeBookSearch");
+                        }}
+                        className={`${defaultButtonLayout(isPremiumUser)}`}>
+                        Active
+                    </button>
                 </div>
-                <button
-                    onClick={() => {
-                        hideSidebarInMobile();
-                        switchContent("bookSearch");
-                    }}
-                    className={`${defaultButtonLayout()}`}>
-                    All
-                </button>
-                <button 
-                    onClick={() => {
-                        hideSidebarInMobile();
-                        switchContent("activeBookSearch");
-                    }}
-                    className={`${defaultButtonLayout()}`}>
-                    Active
-                </button>
             </article>
 
             <ul className="overflow-y-auto scrollbar">
@@ -80,7 +79,8 @@ const Sidebar = ({ isLoadingUser }: LoadingUserProps) => {
                         rounded-2xl
                         italic
                     ">
-                        Open settings, update to premium account and start storing books in this sidebar...
+                        Upgrade to premium to unlock powerful search! Instantly find books with active chats. 
+                        You'll also get to save up to three favorite chats right here in the sidebar.
                     </li>
                 }
 

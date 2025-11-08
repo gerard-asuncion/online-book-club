@@ -4,10 +4,14 @@ import Settings from "../form/Settings";
 import BooksGrid from "../form/BooksGrid";
 import MainContentFrame from "./MainContentFrame";
 import useMainContentRouter from "../../hooks/useMainContentRouter";
-import ActiveBooksGrid from "../form/activeBooksGrid";
+import ActiveBooksGrid from "../form/ActiveBooksGrid";
 import AboutSection from "./AboutSection";
+import { useAppSelector } from "../../app/hooks";
+import { selectUserProfilePremium } from "../../features/userProfile/userProfileSelectors";
 
 const MainContentRouter = () => {
+
+  const isPremiumUser: boolean = useAppSelector(selectUserProfilePremium);
 
   const { isChat, isChatHistorial, isSettings, isSearch, isActiveSearch, isAbout } = useMainContentRouter();
 
@@ -27,7 +31,7 @@ const MainContentRouter = () => {
     return (
       <BooksGrid />
     )
-  } else if(isActiveSearch){
+  } else if(isActiveSearch && isPremiumUser){
     return (
       <ActiveBooksGrid />
     )

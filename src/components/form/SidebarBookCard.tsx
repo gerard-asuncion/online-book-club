@@ -35,8 +35,7 @@ const SidebarBookCard = ({ cardStoredBook, removeMode }: SidebarBookCardProps) =
             flex 
             justify-between
             items-center
-            px-4
-            py-2
+            p-2
             rounded-lg
           `}>
             <section className="flex flex-col items-start justify-center text-left">
