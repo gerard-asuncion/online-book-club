@@ -2,8 +2,8 @@ import type { Timestamp, FieldValue } from "firebase/firestore";
 
 export interface ChatMessageData {
     text: string,
-    username: string | null,
-    userId: string | null,  
+    username: string | null | undefined,
+    userUid: string | undefined,  
     room: string | null,
     bookTitle: string | null,
     bookAuthors: string[]
@@ -11,7 +11,7 @@ export interface ChatMessageData {
 
 export interface MessageToFirestore extends ChatMessageData {
     createdAt: FieldValue;
-    seenBy: (string | null)[];
+    seenBy: (string | undefined)[];
 }
 
 export interface SentMessage extends ChatMessageData {

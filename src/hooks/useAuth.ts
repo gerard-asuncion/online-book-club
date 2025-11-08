@@ -21,7 +21,7 @@ import { auth, db } from '../firebase-config';
 import Cookies from 'universal-cookie';
 import { useAppDispatch } from '../app/hooks';
 import { setIsAuth, clearAuth } from '../features/auth/authSlice';
-import { setUserProfileUid, setUserProfileUsername, clearUserProfile } from '../features/userProfile/userProfileSlice';
+import { clearUserProfile } from '../features/userProfile/userProfileSlice';
 import { clearCurrentBook } from '../features/currentBook/currentBookSlice';
 import { setIsSearch } from '../features/mainContentRoute/mainContentRouteSlice';
 import { setOpenSidebar } from '../features/responsive/responsiveSlice';
@@ -207,8 +207,8 @@ const useAuth = () => {
 
       dispatch(setIsAuth());
 
-      dispatch(setUserProfileUid({ userProfileUid: result.user.uid }));
-      dispatch(setUserProfileUsername({ userProfileUsername: result.user.displayName }));
+      // dispatch(setUserProfileUid({ userProfileUid: result.user.uid }));
+      // dispatch(setUserProfileUsername({ userProfileUsername: result.user.displayName }));
 
       dispatch(setIsSearch());
       dispatch(setOpenSidebar());

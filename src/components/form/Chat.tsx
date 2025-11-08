@@ -9,12 +9,15 @@ import type { SentMessage } from "../../types/messageTypes";
 import { useAppSelector } from '../../app/hooks';
 import { selectCurrentBookTitle } from '../../features/currentBook/currentBookSelectors';
 import { selectIsMobile } from '../../features/responsive/responsiveSelectors';
+import { auth } from '../../firebase-config';
 import { selectUserProfileUid } from '../../features/userProfile/userProfileSelectors';
 import { selectUserProfilePremium } from '../../features/userProfile/userProfileSelectors';
 
 const Chat = () => {
 
-  const currentUserUid: string | null = useAppSelector(selectUserProfileUid);
+  const userProfileUid: string | undefined = auth.currentUser?.uid;
+
+  // const currentUserUid: string | null = useAppSelector(selectUserProfileUid);
   const currentBookTitle: string | null = useAppSelector(selectCurrentBookTitle);
   const isPremiumUser: boolean = useAppSelector(selectUserProfilePremium);
   const isMobile: boolean = useAppSelector(selectIsMobile);
@@ -85,13 +88,13 @@ const Chat = () => {
             key={message.id}
             className={`
               flex w-full
-              ${alineateMessages(currentUserUid, message.userId)}
+              ${alineateMessages(userProfileUid, message.userUid)}
             `}
           >
             <div 
               key={message.id} 
               className={`
-                  ${styleMessages(currentUserUid, message.userId)}
+                  ${styleMessages(userProfileUid, message.userUid)}
                   flex 
                   flex-col
                   min-w-60/100
@@ -102,7 +105,7 @@ const Chat = () => {
               >
               <div className='flex justify-between'>
                 <div className={`
-                  ${displayUserName(currentUserUid, message.userId, message.username)}           
+                  ${displayUserName(userProfileUid, message.userUid, message.username)}           
                   font-bold 
                   sm:text-base 
                   text-sm

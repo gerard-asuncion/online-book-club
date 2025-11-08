@@ -40,8 +40,11 @@ export const useChat = () => {
 
   const { addBookToProfile } = useUserData();
 
-  const currentUserUid: string | null = useAppSelector(selectUserProfileUid);
-  const currentUsername: string | null = useAppSelector(selectUserProfileUsername);
+  const currentUserUid: string | undefined = auth.currentUser?.uid;
+  const currentUserUsername: string | null | undefined = auth.currentUser?.displayName;
+
+  // const userProfileUid: string | null = useAppSelector(selectUserProfileUid);
+  // const currentUsername: string | null = useAppSelector(selectUserProfileUsername);
   const userStoredBooks: BookItem[] = useAppSelector(selectUserProfileStoredBooks);
 
   const currentBookId: string | null = useAppSelector(selectCurrentBookId);
@@ -51,7 +54,7 @@ export const useChat = () => {
   const isStored: boolean = userStoredBooks.some(book => book.id === currentBookId);
 
   useEffect(() => {
-
+    
     if (!(currentBookId && currentBookTitle && currentBookAuthors)) return;
 
     markRoomMessagesAsSeen(currentBookId);
@@ -102,8 +105,8 @@ export const useChat = () => {
 
     const messageData: ChatMessageData = {
       text: newMessage,
-      username: currentUsername,
-      userId: currentUserUid,
+      username: currentUserUsername,
+      userUid: currentUserUid,
       room: currentBookId,
       bookTitle: currentBookTitle,
       bookAuthors: currentBookAuthors
@@ -112,7 +115,7 @@ export const useChat = () => {
     const newChatMessage: ChatMessage = new ChatMessage(
                                           messageData.text, 
                                           messageData.username, 
-                                          messageData.userId, 
+                                          messageData.userUid, 
                                           messageData.room, 
                                           messageData.bookTitle, 
                                           messageData.bookAuthors
@@ -123,7 +126,7 @@ export const useChat = () => {
       text: dataToFirestore.text,
       createdAt: dataToFirestore.createdAt,
       username: dataToFirestore.username,
-      userId: dataToFirestore.userId,
+      userUid: dataToFirestore.userUid,
       room: dataToFirestore.room,
       bookTitle: dataToFirestore.bookTitle,
       bookAuthors: dataToFirestore.bookAuthors,

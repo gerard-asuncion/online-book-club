@@ -44,6 +44,10 @@ const useBooksGrid = () => {
   }
 
   const handleVolumeSelection = async (volumeId: string, volumeTitle: string, volumeAuthors: string[]): Promise<void> => {
+    const selectionConfirmed: boolean = window.confirm(`Do you want to select the book "${volumeTitle}"?`);
+    if (!selectionConfirmed) {
+      return;
+    }
     dispatch(clearCurrentBook());
     dispatch(setCurrentBook({bookId: volumeId, bookTitle: volumeTitle, bookAuthors: volumeAuthors}));
     if(checkboxState){

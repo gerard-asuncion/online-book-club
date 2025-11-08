@@ -2,7 +2,7 @@ export const addTimeout = (callback: () => void, time: number): void => {
     setTimeout(callback, time);
 };
 
-export const detectDeletedUser = (username: string | null): string => {
+export const detectDeletedUser = (username: string | null | undefined): string => {
     if (!username) {
         return "Deleted User";
     } else {

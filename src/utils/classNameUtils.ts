@@ -1,21 +1,21 @@
 export const showHideAnything = (show: boolean | number): string =>
     show ? "" : "hidden";
 
-export const alineateMessages = (userId: string | null, messageId: string | null): string =>
-    userId === messageId
+export const alineateMessages = (userUid: string | undefined, messageUserUid: string | undefined): string =>
+    userUid === messageUserUid
     ? "justify-end"
     : "justify-start"
 
-export const styleMessages = (userId: string | null, messageId: string | null): string =>
-    userId === messageId
+export const styleMessages = (userUid: string | undefined, messageUserUid: string | undefined): string =>
+    userUid === messageUserUid
     ? "border-main-color border-2"
     : "border-secondary-color border-2 bg-secondary-color"
 
-export const displayUserName = (userId: string | null, messageId: string | null, username: string | null): string => {
+export const displayUserName = (userUid: string | undefined, messageUserUid: string | undefined, username: string | null | undefined): string => {
     if(!username) {
         return "text-gray-400";
     }else {
-        return userId === messageId
+        return userUid === messageUserUid
         ? "invisible"
         : "text-main-color"
     }
