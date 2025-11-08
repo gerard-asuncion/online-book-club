@@ -1,10 +1,9 @@
-import { useState } from "react";
 import { clearCurrentBook, setCurrentBook } from "../features/currentBook/currentBookSlice";
-import { selectGoogleBooksVolumesById } from "../features/googleBooks/googleBooksSelectors";
+import { selectGoogleBooksVolumes, selectGoogleBooksStatus, selectGoogleBooksError } from "../features/googleBooks/googleBooksSelectors";
 import useMainContentRouter from "./useMainContentRouter";
 import { doc, DocumentReference, DocumentSnapshot, getDoc, type DocumentData } from 'firebase/firestore';
 import { auth, db } from '../firebase-config';
-import { fetchBooksByIds } from '../features/googleBooks/googleBooksSlice';
+import { fetchBooksByIds, clearGoogleBooksSearch } from '../features/googleBooks/googleBooksSlice';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import type { UserProfileType } from '../types/types';
 import type { BookItem } from '../types/booksTypes';
@@ -17,11 +16,11 @@ const useChatHistorial = () => {
 
     const dispatch = useAppDispatch();
 
-    const userHistorialBooks: BookItem[] = useAppSelector(selectGoogleBooksVolumesById)  
+    const userHistorialBooks: BookItem[] = useAppSelector(selectGoogleBooksVolumes);
+    const userHistorialBooksStatus: string = useAppSelector(selectGoogleBooksStatus);
+    const userHistorialBooksError: string | null = useAppSelector(selectGoogleBooksError);
 
     const { isChat, switchContent } = useMainContentRouter();
-    
-    const [isLoadingHistorial, setIsLoadingHistorial] = useState<boolean>(false);
 
     const handleBookClick = (id: string, title: string, authors: string[]): void => {
 
@@ -60,13 +59,18 @@ const useChatHistorial = () => {
 
     const getHistorialBooks = async (): Promise<void> => {
         if(!userProfileUid) return;
-        setIsLoadingHistorial(true);
+        dispatch(clearGoogleBooksSearch());
         const historialBookIds: string[] = await fetchHistorialBookIds(userProfileUid);
         dispatch(fetchBooksByIds(historialBookIds));
-        setIsLoadingHistorial(false);
     }
 
-    return { userHistorialBooks, isLoadingHistorial, getHistorialBooks, handleBookClick };
+    return { 
+        userHistorialBooks,
+        userHistorialBooksStatus,
+        userHistorialBooksError, 
+        getHistorialBooks, 
+        handleBookClick 
+    };
 }
 
 export default useChatHistorial;

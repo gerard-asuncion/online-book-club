@@ -109,6 +109,8 @@ const BooksGrid = () => {
             scrollbar
           `}>
             <ul className="grid grid-cols-2 md:grid-cols-5">
+              {booksStatus === "loading" && <li className="text-white">Loading...</li>}
+              {booksError && <li className="text-white">{booksError}</li>}
               {booksVolumes.map((book: BookItem) => (
                 <li 
                   className="col-span-1 mb-10 flex flex-col items-center"
@@ -124,7 +126,7 @@ const BooksGrid = () => {
                       className="w-full h-full object-cover"
                       src={book.volumeInfo.imageLinks?.thumbnail} 
                       alt={book.volumeInfo.title} 
-                    />
+                      />
                     <div className="text-left">
                       <strong>{book.volumeInfo.title}</strong>
                       <p
@@ -137,8 +139,6 @@ const BooksGrid = () => {
                 </li>
               ))}
             </ul>
-            {booksStatus === "loading" && <div className="text-white">Loading...</div>}
-            {booksError && <div className="text-white">{booksError}</div>}
             {booksStatus === 'succeeded' && booksVolumes.length > 0 && (
               <div className="flex justify-center col-span-full w-full mb-15">
                 <button

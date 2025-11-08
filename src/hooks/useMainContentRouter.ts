@@ -5,8 +5,9 @@ import {
     selectIsChatHistorial, 
     selectIsSettings, 
     selectIsSearch,
-    selectIsActiveSearch
+    selectIsActiveSearch,
 } from "../features/mainContentRoute/mainContentRouteSelectors";
+import { selectUserProfilePremium } from "../features/userProfile/userProfileSelectors"
 import { 
     setIsAbout, 
     setIsChat, 
@@ -18,6 +19,8 @@ import {
 } from "../features/mainContentRoute/mainContentRouteSlice";
 
 const useMainContentRouter = () => {
+
+    const isPremiumUser: boolean = useAppSelector(selectUserProfilePremium);
 
     const dispatch = useAppDispatch();
 
@@ -43,7 +46,7 @@ const useMainContentRouter = () => {
                 dispatch(setIsSearch());
                 break;
             case "activeBookSearch":
-                dispatch(setIsActiveSearch());
+                if(isPremiumUser) dispatch(setIsActiveSearch());
                 break;
             case "chatHistorial":
                 dispatch(setIsChatHistorial());
