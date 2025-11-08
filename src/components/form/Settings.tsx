@@ -12,7 +12,7 @@ const Settings = () => {
 
   return (
     <MainContentFrame>
-      <div className="h-full w-full p-10 text-white">
+      <section className="h-full w-full text-white flex flex-col items-center justify-center gap-3">
         <button
           className={`${defaultButtonLayout()} max-w-50`}
           onClick={() => switchContent("chatHistorial")}
@@ -30,7 +30,7 @@ const Settings = () => {
           onClick={logout}>
           Log Out
         </button> 
-      </div>
+      </section>
     </MainContentFrame>
   )
 }

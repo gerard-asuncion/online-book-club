@@ -87,7 +87,7 @@ const useChatHistorial = () => {
         setIsLoadingHistorial(false);
     }
 
-    return { userHistorialBooks, isLoadingHistorial, getHistorialBooks, handleBookClick };
+    return { userHistorialBooks, setUserHistorialBooks, isLoadingHistorial, getHistorialBooks, handleBookClick };
 }
 
 export default useChatHistorial;
