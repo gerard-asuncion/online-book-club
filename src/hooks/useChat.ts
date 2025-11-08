@@ -17,7 +17,7 @@ import {
 import { auth, db } from '../firebase-config';
 import { useAppSelector } from '../app/hooks';
 import useUserData from './useUserData';
-import { selectUserProfileUid, selectUserProfileUsername } from '../features/userProfile/userProfileSelectors';
+// import { selectUserProfileUid, selectUserProfileUsername } from '../features/userProfile/userProfileSelectors';
 import { 
   selectCurrentBookId, 
   selectCurrentBookTitle, 

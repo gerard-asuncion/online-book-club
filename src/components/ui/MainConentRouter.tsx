@@ -1,4 +1,5 @@
 import Chat from "../form/Chat";
+import ChatHistorial from "../form/ChatHistorial";
 import Settings from "../form/Settings";
 import BooksGrid from "../form/BooksGrid";
 import MainContentFrame from "./MainContentFrame";
@@ -7,11 +8,15 @@ import AboutSection from "./AboutSection";
 
 const MainContentRouter = () => {
 
-  const { isChat, isSettings, isSearch, isAbout } = useMainContentRouter();
+  const { isChat, isChatHistorial, isSettings, isSearch, isAbout } = useMainContentRouter();
 
   if(isChat){
     return (
       <Chat />
+    )
+  } else if(isChatHistorial){
+    return (
+      <ChatHistorial />
     )
   } else if(isSettings){
     return (

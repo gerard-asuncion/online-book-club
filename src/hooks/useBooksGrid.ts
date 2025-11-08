@@ -2,13 +2,13 @@ import { useState } from 'react';
 import useMainContentRouter from './useMainContentRouter';
 import useUserData from './useUserData';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { clearGoogleBooksSearch, fetchGoogleBooks, fetchMoreGoogleBooks } from '../features/books/googleBooksSlice';
+import { clearGoogleBooksSearch, fetchGoogleBooks, fetchMoreGoogleBooks } from '../features/googleBooks/googleBooksSlice';
 import { setCurrentBook, clearCurrentBook } from '../features/currentBook/currentBookSlice';
 import { 
   selectGoogleBooksError, 
   selectGoogleBooksStatus, 
   selectGoogleBooksVolumes 
-} from '../features/books/googleBooksSelectors';
+} from '../features/googleBooks/googleBooksSelectors';
 import type { BookItem } from '../types/booksTypes';
 
 const useBooksGrid = () => {
