@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { auth } from "../firebase-config";
 import Header from "../components/ui/Header";
 import Sidebar from "../components/form/Sidebar";
 import MainContentRouter from "../components/ui/MainConentRouter";
@@ -16,11 +15,9 @@ function AppPage() {
 
   useResponsive();
 
-  const isLoadingUser: boolean = false; // Hardcoded
-
   useEffect(() => {
-        autoUpdateUserData();
-    }, [auth.currentUser]);
+    autoUpdateUserData();
+  }, []);
 
   return (
     <ScreenFrame page="full">
@@ -37,7 +34,7 @@ function AppPage() {
               border-main-color
               overflow-y-auto
               px-5`}>
-                <Sidebar isLoadingUser={isLoadingUser} />
+                <Sidebar />
             </div>
         </section>
     </ScreenFrame>

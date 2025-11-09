@@ -5,10 +5,6 @@ export interface OnlyReactNodeChildrenProps {
     children: ReactNode;
 }
 
-export interface LoadingUserProps {
-    isLoadingUser: boolean;
-}
-
 export interface SidebarBookCardProps {
     cardStoredBook: BookItem,
     removeMode: boolean;

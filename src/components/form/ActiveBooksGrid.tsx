@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import MainContentFrame from "../ui/MainContentFrame"
 import useActiveBooksGrid from "../../hooks/useActiveBooksGrid";
 import { 
@@ -14,20 +13,15 @@ const ActiveBooksGrid = () => {
   const { 
     allActiveBooksStatus, 
     allActiveBooksError, 
-    getActiveBooks, 
     search, 
-    setSearch, 
+    setSearch,
     handleActiveBooksSearch, 
     showResults
   } = useActiveBooksGrid();
 
   const { handleVolumeSelection } = useBooksGrid();
 
-  const results: BookItem[] = showResults()
-
-  useEffect(() => {
-    getActiveBooks();
-  }, [])
+  const results: BookItem[] = showResults();
 
   return (
     <MainContentFrame>

@@ -30,6 +30,7 @@ import { LoginError } from '../classes/LoginError';
 import { 
   RegisterNewUserError, 
   LoginWithEmailAndPasswordError,
+  UserCredentialError
 } from '../classes/CustomErrors';
 import { RegisterUser } from '../classes/RegisterUser';
 import type { CookieOptions, ErrorType, UserProfileType } from '../types/types';
@@ -161,6 +162,8 @@ const useAuth = () => {
     if(!newUser) throw new RegisterNewUserError("Register form didn't provide any object called newUser.");
 
     const result: UserCredential = await createUserWithEmailAndPassword(auth, newUser.userEmail, newUser.userPassword);
+
+    if(!result) throw new UserCredentialError("Failed register")
     
     await updateProfile(result.user, {
       displayName: newUser.userUsername

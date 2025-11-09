@@ -11,4 +11,7 @@ function createCustomError(name: string) {
 }
 
 export const RegisterNewUserError = createCustomError("RegisterNewUserError");
+export const UserCredentialError = createCustomError("UserCredentialError");
 export const LoginWithEmailAndPasswordError = createCustomError("LoginWithEmailAndPasswordError");
+export const ProfileDataError = createCustomError("ProfileDataError");
+export const AutoUpdateUserDataError = createCustomError("AutoUpdateUserDataError");

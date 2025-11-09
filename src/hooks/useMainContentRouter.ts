@@ -48,9 +48,6 @@ const useMainContentRouter = () => {
             case "activeBookSearch":
                 if(isPremiumUser) dispatch(setIsActiveSearch());
                 break;
-            case "chatHistorial":
-                dispatch(setIsChatHistorial());
-                break;
             case "aboutSection":
                 dispatch(setIsAbout());
                 break;

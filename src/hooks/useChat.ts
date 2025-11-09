@@ -19,6 +19,7 @@ import { useAppSelector } from '../app/hooks';
 import useUserData from './useUserData';
 // import { selectUserProfileUid, selectUserProfileUsername } from '../features/userProfile/userProfileSelectors';
 import { 
+  selectCurrentBook,
   selectCurrentBookId, 
   selectCurrentBookTitle, 
   selectCurrentBookAuthors
@@ -28,6 +29,7 @@ import { ChatMessage } from '../classes/ChatMessage';
 import type { DocumentData, DocumentReference, QuerySnapshot, WriteBatch } from 'firebase/firestore';
 import type { SentMessage, MessageToFirestore, ChatMessageData } from '../types/messageTypes';
 import type { BookItem } from '../types/booksTypes';
+import type { CurrentBookInitialState } from '../types/redux';
 
 const MESSAGES_COLLECTION: string = import.meta.env.VITE_FIREBASE_DB_COLLECTION_MESSAGES;
 const USERS_COLLECTION: string = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERS;
@@ -43,10 +45,9 @@ export const useChat = () => {
   const currentUserUid: string | undefined = auth.currentUser?.uid;
   const currentUserUsername: string | null | undefined = auth.currentUser?.displayName;
 
-  // const userProfileUid: string | null = useAppSelector(selectUserProfileUid);
-  // const currentUsername: string | null = useAppSelector(selectUserProfileUsername);
   const userStoredBooks: BookItem[] = useAppSelector(selectUserProfileStoredBooks);
 
+  const currentBook: CurrentBookInitialState = useAppSelector(selectCurrentBook);
   const currentBookId: string | null = useAppSelector(selectCurrentBookId);
   const currentBookTitle: string | null = useAppSelector(selectCurrentBookTitle);
   const currentBookAuthors: string[] = useAppSelector(selectCurrentBookAuthors);
@@ -55,7 +56,7 @@ export const useChat = () => {
 
   useEffect(() => {
     
-    if (!(currentBookId && currentBookTitle && currentBookAuthors)) return;
+    if (!currentBook) return;
 
     markRoomMessagesAsSeen(currentBookId);
 
@@ -75,7 +76,7 @@ export const useChat = () => {
     
     return () => unsubscribe();
 
-  }, [currentBookId]);
+  }, [currentBook, currentBookId]);
 
   const addChatToHistorial = async (currentRoom: string | null) => {
     

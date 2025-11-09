@@ -3,7 +3,7 @@ import Header from "../components/ui/Header";
 import ScreenFrame from "../components/ui/ScreenFrame";
 import { defaultButtonLayout } from "../utils/classNameUtils";
 
-const Auth = () => {
+const LoginPage = () => {
 
     const { 
         loginEmail,
@@ -75,4 +75,4 @@ const Auth = () => {
     );
 };
 
-export default Auth;
+export default LoginPage;

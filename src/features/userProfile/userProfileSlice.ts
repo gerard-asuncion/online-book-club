@@ -7,8 +7,8 @@ import type { BookItem } from '../../types/booksTypes';
 const BOOKS_API_URL: string = import.meta.env.VITE_GOOGLE_BOOKS_API_URL;
 
 const initialState: UserProfileInitialState = {
-  // userProfileUid: null,
-  // userProfileUsername: null,
+  userProfileUid: null,
+  userProfileUsername: null,
   userProfilePremium: false,
   storedBooks: [],
   fetchStoredBooksStatus: 'idle',
@@ -51,18 +51,18 @@ const userProfileSlice = createSlice({
   name: 'userProfile',
   initialState,
   reducers: {
-    // setUserProfileUid: (state, action: PayloadAction<{ userProfileUid: string | null }>) => {
-    //   state.userProfileUid = action.payload.userProfileUid;
-    // },
-    // setUserProfileUsername: (state, action: PayloadAction<{ userProfileUsername: string | null }>) => {
-    //   state.userProfileUsername = action.payload.userProfileUsername;
-    // },
+    setUserProfileUid: (state, action: PayloadAction<{ userProfileUid: string | null }>) => {
+      state.userProfileUid = action.payload.userProfileUid;
+    },
+    setUserProfileUsername: (state, action: PayloadAction<{ userProfileUsername: string | null }>) => {
+      state.userProfileUsername = action.payload.userProfileUsername;
+    },
     setUserProfilePremium: (state, action: PayloadAction<{ userProfilePremium: boolean }>) => {
       state.userProfilePremium = action.payload.userProfilePremium;
     },
     clearUserProfile: (state) => {
-      // state.userProfileUid = null;
-      // state.userProfileUsername = null;
+      state.userProfileUid = null;
+      state.userProfileUsername = null;
       state.userProfilePremium = false;
       state.storedBooks = [];
       state.fetchStoredBooksStatus = 'idle';
@@ -91,8 +91,8 @@ const userProfileSlice = createSlice({
 });
 
 export const { 
-  // setUserProfileUid,
-  // setUserProfileUsername,
+  setUserProfileUid,
+  setUserProfileUsername,
   setUserProfilePremium,
   clearUserProfile,
   clearAllStoredBooks

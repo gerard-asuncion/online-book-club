@@ -15,7 +15,7 @@ const ChatHistorial = () => {
 
     useEffect(() => {
         getHistorialBooks();
-    }, []);
+    }, [getHistorialBooks]);
   
     return (
         <MainContentFrame>
