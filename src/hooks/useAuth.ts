@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/react";
 import { useState } from 'react';
 import { useNavigate, type NavigateFunction } from 'react-router-dom';
 import { 
@@ -89,6 +90,7 @@ const useAuth = () => {
       return !docSnap.exists();
 
     } catch (error) {
+      Sentry.captureException(error);
       console.error("Error checking username availability:", error);
       return false;
     }
@@ -145,6 +147,7 @@ const useAuth = () => {
       await loginWithEmailAndPassword(newUser.userEmail, newUser.userPassword);
 
     }catch(error){
+      Sentry.captureException(error);
       if (error instanceof ValidationError) {
         setRegistrationErrors([{message: error.message}, ...validationErrors]);
       } else if (error instanceof LoginError) {
@@ -159,31 +162,35 @@ const useAuth = () => {
 
   const registerNewUser = async (newUser: RegisterUser): Promise<void> => {
 
-    if(!newUser) throw new RegisterNewUserError("Register form didn't provide any object called newUser.");
+    try {
+      if(!newUser) throw new RegisterNewUserError("Register form didn't provide any object called newUser.");
 
-    const result: UserCredential = await createUserWithEmailAndPassword(auth, newUser.userEmail, newUser.userPassword);
+      const result: UserCredential = await createUserWithEmailAndPassword(auth, newUser.userEmail, newUser.userPassword);
 
-    if(!result) throw new UserCredentialError("Failed register")
-    
-    await updateProfile(result.user, {
-      displayName: newUser.userUsername
-    });
+      if(!result) throw new UserCredentialError("Failed register")
+      
+      await updateProfile(result.user, {
+        displayName: newUser.userUsername
+      });
 
-    const batch: WriteBatch = writeBatch(db);
-    const userDocRef: DocumentReference = doc(db, USERS_COLLECTION, result.user.uid);
-    const dataForFirestore: UserProfileType = newUser.toFirestoreObject();
-    const resultUserUid: string = result.user.uid;
-    dataForFirestore.uid = resultUserUid;
-    batch.set(userDocRef, dataForFirestore);
+      const batch: WriteBatch = writeBatch(db);
+      const userDocRef: DocumentReference = doc(db, USERS_COLLECTION, result.user.uid);
+      const dataForFirestore: UserProfileType = newUser.toFirestoreObject();
+      const resultUserUid: string = result.user.uid;
+      dataForFirestore.uid = resultUserUid;
+      batch.set(userDocRef, dataForFirestore);
 
-    const usernameDocRef: DocumentReference<DocumentData, DocumentData> = 
-      doc(db, USERNAMES_COLLECTION, dataForFirestore.displayName_lowercase);
-    
+      const usernameDocRef: DocumentReference<DocumentData, DocumentData> = 
+        doc(db, USERNAMES_COLLECTION, dataForFirestore.displayName_lowercase);      
       batch.set(usernameDocRef, {});
+      await batch.commit();
 
-    await batch.commit();
-
-    await sendEmailVerification(result.user);
+      await sendEmailVerification(result.user);
+      
+    } catch(error){
+      Sentry.captureException(error);   
+    }
+  
   }
 
   const premiumRegister = (checked: boolean): void => {
@@ -221,7 +228,7 @@ const useAuth = () => {
       navigate("/", { replace: true });
 
     } catch (error) {
-
+      Sentry.captureException(error);
       console.error("Firebase Login Error:", error);
       const loginError = LoginError.fromFirebaseError(error);
       setLoginError(loginError);

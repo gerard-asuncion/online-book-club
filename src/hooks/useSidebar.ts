@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/react";
 import { useState } from "react";
 import { 
     collection, 
@@ -79,6 +80,7 @@ const useSidebar = () => {
             return Array.from(roomIds);
 
         } catch (error) {
+            Sentry.captureException(error);
             console.error("Error fetching room ids:", error);
             return [];
         }

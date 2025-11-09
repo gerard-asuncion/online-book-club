@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/react";
 import { doc, getDoc, updateDoc, arrayRemove, arrayUnion, DocumentReference, type DocumentData, DocumentSnapshot } from 'firebase/firestore';
 import { auth, db } from '../firebase-config';
 import type { UserProfileType } from '../types/types';
@@ -47,6 +48,7 @@ const useUserData = () => {
             return profileData;
 
         } catch (error) {
+            Sentry.captureException(error);
             console.error("Error fetching profile data:", error);
             return null;
         }
@@ -58,6 +60,7 @@ const useUserData = () => {
             dispatch(setUserProfileUid({ userProfileUid: userUid }));
 
         } catch (error) {
+            Sentry.captureException(error);
             console.error("Error dispatching user uid info from db:", error);
         }
     };
@@ -72,6 +75,7 @@ const useUserData = () => {
                 dispatch(clearAllStoredBooks());
             }
         } catch (error) {
+            Sentry.captureException(error);
             console.error("Error fetching user stored books:", error);
         }
     }
@@ -82,6 +86,7 @@ const useUserData = () => {
             dispatch(setUserProfileUsername({ userProfileUsername: userUsername }));
 
         } catch (error) {
+            Sentry.captureException(error);
             console.error("Error dispatching user username info from db:", error);
         }
     }
@@ -92,6 +97,7 @@ const useUserData = () => {
             dispatch(setUserProfilePremium({ userProfilePremium: isPremiumUserDB }));
 
         } catch (error) {
+            Sentry.captureException(error);
             console.error("Error dispatching premium info from db:", error);
         }
     }
@@ -108,6 +114,7 @@ const useUserData = () => {
             const profileData: UserProfileType | null = await getProfileData();
             storeBooksById(profileData);
         } catch (error) {
+            Sentry.captureException(error);
             console.error("Error adding book to profile:", error);
         }
     }
@@ -128,6 +135,7 @@ const useUserData = () => {
             storeBooksById(profileData);
 
         } catch (error) {
+            Sentry.captureException(error);
             console.error("Error removing book from profile:", error);
         }
     };
@@ -172,6 +180,7 @@ const useUserData = () => {
             storeBooksById(profileData);
 
         }catch(error){
+            Sentry.captureException(error);
             console.error(error);
         }
     }, []);
