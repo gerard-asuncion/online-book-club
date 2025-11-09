@@ -25,9 +25,7 @@ root.render(
     <Provider store={store}>
       <PersistGate loading={<LoadingPage />} persistor={persistor}>
         <BrowserRouter>
-          <Sentry.ErrorBoundary fallback={<p>An error has occurred</p>}>
             <App />
-          </Sentry.ErrorBoundary>;
         </BrowserRouter>
       </PersistGate>
     </Provider>

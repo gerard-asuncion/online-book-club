@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/react';
 import useAuth from "../hooks/useAuth";
 import Header from "../components/ui/Header";
 import ScreenFrame from "../components/ui/ScreenFrame";
@@ -16,6 +17,7 @@ const LoginPage = () => {
     } = useAuth();
 
     return (
+        <Sentry.ErrorBoundary fallback={<p>An error has occurred</p>}>
         <ScreenFrame page="full">
             <Header />
             <ScreenFrame page="center">
@@ -69,9 +71,19 @@ const LoginPage = () => {
                     >
                         Register
                     </button>
+                    <button
+                    type="button"
+                    className={`${defaultButtonLayout()}`}
+                    onClick={() => {
+                        throw new Error("Testing sentry error!!");
+                    }}
+                >
+                Break the world
+                </button>;
                 </section>
             </ScreenFrame>
         </ScreenFrame>
+        </Sentry.ErrorBoundary>
     );
 };
 

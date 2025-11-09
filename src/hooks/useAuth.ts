@@ -202,7 +202,7 @@ const useAuth = () => {
     try {
       if(!email) throw new LoginWithEmailAndPasswordError("No user email, unable to login.");
       if(!password) throw new LoginWithEmailAndPasswordError("No user password, unable to login.");
-
+  
       const result: UserCredential = await signInWithEmailAndPassword(auth, email, password);
 
       dispatch(clearCurrentBook());
