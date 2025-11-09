@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/react";
 import { useState, useEffect } from 'react';
 import { 
   addDoc,
@@ -26,6 +27,7 @@ import {
 } from '../features/currentBook/currentBookSelectors';
 import { selectUserProfileStoredBooks } from '../features/userProfile/userProfileSelectors';
 import { ChatMessage } from '../classes/ChatMessage';
+import { ChatHistorialError } from '../classes/Errors/CustomErrors';
 import type { DocumentData, DocumentReference, QuerySnapshot, WriteBatch } from 'firebase/firestore';
 import type { SentMessage, MessageToFirestore, ChatMessageData } from '../types/messageTypes';
 import type { BookItem } from '../types/booksTypes';
@@ -79,23 +81,18 @@ export const useChat = () => {
   }, [currentBook, currentBookId]);
 
   const addChatToHistorial = async (currentRoom: string | null) => {
-    
-    if (!currentUserUid) {
-      console.error("Error: L'usuari no està autenticat.");
-      return;
-    }
-    if (!currentRoom) {
-      console.error("Error: El missatge no conté l'id de l'usuari.");
-      return;
-    }
     try {
+      if (!currentUserUid) throw new ChatHistorialError("User is not authenticated.");
+      if (!currentRoom) throw new ChatHistorialError("Chat message doesn't contain user's Uid");
+
       const userDocRef = doc(db, USERS_COLLECTION, currentUserUid);
       await updateDoc(userDocRef, {
         userChatHistorial: arrayUnion(currentRoom) 
       });
 
     } catch (error) {
-      console.error("Error en actualitzar l'historial de xat:", error);
+      Sentry.captureException(error);
+      if(import.meta.env.DEV) console.error("Error actualizing user's chat historial:", error);
     }
   }
 
@@ -165,7 +162,7 @@ export const useChat = () => {
       });   
       await batch.commit();
     } catch (error) {
-      console.error("Error en marcar missatges com a llegits (batch): ", error, 4000);
+      if(import.meta.env.DEV) console.error("Error marking messages as 'seen' (batch):", error);
     }
   };
 

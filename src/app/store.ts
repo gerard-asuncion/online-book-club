@@ -1,4 +1,5 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import * as Sentry from "@sentry/react";
 import { 
     persistStore, 
     persistReducer,
@@ -17,6 +18,9 @@ import mainContentRouteReducer from '../features/mainContentRoute/mainContentRou
 import currentBookReducer from '../features/currentBook/currentBookSlice';
 import responsiveReducer from '../features/responsive/responsiveSlice';
 import googleBooksReducer from '../features/googleBooks/googleBooksSlice';
+
+const sentryReduxEnhancer = Sentry.createReduxEnhancer({
+});
 
 const rootReducer = combineReducers({
     auth: authReducer,
@@ -37,6 +41,9 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
 	reducer: persistedReducer,
+    enhancers: (getDefaultEnhancers) => {
+        return getDefaultEnhancers().concat(sentryReduxEnhancer);
+    },
 	middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
             serializableCheck: {

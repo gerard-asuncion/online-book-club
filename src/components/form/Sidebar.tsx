@@ -22,7 +22,6 @@ const Sidebar = () => {
     const { switchContent } = useMainContentRouter();
 
     return(
-
         <section className="h-full grid grid-cols-1 grid-rows-[auto_1fr_auto] px-2 py-5 gap-6">
             <article className="flex flex-col gap-3">
                 <div className="">

@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/react";
 import { useCallback } from 'react';
 import { clearCurrentBook, setCurrentBook } from "../features/currentBook/currentBookSlice";
 import { selectGoogleBooksVolumes, selectGoogleBooksStatus, selectGoogleBooksError } from "../features/googleBooks/googleBooksSelectors";
@@ -53,7 +54,8 @@ const useChatHistorial = () => {
             return historialBookIds;
 
         } catch (error) {
-            console.error("Error fetching user chat historial:", error);
+            Sentry.captureException(error);
+            if(import.meta.env.DEV) console.error("Error fetching user chat historial:", error);
             return [];
         } 
     }
