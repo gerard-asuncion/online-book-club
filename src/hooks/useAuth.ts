@@ -222,10 +222,8 @@ const useAuth = () => {
       console.error("Firebase Login Error:", error);
       const loginError = LoginError.fromFirebaseError(error);
       setLoginError(loginError);
-      
-      // --- AFEGEIX AQUESTA LÍNIA ---
-      // Llança l'error cap amunt perquè 'submitRegisterForm' el pugui capturar
       throw loginError;
+      
     } finally {
       setLoadingLogin(false);
     }
