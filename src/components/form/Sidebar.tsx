@@ -23,14 +23,23 @@ const Sidebar = ({ isLoadingUser }: LoadingUserProps) => {
         <section className="h-full grid grid-cols-1 grid-rows-[auto_1fr_auto] px-2 py-5 gap-6">
             <article className="flex flex-col gap-3">
                 <div className="">
-                    <p className="text-gray-400 text-sm">Username:</p>
+                    <p className="text-main-color text-sm">Username:</p>
                     {isLoadingUser && <p className="text-white">Loading username...</p>}
                     {!isLoadingUser && <p className="text-white font-semibold">{auth.currentUser?.displayName}</p>}
                 </div>
                     {isLoadingUser && <p>Loading room...</p>}
-                    {!isLoadingUser && 
+                    {!isLoadingUser && !currentBookTitle && 
                         <div className="">
-                            <p className="text-gray-400 text-sm text-left">Active room:</p>
+                            <p className="text-main-color text-sm text-left">No active room!</p>
+                            <div 
+                                className={`${setCursorPointer(currentBookTitle)} text-left text-white`} 
+                            >
+                                <div>Please search a book...</div>
+                            </div>
+                        </div>}
+                    {!isLoadingUser && currentBookTitle && 
+                        <div className="">
+                            <p className="text-main-color text-sm text-left">Active room:</p>
                             <button 
                                 className={`${setCursorPointer(currentBookTitle)} text-left text-white hover:text-main-color`} 
                                 onClick={() => openChat(currentBookTitle)}
@@ -52,7 +61,7 @@ const Sidebar = ({ isLoadingUser }: LoadingUserProps) => {
                     </button>
                     <button 
                         onClick={() => {
-                            hideSidebarInMobile();
+                            hideSidebarInMobile(isPremiumUser);
                             switchContent("activeBookSearch");
                         }}
                         className={`${defaultButtonLayout(isPremiumUser)}`}>

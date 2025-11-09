@@ -24,8 +24,8 @@ const useSidebar = () => {
         }
     }
 
-    const hideSidebarInMobile = (): void => {
-        if(isMobile){
+    const hideSidebarInMobile = (checkPremium: boolean = true): void => {
+        if(isMobile && checkPremium){
             const closeDispatch = () => dispatch(setCloseSidebar());
             addTimeout(closeDispatch, 400);
         }

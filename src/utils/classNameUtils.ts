@@ -21,8 +21,11 @@ export const displayUserName = (userUid: string | undefined, messageUserUid: str
     }
 }
 
-export const justifyBooksGrid = (center: boolean): string =>
+export const justifyBooksSection = (center: boolean): string =>
     center ? "justify-center" : "justify-between"
+
+export const changeBooksGridFlexDirection = (open: boolean): string =>
+    open ? "md:flex-row items-center" : "items-center"
 
 export const changeWindowLayout = (openSidebar: boolean): string =>
     openSidebar 
