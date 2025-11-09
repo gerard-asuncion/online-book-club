@@ -49,7 +49,7 @@ const useUserData = () => {
 
         } catch (error) {
             Sentry.captureException(error);
-            console.error("Error fetching profile data:", error);
+            if(import.meta.env.DEV) console.error("Error fetching profile data:", error);
             return null;
         }
     }
@@ -61,7 +61,7 @@ const useUserData = () => {
 
         } catch (error) {
             Sentry.captureException(error);
-            console.error("Error dispatching user uid info from db:", error);
+            if(import.meta.env.DEV) console.error("Error dispatching user uid info from db:", error);
         }
     };
 
@@ -76,7 +76,7 @@ const useUserData = () => {
             }
         } catch (error) {
             Sentry.captureException(error);
-            console.error("Error fetching user stored books:", error);
+            if(import.meta.env.DEV) console.error("Error fetching user stored books:", error);
         }
     }
 
@@ -87,7 +87,7 @@ const useUserData = () => {
 
         } catch (error) {
             Sentry.captureException(error);
-            console.error("Error dispatching user username info from db:", error);
+            if(import.meta.env.DEV) console.error("Error dispatching user username info from db:", error);
         }
     }
 
@@ -98,7 +98,7 @@ const useUserData = () => {
 
         } catch (error) {
             Sentry.captureException(error);
-            console.error("Error dispatching premium info from db:", error);
+            if(import.meta.env.DEV) console.error("Error dispatching premium info from db:", error);
         }
     }
 
@@ -115,7 +115,7 @@ const useUserData = () => {
             storeBooksById(profileData);
         } catch (error) {
             Sentry.captureException(error);
-            console.error("Error adding book to profile:", error);
+            if(import.meta.env.DEV) console.error("Error adding book to profile:", error);
         }
     }
 
@@ -136,7 +136,7 @@ const useUserData = () => {
 
         } catch (error) {
             Sentry.captureException(error);
-            console.error("Error removing book from profile:", error);
+            if(import.meta.env.DEV) console.error("Error removing book from profile:", error);
         }
     };
 
@@ -181,7 +181,7 @@ const useUserData = () => {
 
         }catch(error){
             Sentry.captureException(error);
-            console.error(error);
+            if(import.meta.env.DEV) console.error("Error in autoUpdateUserData:", error);
         }
     }, []);
 

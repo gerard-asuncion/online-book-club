@@ -92,7 +92,7 @@ export const useChat = () => {
 
     } catch (error) {
       Sentry.captureException(error);
-      console.error("Error en actualitzar l'historial de xat:", error);
+      if(import.meta.env.DEV) console.error("Error actualizing user's chat historial:", error);
     }
   }
 
@@ -162,7 +162,7 @@ export const useChat = () => {
       });   
       await batch.commit();
     } catch (error) {
-      console.error("Error en marcar missatges com a llegits (batch): ", error, 4000);
+      if(import.meta.env.DEV) console.error("Error marking messages as 'seen' (batch):", error);
     }
   };
 

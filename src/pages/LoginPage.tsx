@@ -71,15 +71,6 @@ const LoginPage = () => {
                     >
                         Register
                     </button>
-                    <button
-                    type="button"
-                    className={`${defaultButtonLayout()}`}
-                    onClick={() => {
-                        throw new Error("Testing sentry error!!");
-                    }}
-                >
-                Break the world
-                </button>;
                 </section>
             </ScreenFrame>
         </ScreenFrame>

@@ -81,7 +81,7 @@ const useSidebar = () => {
 
         } catch (error) {
             Sentry.captureException(error);
-            console.error("Error fetching room ids:", error);
+            if(import.meta.env.DEV) console.error("Error fetching room ids:", error);
             return [];
         }
     }

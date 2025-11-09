@@ -55,7 +55,7 @@ const useChatHistorial = () => {
 
         } catch (error) {
             Sentry.captureException(error);
-            console.error("Error fetching user chat historial:", error);
+            if(import.meta.env.DEV) console.error("Error fetching user chat historial:", error);
             return [];
         } 
     }

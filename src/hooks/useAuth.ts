@@ -91,7 +91,7 @@ const useAuth = () => {
 
     } catch (error) {
       Sentry.captureException(error);
-      console.error("Error checking username availability:", error);
+      if (import.meta.env.DEV) console.error("Error checking username availability:", error);
       return false;
     }
   }
@@ -148,6 +148,7 @@ const useAuth = () => {
 
     }catch(error){
       Sentry.captureException(error);
+      if (import.meta.env.DEV) console.error("Error submitting register form:", error);
       if (error instanceof ValidationError) {
         setRegistrationErrors([{message: error.message}, ...validationErrors]);
       } else if (error instanceof LoginError) {
@@ -188,6 +189,7 @@ const useAuth = () => {
       await sendEmailVerification(result.user);
       
     } catch(error){
+      if (import.meta.env.DEV) console.error("Error registering new user:", error);
       Sentry.captureException(error);   
     }
   
@@ -229,7 +231,7 @@ const useAuth = () => {
 
     } catch (error) {
       Sentry.captureException(error);
-      console.error("Firebase Login Error:", error);
+      if (import.meta.env.DEV) console.error("Firebase Login Error:", error);
       const loginError = LoginError.fromFirebaseError(error);
       setLoginError(loginError);
       throw loginError;
