@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/react';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import type { GoogleBooksSliceInitialState } from '../../types/redux';
@@ -31,7 +32,7 @@ export const fetchGoogleBooks = createAsyncThunk<
       return response.data.items as BookItem[] || [];
     
     } catch (error) {
-
+      Sentry.captureException(error);
       if (axios.isAxiosError(error)) {
         const apiError: string = error.response?.data?.error?.message;
         return rejectWithValue(apiError || 'Unable to contact API.');
@@ -66,6 +67,7 @@ export const fetchMoreGoogleBooks = createAsyncThunk<
       return response.data.items as BookItem[] || [];
 
     } catch (error) {
+      Sentry.captureException(error);
       if (axios.isAxiosError(error)) {
         const apiError = error.response?.data?.error?.message;
         return rejectWithValue(apiError || 'Unable to contact API.');
@@ -81,8 +83,7 @@ export const fetchBooksByIds = createAsyncThunk<
   { rejectValue: string }
 >(
   'googleBooks/fetchBooksByIds',
-  async (allRoomIds: string[], { rejectWithValue }) => {   
-
+  async (allRoomIds: string[], { rejectWithValue }) => { 
     const validRoomIds = allRoomIds.filter(Boolean);
     if (validRoomIds.length === 0) return [];
 
@@ -97,6 +98,7 @@ export const fetchBooksByIds = createAsyncThunk<
       return activeBooksData;
 
     } catch (error) { 
+      Sentry.captureException(error);
       if (axios.isAxiosError(error)) {
         console.error('Failed to fetch one or more active book rooms.');
         return rejectWithValue('Failed to fetch one or more active book rooms.');
