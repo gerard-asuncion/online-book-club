@@ -25,7 +25,12 @@ import { clearUserProfile } from '../features/userProfile/userProfileSlice';
 import { clearCurrentBook } from '../features/currentBook/currentBookSlice';
 import { setIsSearch } from '../features/mainContentRoute/mainContentRouteSlice';
 import { setOpenSidebar } from '../features/responsive/responsiveSlice';
-import { ValidationError } from "../classes/ValidationError"
+import { ValidationError } from "../classes/ValidationError";
+import { LoginError } from '../classes/LoginError';
+import { 
+  RegisterNewUserError, 
+  LoginWithEmailAndPasswordError,
+} from '../classes/CustomErrors';
 import { RegisterUser } from '../classes/RegisterUser';
 import type { CookieOptions, ErrorType, UserProfileType } from '../types/types';
 
@@ -38,7 +43,8 @@ const useAuth = () => {
 
   const navigate: NavigateFunction = useNavigate();
   const dispatch = useAppDispatch();
-
+  
+  const [loginError, setLoginError] = useState<LoginError | null>(null);
   const [registrationErrors, setRegistrationErrors] = useState<ErrorType[]>([]);
     
   const [newUsername, setNewUsername] = useState<string>("");
@@ -46,11 +52,12 @@ const useAuth = () => {
   const [newUserPassword, setNewUserPassword] = useState<string>("");
   const [newPasswordConfirmation, setNewPasswordConfirmation] = useState<string>("");
 
-  const [loginError, setLoginError] = useState<string | null>(null);
   const [loginEmail, setLoginEmail] = useState<string>("");
   const [loginPassword, setLoginPassword] = useState<string>("");
 
   const [checkboxState, setCheckboxState] = useState<boolean>(false);
+
+  const [loadingLogin, setLoadingLogin] = useState<boolean>(false);
 
   const navigateToRegister = (): void => {
     navigate("/register", { replace: true });
@@ -91,6 +98,7 @@ const useAuth = () => {
     e.preventDefault();
     
     const validationErrors: ErrorType[] = []
+    setRegistrationErrors([]);
 
     try {
 
@@ -128,119 +136,100 @@ const useAuth = () => {
       
       if(registrationErrors.length > 0) setRegistrationErrors([]);
 
+      setLoadingLogin(true);
+
       const newUser: RegisterUser = new RegisterUser(newUsername, newUserEmail, newUserPassword, checkboxState);
 
-      registerNewUser(newUser);
-
-      navigate("/login", { replace: true });
+      await registerNewUser(newUser);   
+      await loginWithEmailAndPassword(newUser.userEmail, newUser.userPassword);
 
     }catch(error){
-
-      error instanceof ValidationError
-      ? setRegistrationErrors([{message: error.message}, ...validationErrors])
-      : setRegistrationErrors([{message: `Unexpected: ${error}`}])
-
-    }finally{
-      
-      setNewUsername("")
-      setNewUserEmail("");
-      setNewUserPassword("");
-      setNewPasswordConfirmation("");
-
-      validationErrors.length = 0;
-
+      if (error instanceof ValidationError) {
+        setRegistrationErrors([{message: error.message}, ...validationErrors]);
+      } else if (error instanceof LoginError) {
+        setRegistrationErrors([{message: error.userMessage}]);
+      } else if (error instanceof Error && 'code' in error) {
+        setRegistrationErrors([{message: (error as {code: string}).code}]);
+      } else {
+        setRegistrationErrors([{message: `Unexpected: ${error}`}]);
+      }
     }
   }
 
   const registerNewUser = async (newUser: RegisterUser): Promise<void> => {
 
-    try {
-      const result: UserCredential = await createUserWithEmailAndPassword(auth, newUser.userEmail, newUser.userPassword);
-      await updateProfile(result.user, {
-        displayName: newUser.userUsername
-      });
+    if(!newUser) throw new RegisterNewUserError("Register form didn't provide any object called newUser.");
 
-      const batch: WriteBatch = writeBatch(db);
+    const result: UserCredential = await createUserWithEmailAndPassword(auth, newUser.userEmail, newUser.userPassword);
+    
+    await updateProfile(result.user, {
+      displayName: newUser.userUsername
+    });
 
-      const userDocRef: DocumentReference = doc(db, USERS_COLLECTION, result.user.uid);
-      const dataForFirestore: UserProfileType = newUser.toFirestoreObject();
-      const resultUserUid: string = result.user.uid;
-      dataForFirestore.uid = resultUserUid;
-      batch.set(userDocRef, dataForFirestore);
+    const batch: WriteBatch = writeBatch(db);
+    const userDocRef: DocumentReference = doc(db, USERS_COLLECTION, result.user.uid);
+    const dataForFirestore: UserProfileType = newUser.toFirestoreObject();
+    const resultUserUid: string = result.user.uid;
+    dataForFirestore.uid = resultUserUid;
+    batch.set(userDocRef, dataForFirestore);
 
-      const usernameDocRef: DocumentReference<DocumentData, DocumentData> = 
-        doc(db, USERNAMES_COLLECTION, dataForFirestore.displayName_lowercase);
-      
-        batch.set(usernameDocRef, {});
+    const usernameDocRef: DocumentReference<DocumentData, DocumentData> = 
+      doc(db, USERNAMES_COLLECTION, dataForFirestore.displayName_lowercase);
+    
+      batch.set(usernameDocRef, {});
 
-      await batch.commit();
+    await batch.commit();
 
-      await sendEmailVerification(result.user);
-
-      }catch (error) {
-      console.error("Error creating user or sending verification email:", error, 4000);
-    }
+    await sendEmailVerification(result.user);
   }
 
   const premiumRegister = (checked: boolean): void => {
     setCheckboxState(checked);
   }
 
-  const loginWithEmailAndPassword = async (e: React.FormEvent): Promise<void> => {
-
+  const submitLoginForm = (e: React.FormEvent): void => {
     e.preventDefault();
+    loginWithEmailAndPassword(loginEmail, loginPassword);  
+  };
 
-    setLoginError(null); 
+  const loginWithEmailAndPassword = async (email: string, password: string): Promise<void> => {
+    setLoadingLogin(true);
+    setLoginError(null);
 
     try {
-      const result: UserCredential = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
+      if(!email) throw new LoginWithEmailAndPasswordError("No user email, unable to login.");
+      if(!password) throw new LoginWithEmailAndPasswordError("No user password, unable to login.");
+
+      const result: UserCredential = await signInWithEmailAndPassword(auth, email, password);
 
       dispatch(clearCurrentBook());
       dispatch(clearUserProfile());
 
-      const cookieOptions: CookieOptions = {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7
-      };
-
+        const cookieOptions: CookieOptions = {
+          path: '/',
+          maxAge: 60 * 60 * 24 * 7
+        };
       cookies.set("auth-token", result.user.refreshToken, cookieOptions);
 
       dispatch(setIsAuth());
-
-      // dispatch(setUserProfileUid({ userProfileUid: result.user.uid }));
-      // dispatch(setUserProfileUsername({ userProfileUsername: result.user.displayName }));
-
       dispatch(setIsSearch());
       dispatch(setOpenSidebar());
 
       navigate("/", { replace: true });
 
     } catch (error) {
- 
-      if (error instanceof Error && 'code' in error) {
-        const errorCode = (error as { code: string }).code;
-        console.error("Firebase Login Error:", errorCode);
 
-        switch (errorCode) {
-          case "auth/invalid-credential":
-          case "auth/invalid-email":
-          case "auth/user-not-found":
-          case "auth/wrong-password":
-            setLoginError("Incorrect email or password");
-              break;
-
-          default:
-            setLoginError("Unexpected error, please try again.");
-        }
-      } else {
-        console.error("Unexpected Error:", error);
-        setLoginError("Unexpected error, please try again.");
-      } 
-    }finally {
-      setLoginEmail("");
-      setLoginPassword("");
+      console.error("Firebase Login Error:", error);
+      const loginError = LoginError.fromFirebaseError(error);
+      setLoginError(loginError);
+      
+      // --- AFEGEIX AQUESTA LÍNIA ---
+      // Llança l'error cap amunt perquè 'submitRegisterForm' el pugui capturar
+      throw loginError;
+    } finally {
+      setLoadingLogin(false);
     }
-  };
+  }
 
   const logout = async (): Promise<void> => {
     await signOut(auth);
@@ -257,6 +246,7 @@ const useAuth = () => {
     setLoginEmail,
     loginPassword,
     setLoginPassword,
+    loadingLogin,
     loginError,
     registrationErrors,
     newUsername,
@@ -270,7 +260,7 @@ const useAuth = () => {
     setNewPasswordConfirmation,
     navigateToRegister,
     navigateToLogin,
-    loginWithEmailAndPassword,
+    submitLoginForm,
     checkboxState,
     premiumRegister,
     logout

@@ -1,7 +1,8 @@
 import MainContentFrame from "../ui/MainContentFrame";
 import { 
   defaultButtonLayout, 
-  justifyBooksGrid, 
+  justifyBooksSection,
+  changeBooksGridFlexDirection, 
   showHideAnything
 } from "../../utils/classNameUtils";
 import useBooksGrid from "../../hooks/useBooksGrid";
@@ -29,20 +30,18 @@ const BooksGrid = () => {
 
   return (
     <MainContentFrame>
-      <section className={`${justifyBooksGrid(!displayBooks)} flex flex-col items-center h-full w-full`}>
-        <article className="flex flex-col justify-center items-center p-10">
+      <section className={`${justifyBooksSection(!displayBooks)} flex flex-col items-center h-full w-full`}>
+        <article className="flex flex-col justify-center items-center p-10 w-full">
           <form 
             onSubmit={(e) => {handleBooksSearch(e, query);}}
             className={`
-              grid
+              ${changeBooksGridFlexDirection(displayBooks)}
+              flex
+              flex-col
               gap-6
-              max-w-xs
-              md:max-w-xl
               shrink-0
-              w-full
-              place-items-center
-              grid-cols-1
-              ${isPremiumUser ? 'md:grid-cols-4' : 'md:grid-cols-3'}
+              w-80/100
+              md:w-50/100
             `}
           >
             <input 
@@ -53,7 +52,6 @@ const BooksGrid = () => {
               placeholder="search a book..."
               className={`
                 w-full
-                ${isPremiumUser ? 'md:col-span-3 md:row-span-1' : 'md:col-span-2 md:row-span-1'}
                 max-h-10
                 p-4
                 rounded-full 
@@ -66,11 +64,11 @@ const BooksGrid = () => {
             />
             <button 
                 type="submit"
-                className={`${defaultButtonLayout()} w-full md:w-auto max-h-10 text-sm md:col-span-1 md:row-span-1`}>
+                className={`${defaultButtonLayout()} w-full md:w-50/100 max-h-10 text-sm`}>
               Search
             </button>
             {isPremiumUser && 
-              <div className="flex justify-center items-center gap-2">
+              <div className="max-h-2 min-w-20/100 flex justify-center items-center gap-2">
                 <input 
                   type="checkbox"
                   className="accent-main-color"

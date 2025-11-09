@@ -3,7 +3,7 @@ import MainContentFrame from "../ui/MainContentFrame"
 import useActiveBooksGrid from "../../hooks/useActiveBooksGrid";
 import { 
   defaultButtonLayout, 
-  justifyBooksGrid, 
+  justifyBooksSection, 
   showHideAnything
 } from "../../utils/classNameUtils";
 import type { BookItem } from "../../types/booksTypes";
@@ -31,15 +31,15 @@ const ActiveBooksGrid = () => {
 
   return (
     <MainContentFrame>
-      <section className={`${justifyBooksGrid(false)} flex flex-col items-center h-full w-full`}>
+      <section className={`${justifyBooksSection(false)} flex flex-col items-center h-full w-full`}>
         <form 
           onSubmit={(e) => {handleActiveBooksSearch(e, search);}}
           className={`
-            p-15
+            p-10
             flex
             gap-6
-            max-w-xs
-            md:max-w-xl
+            max-w-full
+            md:max-w-2xl
             shrink-0
           `}
         >

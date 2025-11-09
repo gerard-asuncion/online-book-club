@@ -2,8 +2,13 @@ import { useState } from 'react';
 import useMainContentRouter from './useMainContentRouter';
 import useUserData from './useUserData';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { clearGoogleBooksSearch, fetchGoogleBooks, fetchMoreGoogleBooks } from '../features/googleBooks/googleBooksSlice';
+import { 
+  clearGoogleBooksSearch, 
+  fetchGoogleBooks, 
+  fetchMoreGoogleBooks 
+} from '../features/googleBooks/googleBooksSlice';
 import { setCurrentBook, clearCurrentBook } from '../features/currentBook/currentBookSlice';
+import { selectUserProfilePremium } from '../features/userProfile/userProfileSelectors';
 import { 
   selectGoogleBooksError, 
   selectGoogleBooksStatus, 
@@ -21,6 +26,8 @@ const useBooksGrid = () => {
   const [storeCheckboxState, setStoreCheckboxState] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
+
+  const isPremiumUser: boolean = useAppSelector(selectUserProfilePremium);
 
   const booksVolumes: BookItem[] = useAppSelector(selectGoogleBooksVolumes);
   const booksStatus: string = useAppSelector(selectGoogleBooksStatus);
@@ -43,9 +50,9 @@ const useBooksGrid = () => {
   }
 
   const handleVolumeSelection = async (volumeId: string, volumeTitle: string, volumeAuthors: string[]): Promise<void> => {
-    const selectionConfirmed: boolean = window.confirm(`Do you want to select the book "${volumeTitle}"?`);
-    if (!selectionConfirmed) {
-      return;
+    if(!isPremiumUser){
+      const selectionConfirmed: boolean = window.confirm(`Do you want to select the book "${volumeTitle}"?`);
+      if(!selectionConfirmed) return;
     }
     dispatch(clearCurrentBook());
     dispatch(setCurrentBook({bookId: volumeId, bookTitle: volumeTitle, bookAuthors: volumeAuthors}));
