@@ -25,13 +25,13 @@ import { clearUserProfile } from '../features/userProfile/userProfileSlice';
 import { clearCurrentBook } from '../features/currentBook/currentBookSlice';
 import { setIsSearch } from '../features/mainContentRoute/mainContentRouteSlice';
 import { setOpenSidebar } from '../features/responsive/responsiveSlice';
-import { ValidationError } from "../classes/ValidationError";
-import { LoginError } from '../classes/LoginError';
+import { ValidationError } from "../classes/Errors/ValidationError";
+import { LoginError } from '../classes/Errors/LoginError';
 import { 
   RegisterNewUserError, 
   LoginWithEmailAndPasswordError,
   UserCredentialError
-} from '../classes/CustomErrors';
+} from '../classes/Errors/CustomErrors';
 import { RegisterUser } from '../classes/RegisterUser';
 import type { CookieOptions, ErrorType, UserProfileType } from '../types/types';
 
