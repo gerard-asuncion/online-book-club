@@ -37,6 +37,7 @@ const useChatHistorial = () => {
         const historialBookIds: string[] = [];
 
         try {
+            // if(true) throw new Error("HERE'S AN ERROR!")
             const userDocRef: DocumentReference<DocumentData, DocumentData> = 
                 doc(db, USERS_COLLECTION, userProfileUid);
             const docSnap: DocumentSnapshot<DocumentData, DocumentData> = 
