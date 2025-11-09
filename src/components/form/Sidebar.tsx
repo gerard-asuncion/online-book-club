@@ -4,18 +4,21 @@ import SidebarBookCard from "./SidebarBookCard";
 import { defaultButtonLayout, setCursorPointer } from "../../utils/classNameUtils";
 import { useAppSelector } from "../../app/hooks";
 import { selectCurrentBookTitle } from "../../features/currentBook/currentBookSelectors";
-import { selectUserProfileStoredBooks, selectUserProfilePremium } from "../../features/userProfile/userProfileSelectors";
-import { auth } from "../../firebase-config";
-import type { LoadingUserProps } from "../../types/props";
+import {
+    selectUserProfileUsername,
+    selectUserProfileStoredBooks, 
+    selectUserProfilePremium 
+} from "../../features/userProfile/userProfileSelectors";
 import type { BookItem } from "../../types/booksTypes";
 
-const Sidebar = ({ isLoadingUser }: LoadingUserProps) => {
+const Sidebar = () => {
 
+    const userProfileUsername: string | null = useAppSelector(selectUserProfileUsername);
     const currentBookTitle: string | null = useAppSelector(selectCurrentBookTitle);
     const storedBooks: BookItem[] = useAppSelector(selectUserProfileStoredBooks);
     const isPremiumUser: boolean = useAppSelector(selectUserProfilePremium);
 
-    const { openChat, hideSidebarInMobile, removeMode, setRemoveMode } = useSidebar();
+    const { openChat, hideSidebarInMobile, removeMode, setRemoveMode, getActiveBooks } = useSidebar();
     const { switchContent } = useMainContentRouter();
 
     return(
@@ -24,11 +27,10 @@ const Sidebar = ({ isLoadingUser }: LoadingUserProps) => {
             <article className="flex flex-col gap-3">
                 <div className="">
                     <p className="text-main-color text-sm">Username:</p>
-                    {isLoadingUser && <p className="text-white">Loading username...</p>}
-                    {!isLoadingUser && <p className="text-white font-semibold">{auth.currentUser?.displayName}</p>}
+                    {!userProfileUsername && <p className="text-white">Username not found</p>}
+                    {<p className="text-white font-semibold">{userProfileUsername}</p>}
                 </div>
-                    {isLoadingUser && <p>Loading room...</p>}
-                    {!isLoadingUser && !currentBookTitle && 
+                    {!currentBookTitle && 
                         <div className="">
                             <p className="text-main-color text-sm text-left">No active room!</p>
                             <div 
@@ -37,7 +39,7 @@ const Sidebar = ({ isLoadingUser }: LoadingUserProps) => {
                                 <div>Please search a book...</div>
                             </div>
                         </div>}
-                    {!isLoadingUser && currentBookTitle && 
+                    {currentBookTitle && 
                         <div className="">
                             <p className="text-main-color text-sm text-left">Active room:</p>
                             <button 
@@ -61,6 +63,7 @@ const Sidebar = ({ isLoadingUser }: LoadingUserProps) => {
                     </button>
                     <button 
                         onClick={() => {
+                            getActiveBooks(isPremiumUser);
                             hideSidebarInMobile(isPremiumUser);
                             switchContent("activeBookSearch");
                         }}

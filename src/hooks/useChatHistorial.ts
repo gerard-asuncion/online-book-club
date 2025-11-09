@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { clearCurrentBook, setCurrentBook } from "../features/currentBook/currentBookSlice";
 import { selectGoogleBooksVolumes, selectGoogleBooksStatus, selectGoogleBooksError } from "../features/googleBooks/googleBooksSelectors";
 import useMainContentRouter from "./useMainContentRouter";
@@ -57,12 +58,12 @@ const useChatHistorial = () => {
         } 
     }
 
-    const getHistorialBooks = async (): Promise<void> => {
+    const getHistorialBooks = useCallback(async (): Promise<void> => {
         if(!userProfileUid) return;
         dispatch(clearGoogleBooksSearch());
         const historialBookIds: string[] = await fetchHistorialBookIds(userProfileUid);
         dispatch(fetchBooksByIds(historialBookIds));
-    }
+    }, [userProfileUid, dispatch]);
 
     return { 
         userHistorialBooks,

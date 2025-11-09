@@ -33,8 +33,8 @@ export interface GoogleBooksSliceInitialState {
 }
 
 export interface UserProfileInitialState {
-    // userProfileUid: string | null,
-    // userProfileUsername: string | null,
+    userProfileUid: string | null,
+    userProfileUsername: string | null,
     userProfilePremium: boolean,
     storedBooks: BookItem[],
     fetchStoredBooksStatus: 'idle' | 'loading' | 'succeeded' | 'failed',
