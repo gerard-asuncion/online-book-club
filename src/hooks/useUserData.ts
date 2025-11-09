@@ -16,7 +16,7 @@ import {
     selectUserProfilePremium 
 } from '../features/userProfile/userProfileSelectors';
 import { useCallback } from 'react';
-import { ProfileDataError, AutoUpdateUserDataError } from '../classes/CustomErrors';
+import { ProfileDataError, AutoUpdateUserDataError } from '../classes/Errors/CustomErrors';
 
 const USERS_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERS;
 

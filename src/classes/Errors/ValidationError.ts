@@ -1,4 +1,4 @@
-import type { ErrorType } from "../types/types";
+import type { ErrorType } from "../../types/types";
 
 export class ValidationError extends Error {
     #errors: ErrorType[];
