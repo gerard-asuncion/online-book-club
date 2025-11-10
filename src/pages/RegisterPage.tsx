@@ -68,7 +68,7 @@ const RegisterPage = () => {
                         Email:
                       </label>
                       <input 
-                        type="text"
+                        type="email"
                         name="email" 
                         value={newUserEmail}
                         onChange={(e) => setNewUserEmail(e.target.value)}
