@@ -62,8 +62,10 @@ const useBooksGrid = () => {
     if(!isChat){
       switchContent("chatRoom");
     };
-    console.log('Selected volume title:', volumeTitle);
-    console.log('Selected volume ID:', volumeId);
+    if(import.meta.env.DEV){
+      console.log('Selected volume title:', volumeTitle);
+      console.log('Selected volume ID:', volumeId);
+    }
   }
 
   return { 
