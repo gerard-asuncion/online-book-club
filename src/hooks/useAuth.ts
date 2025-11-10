@@ -26,8 +26,8 @@ import { clearUserProfile } from '../features/userProfile/userProfileSlice';
 import { clearCurrentBook } from '../features/currentBook/currentBookSlice';
 import { setIsSearch } from '../features/mainContentRoute/mainContentRouteSlice';
 import { setOpenSidebar } from '../features/responsive/responsiveSlice';
-import { LoginError } from '../classes/Errors/LoginError';
-import { RegisterNewUserError, UserCredentialError } from '../classes/Errors/CustomErrors';
+import { LoginError } from '../classes/LoginError';
+import { RegisterNewUserError, UserCredentialError } from '../classes/CustomErrors';
 import { RegisterUser } from '../classes/RegisterUser';
 import type { CookieOptions, RegistrationErrorType, UserProfileType } from '../types/types';
 
