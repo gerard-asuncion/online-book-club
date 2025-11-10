@@ -73,7 +73,7 @@ const useAuth = () => {
   }
 
   const isUsernameFormatValid = (username: string): boolean => {
-    const regex: RegExp = /^[a-zA-Z0-9]+$/;
+    const regex: RegExp = /^[a-zA-Z0-9_]+$/;
     return regex.test(username);
   };
 
@@ -105,7 +105,7 @@ const useAuth = () => {
 
     setRegistrationWarnings([{
         id: "username-condition",
-        message: "Username can't contain symbols or spaces."
+        message: "Username can't contain symbols or spaces, except the underscore: _"
       },{
         id: "password-condition",
         message: "Password must be at least 8 characters long."
@@ -147,6 +147,8 @@ const useAuth = () => {
           return actualErrors;
         });
       }
+
+      if(registrationWarnings.length > 0) return;
 
       setLoadingLogin(true);
 

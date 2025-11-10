@@ -9,18 +9,16 @@ import RegisterPage from "./pages/RegisterPage";
 function App() {
 
   return (
-    <> 
-      <Routes>
-        <Route element={<RedirectIfAuth />}>
-          <Route path="/login" element={<LoginPage />}/>
-          <Route path="/register" element={<RegisterPage />} />
-        </Route>
-        <Route element={<RequireAuth />}>
-          <Route path="/" element={<AppPage />} />
-        </Route>
-        <Route path="*" element={<ErrorPage />} />
-      </Routes>
-    </>
+    <Routes>
+      <Route element={<RedirectIfAuth />}>
+        <Route path="/login" element={<LoginPage />}/>
+        <Route path="/register" element={<RegisterPage />} />
+      </Route>
+      <Route element={<RequireAuth />}>
+        <Route path="/" element={<AppPage />} />
+      </Route>
+      <Route path="*" element={<ErrorPage />} />
+    </Routes>
   )
 }
 
