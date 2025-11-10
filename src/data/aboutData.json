@@ -1,0 +1,131 @@
+[
+  {
+    "id": "CAT",
+    "lang": "Català",
+    "what": {
+      "title": "Què és Online Book Club?",
+      "text": "Online Book Club és una aplicació web creada per Gerard Asunción com a projecte final del bootcamp de Front-end de la IT Academy. És un club de lectura online, una xarxa social per als amants dels llibres."
+    },
+    "actions": {
+      "title": "Què es pot fer a Online Book Club?",
+      "text": "A Online Book Club, l'usuari pot participar de xats associats a determinats llibres. El funcionament és molt fàcil: hi ha un cercador que permet buscar qualsevol llibre de la API de Google Books i automàticament unir-se al xat per a parlar sobre aquell llibre amb altres lectors. Si l'usuari és premium, tindrà disponible una altra cerca, restringida a sales actives, que mostrarà només aquells llibres que tenen almenys un missatge. Per últim, tots els usuaris podran accedir a un historial on trobarà la llista de tots els xats on ha participat activament."
+    },
+    "features": {
+      "title": "Com funciona la pàgina?",
+      "sections": {
+        "sidebar": "Menú",
+        "sidebarText": "El menú s'obre desde la capçalera de la pàgina, en la versió mòbil ocupa tota la pantalla, però a l'escriptori ocupa l'espai lateral dret. Permet navegar fàcilment per la aplicació.",
+        "sidebarFeatures": {
+          "username": "Username (nom d'usuari)",
+          "usernameText": "Mostra el nom de l'usuari. Si no el mostrés, alguna cosa ha fallat. Si això passa, et demanem disculpes i estarem atents per a millorar el funcionament de l'aplicació.",
+          "activeRoom": "Active room (sala activa)",
+          "activeRoomText": "Mostra el títol del llibre que correspongui a l'últim xat obert i permet obrir-lo.",
+          "booksSearch": "All (cerca de llibres)",
+          "booksSearchText": "Obre un buscador que permet cercar qualsevol llibre de la base de dades de Google Books.",
+          "activeBooksSearch": "Active (cerca de llibres amb xats actius)",
+          "activeBooksSearchText": "Obre un buscador que permet trobar qualsevol llibre que ja tingui un xat actiu. La secció 'active' mostrarà automàticament tots els llibres actius, però permet cercar per títol o autor entre els resultats.",
+          "booksStorage": "Storage (llibres desats al menú)",
+          "booksStorageText": "Els usuaris premium poden desar fins a tres llibres al menú i accedir-hi amb un sol click. Això és més ràpid i eficient que buscar-los entre l'historial de xats (cosa que de totes maneres seguirà podent fer), i podrà desar-los encara que no hi hagi escrit res. Encara que tanqui sessió o, fins i tot, canvii el plà d'usuari, seguirà tenint-los desats al perfil. Si torna a fer-se premium, seguiran allà. Eliminar-los és molt fàcil, utilitzant el botó 'Remove from sidebar'."
+        },
+        "chat": "Xat",
+        "chatText": "El xat és la secció principal i més important de la aplicació. El seu funcionament és bastant intuïtiu. Com a peculiaritat, per als usuaris premium permet desar el propi xat a la barra lateral, amb un botó anomenat 'store book in sidebar'. Aquest només es mostra si: l'usuari és premium, no té el xat desat i té menys de tres xats desats, perquè tres és el màxim.",
+        "userSettings": "User settings (configuració d'usuari)",
+        "userSettingsFeatures": {
+          "chatHistorial": "Chat historial (historial de xats)",
+          "chatHistorialText": "L'historial de xats mostrarà automàticament tots els llibres sobre els quals l'usuari ha xatejat alguna vegada. Es mostren automàticament i de la mateixa manera que als cercadors 'all' i 'active'.",
+          "changePlan": "Change plan (canviar entre usuari premium i regular)",
+          "changePlanText": "Aquest botó permet a l'usuari canviar automàticament entre premium i normal. No hi ha pagament, simplement canvia el pla, ja que la implementació d'aquesta característica és només per a complir amb els requisits del projecte final de la IT Academy.",
+          "logout": "Log Out (tancar sessió)",
+          "logoutText": "Aquest botó tanca la sessió."
+        }
+      }
+    },
+    "contact": "Contacta amb nosaltres: onlinebookclub.app@gmail.com"
+  },
+  {
+    "id": "ESP",
+    "lang": "Español",
+    "what": {
+      "title": "¿Qué es Online Book Club?",
+      "text": "Online Book Club es una aplicación web creada por Gerard Asunción como proyecto final del bootcamp de Front-end de la IT Academy. Es un club de lectura online, una red social para los amantes de los libros."
+    },
+    "actions": {
+      "title": "¿Qué se puede hacer en Online Book Club?",
+      "text": "En Online Book Club, el usuario puede participar en chats asociados a determinados libros. El funcionamiento es muy fácil: hay un buscador que permite buscar cualquier libro de la API de Google Books y unirse automáticamente al chat para hablar sobre ese libro con otros lectores. Si el usuario es premium, tendrá disponible otra búsqueda, restringida a salas activas, que mostrará solo aquellos libros que tienen al menos un mensaje. Por último, todos los usuarios podrán acceder a un historial donde encontrarán la lista de todos los chats en los que han participado activamente."
+    },
+    "features": {
+      "title": "¿Cómo funciona la página?",
+      "sections": {
+        "sidebar": "Menú",
+        "sidebarText": "El menú se abre desde la cabecera de la página, en la versión móvil ocupa toda la pantalla, pero en el escritorio ocupa el espacio lateral derecho. Permite navegar fácilmente por la aplicación.",
+        "sidebarFeatures": {
+          "username": "Username (nombre de usuario)",
+          "usernameText": "Muestra el nombre del usuario. Si no lo mostrara, algo ha fallado. Si esto ocurre, te pedimos disculpas y estaremos atentos para mejorar el funcionamiento de la aplicación.",
+          "activeRoom": "Active room (sala activa)",
+          "activeRoomText": "Muestra el título del libro que corresponda al último chat abierto y permite abrirlo.",
+          "booksSearch": "All (búsqueda de libros)",
+          "booksSearchText": "Abre un buscador que permite buscar cualquier libro de la base de datos de Google Books.",
+          "activeBooksSearch": "Active (búsqueda de libros con chats activos)",
+          "activeBooksSearchText": "Abre un buscador que permite encontrar cualquier libro que ya tenga un chat activo. La sección 'active' mostrará automáticamente todos los libros activos, pero permite buscar por título o autor entre los resultados.",
+          "booksStorage": "Storage (libros guardados en el menú)",
+          "booksStorageText": "Los usuarios premium pueden guardar hasta tres libros en el menú y acceder a ellos con un solo clic. Esto es más rápido y eficiente que buscarlos en el historial de chats (algo que de todas formas podrá seguir haciendo), y podrá guardarlos aunque no haya escrito nada. Aunque cierre sesión o, incluso, cambie el plan de usuario, seguirá teniéndolos guardados en el perfil. Si vuelve a hacerse premium, seguirán allí. Eliminarlos es muy fácil, utilizando el botón 'Remove from sidebar'."
+        },
+        "chat": "Chat",
+        "chatText": "El chat es la sección principal y más importante de la aplicación. Su funcionamiento es bastante intuitivo. Como peculiaridad, para los usuarios premium permite guardar el propio chat en la barra lateral, con un botón llamado 'store book in sidebar'. Este solo se muestra si: el usuario es premium, no tiene el chat guardado y tiene menos de tres chats guardados, porque tres es el máximo.",
+        "userSettings": "User settings (configuración de usuario)",
+        "userSettingsFeatures": {
+          "chatHistorial": "Chat historial (historial de chats)",
+          "chatHistorialText": "El historial de chats mostrará automáticamente todos los libros sobre los cuales el usuario ha chateado alguna vez. Se muestran automáticamente y de la misma forma que en los buscadores 'all' y 'active'.",
+          "changePlan": "Change plan (cambiar entre usuario premium y regular)",
+          "changePlanText": "Este botón permite al usuario cambiar automáticamente entre premium y normal. No hay pago, simplemente cambia el plan, ya que la implementación de esta característica es solo para cumplir con los requisitos del proyecto final de la IT Academy.",
+          "logout": "Log Out (cerrar sesión)",
+          "logoutText": "Este botón cierra la sesión."
+        }
+      }
+    },
+    "contact": "Contacta con nosotros: onlinebookclub.app@gmail.com"
+  },
+  {
+    "id": "ENG",
+    "lang": "English",
+    "what": {
+      "title": "What is Online Book Club?",
+      "text": "Online Book Club is a web application created by Gerard Asunción as the final project for the IT Academy Front-end bootcamp. It is an online book club, a social network for book lovers."
+    },
+    "actions": {
+      "title": "What can you do in Online Book Club?",
+      "text": "In Online Book Club, users can participate in chats associated with specific books. How it works is very easy: there is a search engine that allows you to search for any book from the Google Books API and automatically join the chat to talk about that book with other readers. If the user is premium, another search will be available, restricted to active rooms, which will show only those books that have at least one message. Finally, all users can access a history where they will find a list of all the chats they have actively participated in."
+    },
+    "features": {
+      "title": "How does the app work?",
+      "sections": {
+        "sidebar": "Menu",
+        "sidebarText": "The menu opens from the page header; in the mobile version it takes up the entire screen, but on desktop, it occupies the right lateral space. It allows for easy navigation through the application.",
+        "sidebarFeatures": {
+          "username": "Username",
+          "usernameText": "Shows the user's name. If it doesn't show, something has failed. If this happens, we apologize and will be attentive to improving the application's functionality.",
+          "activeRoom": "Active room",
+          "activeRoomText": "Shows the title of the book corresponding to the last opened chat and allows opening it.",
+          "booksSearch": "All (global books search)",
+          "booksSearchText": "Opens a search engine that allows searching for any book in the Google Books database.",
+          "activeBooksSearch": "Active (search books that have active chats)",
+          "activeBooksSearchText": "Opens a search engine to find any book that already has an active chat. The 'active' section will automatically show all active books, but it allows searching by title or author among the results.",
+          "booksStorage": "Store books",
+          "booksStorageText": "Premium users can save up to three books in the menu and access them with a single click. This is faster and more efficient than searching for them in the chat history (which they can still do anyway), and they can save them even if they haven't written anything. Even if they log out or even change their user plan, they will still have them saved in their profile. If they become premium again, they will still be there. Removing them is very easy, using the 'Remove from sidebar' button."
+        },
+        "chat": "Chat",
+        "chatText": "The chat is the main and most important section of the application. Its operation is quite intuitive. As a special feature, it allows premium users to save the chat itself to the sidebar, with a button called 'store book in sidebar'. This is only displayed if: the user is premium, does not have the chat saved, and has fewer than three saved chats, because three is the maximum.",
+        "userSettings": "User settings",
+        "userSettingsFeatures": {
+          "chatHistorial": "Chat historial",
+          "chatHistorialText": "The chat history will automatically show all the books the user has ever chatted about. They are displayed automatically and in the same way as in the 'all' and 'active' searchers.",
+          "changePlan": "Change plan (switch between premium and regular account)",
+          "changePlanText": "This button allows the user to automatically switch between premium and normal. There is no payment, it simply changes the plan, as the implementation of this feature is only to meet the requirements of the IT Academy final project.",
+          "logout": "Log out",
+          "logoutText": "This button logs out."
+        }
+      }
+    },
+    "contact":"Contact us: onlinebookclub.app@gmail.com"
+  }
+]
