@@ -31,18 +31,3 @@ root.render(
     </Provider>
   </StrictMode>,
 );
-
-
-
-
-// createRoot(document.getElementById('root')!).render(
-//   <StrictMode>
-//     <Provider store={store}>
-//       <PersistGate loading={<LoadingPage />} persistor={persistor}>
-//         <BrowserRouter>
-//             <App />
-//         </BrowserRouter>
-//       </PersistGate>
-//     </Provider>
-//   </StrictMode>,
-// )

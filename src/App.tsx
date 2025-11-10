@@ -2,16 +2,19 @@ import { Routes, Route } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import AppPage from "./pages/AppPage";
 import RequireAuth from "./components/form/RequireAuth";
+import RedirectIfAuth from "./components/form/RedirectIfAuth";
 import ErrorPage from "./pages/ErrorPage";
 import RegisterPage from "./pages/RegisterPage";
 
 function App() {
 
   return (
-    <>
+    <> 
       <Routes>
-        <Route path="/login" element={<LoginPage />}/>
-        <Route path="/register" element={<RegisterPage />} />
+        <Route element={<RedirectIfAuth />}>
+          <Route path="/login" element={<LoginPage />}/>
+          <Route path="/register" element={<RegisterPage />} />
+        </Route>
         <Route element={<RequireAuth />}>
           <Route path="/" element={<AppPage />} />
         </Route>

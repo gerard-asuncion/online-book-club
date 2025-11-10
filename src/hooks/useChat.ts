@@ -18,7 +18,7 @@ import {
 import { auth, db } from '../firebase-config';
 import { useAppSelector } from '../app/hooks';
 import useUserData from './useUserData';
-// import { selectUserProfileUid, selectUserProfileUsername } from '../features/userProfile/userProfileSelectors';
+import { selectUserProfileUid, selectUserProfileUsername } from '../features/userProfile/userProfileSelectors';
 import { 
   selectCurrentBook,
   selectCurrentBookId, 
@@ -44,9 +44,11 @@ export const useChat = () => {
 
   const { addBookToProfile } = useUserData();
 
-  const currentUserUid: string | undefined = auth.currentUser?.uid;
-  const currentUserUsername: string | null | undefined = auth.currentUser?.displayName;
+  const userProfileUid: string | undefined = auth.currentUser?.uid;
+  const userProfileUsername: string | null | undefined = auth.currentUser?.displayName;
 
+  const currentUserUid: string | null = useAppSelector(selectUserProfileUid);
+  const currentUserUsername: string | null = useAppSelector(selectUserProfileUsername);
   const userStoredBooks: BookItem[] = useAppSelector(selectUserProfileStoredBooks);
 
   const currentBook: CurrentBookInitialState = useAppSelector(selectCurrentBook);
@@ -55,6 +57,28 @@ export const useChat = () => {
   const currentBookAuthors: string[] = useAppSelector(selectCurrentBookAuthors);
 
   const isStored: boolean = userStoredBooks.some(book => book.id === currentBookId);
+
+  const getUserUid = (): string | undefined => {
+    if(userProfileUid){
+      return userProfileUid;
+    }else if(currentUserUid){
+      return currentUserUid;
+    }else {
+      return undefined;
+    }
+  }
+  const userUid: string | undefined = getUserUid();
+
+  const getUserUsername = (): string | undefined => {
+    if(userProfileUsername){
+      return userProfileUsername;
+    }else if(currentUserUsername){
+      return currentUserUsername;
+    }else {
+      return undefined;
+    }
+  }
+  const userUsername: string | undefined = getUserUsername();
 
   useEffect(() => {
     
@@ -82,10 +106,10 @@ export const useChat = () => {
 
   const addChatToHistorial = async (currentRoom: string | null) => {
     try {
-      if (!currentUserUid) throw new ChatHistorialError("User is not authenticated.");
+      if (!userUid) throw new ChatHistorialError("User is not authenticated.");
       if (!currentRoom) throw new ChatHistorialError("Chat message doesn't contain user's Uid");
 
-      const userDocRef = doc(db, USERS_COLLECTION, currentUserUid);
+      const userDocRef = doc(db, USERS_COLLECTION, userUid);
       await updateDoc(userDocRef, {
         userChatHistorial: arrayUnion(currentRoom) 
       });
@@ -103,8 +127,8 @@ export const useChat = () => {
 
     const messageData: ChatMessageData = {
       text: newMessage,
-      username: currentUserUsername,
-      userUid: currentUserUid,
+      username: userUsername,
+      userUid: userUid,
       room: currentBookId,
       bookTitle: currentBookTitle,
       bookAuthors: currentBookAuthors
