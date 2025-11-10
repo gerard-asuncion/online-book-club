@@ -31,7 +31,7 @@ const LoginPage = () => {
                             User Email:
                         </label>
                         <input 
-                            type="text" 
+                            type="email" 
                             name="email" 
                             value={loginEmail}
                             onChange={(e) => {setLoginEmail(e.target.value)}}
