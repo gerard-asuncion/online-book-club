@@ -10,13 +10,12 @@ import { useAppSelector } from '../../app/hooks';
 import { selectCurrentBookTitle } from '../../features/currentBook/currentBookSelectors';
 import { selectIsMobile } from '../../features/responsive/responsiveSelectors';
 import { auth } from '../../firebase-config';
-import { selectUserProfilePremium, selectUserProfileUid } from '../../features/userProfile/userProfileSelectors';
+import { selectUserProfilePremium } from '../../features/userProfile/userProfileSelectors';
 
 const Chat = () => {
 
   const userProfileUid: string | undefined = auth.currentUser?.uid;
 
-  const currentUserUid: string | null = useAppSelector(selectUserProfileUid);
   const currentBookTitle: string | null = useAppSelector(selectCurrentBookTitle);
   const isPremiumUser: boolean = useAppSelector(selectUserProfilePremium);
   const isMobile: boolean = useAppSelector(selectIsMobile);
@@ -30,18 +29,6 @@ const Chat = () => {
     handleAddCurrentBook,
     isStored
   } = useChat();
-
-  const getUserUid = (): string | undefined => {
-    if(userProfileUid){
-      return userProfileUid;
-    }else if(currentUserUid){
-      return currentUserUid;
-    }else {
-      return undefined;
-    }
-  }
-
-  const userUid: string | undefined = getUserUid();
 
   const scrollerRef = useRef<HTMLDivElement>(null);
 
@@ -99,13 +86,13 @@ const Chat = () => {
             key={message.id}
             className={`
               flex w-full
-              ${alineateMessages(userUid, message.userUid)}
+              ${alineateMessages(userProfileUid, message.userUid)}
             `}
           >
             <div 
               key={message.id} 
               className={`
-                  ${styleMessages(userUid, message.userUid)}
+                  ${styleMessages(userProfileUid, message.userUid)}
                   flex 
                   flex-col
                   min-w-60/100
@@ -116,7 +103,7 @@ const Chat = () => {
               >
               <div className='flex justify-between'>
                 <div className={`
-                  ${displayUserName(userUid, message.userUid, message.username)}           
+                  ${displayUserName(userProfileUid, message.userUid, message.username)}           
                   font-bold 
                   sm:text-base 
                   text-sm

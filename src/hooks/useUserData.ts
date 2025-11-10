@@ -12,7 +12,6 @@ import {
 } from '../features/userProfile/userProfileSlice';
 import type { BookItem } from '../types/booksTypes';
 import { 
-    selectUserProfileUid,
     selectUserProfileStoredBooks, 
     selectUserProfilePremium 
 } from '../features/userProfile/userProfileSelectors';
@@ -27,26 +26,14 @@ const useUserData = () => {
 
     const userProfileUid: string | undefined = auth.currentUser?.uid
 
-    const currentUserUid: string | null = useAppSelector(selectUserProfileUid);
     const userStoredBooks: BookItem[] = useAppSelector(selectUserProfileStoredBooks);
     const isPremiumUser: boolean = useAppSelector(selectUserProfilePremium);
 
-    const getUserUid = (): string | undefined => {
-        if(userProfileUid){
-        return userProfileUid;
-        }else if(currentUserUid){
-        return currentUserUid;
-        }else {
-        return undefined;
-        }
-    }
-    const userUid: string | undefined = getUserUid();
-
     const getProfileData = async (): Promise<UserProfileType | null> => {
         try {
-            if(!userUid) throw new ProfileDataError("User ID not provided by Firebase Auth.");
+            if(!userProfileUid) throw new ProfileDataError("User ID not provided by Firebase Auth.");
 
-            const userDocRef: DocumentReference<DocumentData, DocumentData> = doc(db, USERS_COLLECTION, userUid);
+            const userDocRef: DocumentReference<DocumentData, DocumentData> = doc(db, USERS_COLLECTION, userProfileUid);
             const docSnap: DocumentSnapshot<DocumentData, DocumentData> = await getDoc(userDocRef);
 
             if(!docSnap.exists()) throw new ProfileDataError("Unable to find user in database.");
@@ -111,11 +98,11 @@ const useUserData = () => {
     }
 
     const addBookToProfile = async (bookIdToAdd: string): Promise<void> => {     
-        if (!userUid) throw new ProfileDataError("No user is logged in to perform this action.");
+        if (!userProfileUid) throw new ProfileDataError("No user is logged in to perform this action.");
         if(userStoredBooks.length >= 3) return alert("You can't store more than 3 books. Please, remove some. In 'settings' you can recover any chat where you have written.");
         if(!isPremiumUser) return alert("Only premium users can store books. Please, upgrade your account.");
         try {
-            const userDocRef: DocumentReference<DocumentData, DocumentData> = doc(db, USERS_COLLECTION, userUid);
+            const userDocRef: DocumentReference<DocumentData, DocumentData> = doc(db, USERS_COLLECTION, userProfileUid);
             await updateDoc(userDocRef, {
                 storedBookIds: arrayUnion(bookIdToAdd)
             });
@@ -128,13 +115,13 @@ const useUserData = () => {
     }
 
     const removeBookFromProfile = async (bookIdToRemove: string, isPremiumUser: boolean): Promise<void> => {           
-        if (!userUid) {
+        if (!userProfileUid) {
             console.error("No user is logged in to perform this action.");
             return;
         }
         if(!isPremiumUser) return;
         try {
-            const userDocRef: DocumentReference<DocumentData, DocumentData> = doc(db, USERS_COLLECTION, userUid);
+            const userDocRef: DocumentReference<DocumentData, DocumentData> = doc(db, USERS_COLLECTION, userProfileUid);
             await updateDoc(userDocRef, {
                 storedBookIds: arrayRemove(bookIdToRemove)
             });
@@ -149,8 +136,8 @@ const useUserData = () => {
 
     const activatePremiumMode = async (): Promise<void> => {
         if(isPremiumUser) return;
-        if(userUid){
-            const userDocRef: DocumentReference<DocumentData, DocumentData> = doc(db, USERS_COLLECTION, userUid);
+        if(userProfileUid){
+            const userDocRef: DocumentReference<DocumentData, DocumentData> = doc(db, USERS_COLLECTION, userProfileUid);
             await updateDoc(userDocRef, {
                 isPremiumUser: true
             });
@@ -161,8 +148,8 @@ const useUserData = () => {
 
     const disablePremiumMode = async (): Promise<void> => {
         if(!isPremiumUser) return;
-        if(userUid){
-            const userDocRef: DocumentReference<DocumentData, DocumentData> = doc(db, USERS_COLLECTION, userUid);
+        if(userProfileUid){
+            const userDocRef: DocumentReference<DocumentData, DocumentData> = doc(db, USERS_COLLECTION, userProfileUid);
             await updateDoc(userDocRef, {
                 isPremiumUser: false
             });
@@ -181,18 +168,7 @@ const useUserData = () => {
             const userProfileDataUsername: string | null = profileData.displayName;
             const isPremiumUserDB: boolean = profileData.isPremiumUser || false;
 
-            const getUserUidInUpdateUserData = () => {
-                if(userProfileDataUid){
-                    return userProfileDataUid;
-                }else if(userUid){
-                    return userUid;
-                }else{
-                    return null;
-                }
-            }
-            const userDataUserUid: string | null = getUserUidInUpdateUserData();
-
-            storeUidUser(userDataUserUid);
+            storeUidUser(userProfileDataUid);
             storeUsernameUser(userProfileDataUsername);
             storeIsPremiumUser(isPremiumUserDB);
             storeBooksById(profileData);
