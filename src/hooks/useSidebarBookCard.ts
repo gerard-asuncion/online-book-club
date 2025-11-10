@@ -14,7 +14,7 @@ import {
 import { auth, db } from '../firebase-config';
 import { useAppSelector, useAppDispatch } from '../app/hooks';
 import { clearCurrentBook, setCurrentBook } from "../features/currentBook/currentBookSlice";
-import { selectUserProfilePremium } from '../features/userProfile/userProfileSelectors';
+import { selectUserProfilePremium, selectUserProfileUid} from '../features/userProfile/userProfileSelectors';
 
 const MESSAGES_COLLECTION: string = import.meta.env.VITE_FIREBASE_DB_COLLECTION_MESSAGES;
 const messagesRef: CollectionReference<DocumentData> = collection(db, MESSAGES_COLLECTION);
@@ -22,8 +22,8 @@ const messagesRef: CollectionReference<DocumentData> = collection(db, MESSAGES_C
 const useSidebarBookCard = (displayedBookId: string | null) => {
 
     const userProfileUid: string | undefined = auth.currentUser?.uid;
+    const currentUserUid: string | null = useAppSelector(selectUserProfileUid);
 
-    // const userProfileUid: string | null = useAppSelector(selectUserProfileUid);
     const isPremiumUser: boolean = useAppSelector(selectUserProfilePremium);
 
     const [unreadCount, setUnreadCount] = useState<number>(0);
@@ -33,10 +33,21 @@ const useSidebarBookCard = (displayedBookId: string | null) => {
     const { isChat, switchContent } = useMainContentRouter();
 
     const dispatch = useAppDispatch();
+
+    const getUserUid = (): string | undefined => {
+        if(userProfileUid){
+        return userProfileUid;
+        }else if(currentUserUid){
+        return currentUserUid;
+        }else {
+        return undefined;
+        }
+    }
+    const userUid: string | undefined = getUserUid();
     
     useEffect(() => {
 
-        if (!userProfileUid || !displayedBookId) {
+        if (!userUid || !displayedBookId) {
             setUnreadCount(0);
             return;
         }
@@ -46,14 +57,14 @@ const useSidebarBookCard = (displayedBookId: string | null) => {
         );
         const unsubscribe = onSnapshot(queryMessages, (snapshot) => {            
             const unreadMessages: QueryDocumentSnapshot<DocumentData, DocumentData>[] = snapshot.docs.filter(doc => {
-                const seenBy = doc.data().seenBy || [userProfileUid];
-                return !seenBy.includes(userProfileUid);
+                const seenBy = doc.data().seenBy || [userUid];
+                return !seenBy.includes(userUid);
             });
             setUnreadCount(unreadMessages.length);
         });
         return () => unsubscribe();
 
-    }, [displayedBookId, userProfileUid]);
+    }, [displayedBookId, userUid]);
 
     const handleBookCardClick = (id: string, title: string, authors: string[], removeMode: boolean) : void => {
 

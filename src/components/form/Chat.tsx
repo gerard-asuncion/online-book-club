@@ -10,13 +10,13 @@ import { useAppSelector } from '../../app/hooks';
 import { selectCurrentBookTitle } from '../../features/currentBook/currentBookSelectors';
 import { selectIsMobile } from '../../features/responsive/responsiveSelectors';
 import { auth } from '../../firebase-config';
-import { selectUserProfilePremium } from '../../features/userProfile/userProfileSelectors';
+import { selectUserProfilePremium, selectUserProfileUid } from '../../features/userProfile/userProfileSelectors';
 
 const Chat = () => {
 
   const userProfileUid: string | undefined = auth.currentUser?.uid;
 
-  // const currentUserUid: string | null = useAppSelector(selectUserProfileUid);
+  const currentUserUid: string | null = useAppSelector(selectUserProfileUid);
   const currentBookTitle: string | null = useAppSelector(selectCurrentBookTitle);
   const isPremiumUser: boolean = useAppSelector(selectUserProfilePremium);
   const isMobile: boolean = useAppSelector(selectIsMobile);
@@ -30,6 +30,18 @@ const Chat = () => {
     handleAddCurrentBook,
     isStored
   } = useChat();
+
+  const getUserUid = (): string | undefined => {
+    if(userProfileUid){
+      return userProfileUid;
+    }else if(currentUserUid){
+      return currentUserUid;
+    }else {
+      return undefined;
+    }
+  }
+
+  const userUid: string | undefined = getUserUid();
 
   const scrollerRef = useRef<HTMLDivElement>(null);
 
@@ -87,13 +99,13 @@ const Chat = () => {
             key={message.id}
             className={`
               flex w-full
-              ${alineateMessages(userProfileUid, message.userUid)}
+              ${alineateMessages(userUid, message.userUid)}
             `}
           >
             <div 
               key={message.id} 
               className={`
-                  ${styleMessages(userProfileUid, message.userUid)}
+                  ${styleMessages(userUid, message.userUid)}
                   flex 
                   flex-col
                   min-w-60/100
@@ -104,7 +116,7 @@ const Chat = () => {
               >
               <div className='flex justify-between'>
                 <div className={`
-                  ${displayUserName(userProfileUid, message.userUid, message.username)}           
+                  ${displayUserName(userUid, message.userUid, message.username)}           
                   font-bold 
                   sm:text-base 
                   text-sm

@@ -25,20 +25,28 @@ const useUserData = () => {
 
     const dispatch = useAppDispatch();
 
-    const userUidFromAuth: string | undefined = auth.currentUser?.uid
+    const userProfileUid: string | undefined = auth.currentUser?.uid
 
-    const userUid: string | null = useAppSelector(selectUserProfileUid);
+    const currentUserUid: string | null = useAppSelector(selectUserProfileUid);
     const userStoredBooks: BookItem[] = useAppSelector(selectUserProfileStoredBooks);
     const isPremiumUser: boolean = useAppSelector(selectUserProfilePremium);
 
+    const getUserUid = (): string | undefined => {
+        if(userProfileUid){
+        return userProfileUid;
+        }else if(currentUserUid){
+        return currentUserUid;
+        }else {
+        return undefined;
+        }
+    }
+    const userUid: string | undefined = getUserUid();
+
     const getProfileData = async (): Promise<UserProfileType | null> => {
         try {
-            let actualUid: string | null = null;
-            if(userUid){ actualUid = userUid;   
-            }else if(userUidFromAuth){ actualUid = userUidFromAuth; }
-            if(!actualUid) throw new ProfileDataError("User ID not provided by Firebase Auth.");
+            if(!userUid) throw new ProfileDataError("User ID not provided by Firebase Auth.");
 
-            const userDocRef: DocumentReference<DocumentData, DocumentData> = doc(db, USERS_COLLECTION, actualUid);
+            const userDocRef: DocumentReference<DocumentData, DocumentData> = doc(db, USERS_COLLECTION, userUid);
             const docSnap: DocumentSnapshot<DocumentData, DocumentData> = await getDoc(userDocRef);
 
             if(!docSnap.exists()) throw new ProfileDataError("Unable to find user in database.");
@@ -54,9 +62,9 @@ const useUserData = () => {
         }
     }
 
-    const storeUidUser = async (userUid: string | null | undefined): Promise<void> => { 
+    const storeUidUser = async (userUid: string | null): Promise<void> => { 
         try {
-            if(!userUid) throw new ProfileDataError(`User Uid is ${userUid}. If "undefined", it comes from firebase auth, but if it's null, it's from ProfileData (user's document in DB)`);
+            if(!userUid) throw new ProfileDataError(`User Uid is ${userUid}. It wasn't found in ProfileData (user's document in DB). If there are more errors about user's Uid, consider auth.currentUser or redux as the source of the problem.`);
             dispatch(setUserProfileUid({ userProfileUid: userUid }));
 
         } catch (error) {
@@ -103,7 +111,7 @@ const useUserData = () => {
     }
 
     const addBookToProfile = async (bookIdToAdd: string): Promise<void> => {     
-        if (!userUid) return console.error("No user is logged in to perform this action.");
+        if (!userUid) throw new ProfileDataError("No user is logged in to perform this action.");
         if(userStoredBooks.length >= 3) return alert("You can't store more than 3 books. Please, remove some. In 'settings' you can recover any chat where you have written.");
         if(!isPremiumUser) return alert("Only premium users can store books. Please, upgrade your account.");
         try {
@@ -119,8 +127,7 @@ const useUserData = () => {
         }
     }
 
-    const removeBookFromProfile = async (bookIdToRemove: string, isPremiumUser: boolean): Promise<void> => {     
-        const userUid: string | undefined = auth.currentUser?.uid;       
+    const removeBookFromProfile = async (bookIdToRemove: string, isPremiumUser: boolean): Promise<void> => {           
         if (!userUid) {
             console.error("No user is logged in to perform this action.");
             return;
@@ -129,7 +136,7 @@ const useUserData = () => {
         try {
             const userDocRef: DocumentReference<DocumentData, DocumentData> = doc(db, USERS_COLLECTION, userUid);
             await updateDoc(userDocRef, {
-                storedBookIds: arrayRemove(bookIdToRemove) //
+                storedBookIds: arrayRemove(bookIdToRemove)
             });
             const profileData: UserProfileType | null = await getProfileData();
             storeBooksById(profileData);
@@ -170,12 +177,23 @@ const useUserData = () => {
             
             if(!profileData) throw new AutoUpdateUserDataError("Failed automatic profile data fetch at first app loading.");
 
-            const userUid: string | null = profileData.uid;
-            const userUsername: string | null = profileData.displayName;
+            const userProfileDataUid: string | null = profileData.uid;
+            const userProfileDataUsername: string | null = profileData.displayName;
             const isPremiumUserDB: boolean = profileData.isPremiumUser || false;
 
-            storeUidUser(userUid);
-            storeUsernameUser(userUsername);
+            const getUserUidInUpdateUserData = () => {
+                if(userProfileDataUid){
+                    return userProfileDataUid;
+                }else if(userUid){
+                    return userUid;
+                }else{
+                    return null;
+                }
+            }
+            const userDataUserUid: string | null = getUserUidInUpdateUserData();
+
+            storeUidUser(userDataUserUid);
+            storeUsernameUser(userProfileDataUsername);
             storeIsPremiumUser(isPremiumUserDB);
             storeBooksById(profileData);
 
