@@ -1,4 +1,4 @@
-function createCustomError(name: string) {
+const createCustomError = (name: string) => {
 
     return class CustomError extends Error {
 
@@ -7,10 +7,10 @@ function createCustomError(name: string) {
             this.name = name;
         }
     }
-
 }
 
 export const RegisterNewUserError = createCustomError("RegisterNewUserError");
+export const UserLoginError = createCustomError("UserLoginError")
 export const UserCredentialError = createCustomError("UserCredentialError");
 export const LoginWithEmailAndPasswordError = createCustomError("LoginWithEmailAndPasswordError");
 export const ProfileDataError = createCustomError("ProfileDataError");
