@@ -26,7 +26,7 @@ import {
 } from '../features/currentBook/currentBookSelectors';
 import { selectUserProfileStoredBooks } from '../features/userProfile/userProfileSelectors';
 import { ChatMessage } from '../classes/ChatMessage';
-import { ChatHistorialError } from '../classes/Errors/CustomErrors';
+import { ChatHistorialError } from '../classes/CustomErrors';
 import type { DocumentData, DocumentReference, QuerySnapshot, WriteBatch } from 'firebase/firestore';
 import type { SentMessage, MessageToFirestore, ChatMessageData } from '../types/messageTypes';
 import type { BookItem } from '../types/booksTypes';

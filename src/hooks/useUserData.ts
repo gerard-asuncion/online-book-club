@@ -16,7 +16,7 @@ import {
     selectUserProfilePremium 
 } from '../features/userProfile/userProfileSelectors';
 import { useCallback } from 'react';
-import { ProfileDataError, AutoUpdateUserDataError } from '../classes/Errors/CustomErrors';
+import { ProfileDataError } from '../classes/CustomErrors';
 
 const USERS_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERS;
 
@@ -30,9 +30,8 @@ const useUserData = () => {
     const isPremiumUser: boolean = useAppSelector(selectUserProfilePremium);
 
     const getProfileData = async (): Promise<UserProfileType | null> => {
+        if(!userProfileUid) return null;
         try {
-            if(!userProfileUid) throw new ProfileDataError("User ID not provided by Firebase Auth.");
-
             const userDocRef: DocumentReference<DocumentData, DocumentData> = doc(db, USERS_COLLECTION, userProfileUid);
             const docSnap: DocumentSnapshot<DocumentData, DocumentData> = await getDoc(userDocRef);
 
@@ -162,7 +161,7 @@ const useUserData = () => {
         try {
             const profileData: UserProfileType | null = await getProfileData();
             
-            if(!profileData) throw new AutoUpdateUserDataError("Failed automatic profile data fetch at first app loading.");
+            if(!profileData) return;
 
             const userProfileDataUid: string | null = profileData.uid;
             const userProfileDataUsername: string | null = profileData.displayName;
