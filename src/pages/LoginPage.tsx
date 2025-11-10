@@ -12,6 +12,7 @@ const LoginPage = () => {
         loginPassword,
         setLoginPassword,
         loginError,
+        userLoginErrors,
         submitLoginForm, 
         navigateToRegister
     } = useAuth();
@@ -51,13 +52,19 @@ const LoginPage = () => {
                             placeholder="Enter password..."
                             className="bg-white p-1 mb-5 rounded-md"
                         />
-                        
-                            {loginError && (
-                                <div className="text-main-color text-xs text-center p-2 rounded-md">
-                                    {loginError.userMessage}
+                            {userLoginErrors.map((error, index) =>
+                                <div 
+                                    key={index}
+                                    className="text-white text-xs text-center"
+                                >
+                                    {error}
                                 </div>
                             )}
-                            
+                            {!userLoginErrors && loginError && (
+                                <div className="text-main-color text-xs text-center p-2">
+                                    {loginError.userMessage}
+                                </div>
+                            )}                            
                         <button 
                             type="submit"
                             className={`${defaultButtonLayout()}`}

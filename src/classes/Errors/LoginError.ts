@@ -4,7 +4,7 @@ export class LoginError extends Error {
     public readonly userMessage: string;
 
     public static fromFirebaseError(error: unknown): LoginError {
-        let code = "unknown";
+        let code: string = "unknown";
         if (error instanceof Error && 'code' in error) {
             code = (error as { code: string }).code;
         }

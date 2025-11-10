@@ -26,15 +26,10 @@ import { clearUserProfile } from '../features/userProfile/userProfileSlice';
 import { clearCurrentBook } from '../features/currentBook/currentBookSlice';
 import { setIsSearch } from '../features/mainContentRoute/mainContentRouteSlice';
 import { setOpenSidebar } from '../features/responsive/responsiveSlice';
-import { ValidationError } from "../classes/Errors/ValidationError";
 import { LoginError } from '../classes/Errors/LoginError';
-import { 
-  RegisterNewUserError, 
-  LoginWithEmailAndPasswordError,
-  UserCredentialError
-} from '../classes/Errors/CustomErrors';
+import { RegisterNewUserError, UserCredentialError } from '../classes/Errors/CustomErrors';
 import { RegisterUser } from '../classes/RegisterUser';
-import type { CookieOptions, ErrorType, UserProfileType } from '../types/types';
+import type { CookieOptions, RegistrationErrorType, UserProfileType } from '../types/types';
 
 const USERS_COLLECTION: string = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERS;
 const USERNAMES_COLLECTION: string = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERNAMES;
@@ -47,7 +42,15 @@ const useAuth = () => {
   const dispatch = useAppDispatch();
   
   const [loginError, setLoginError] = useState<LoginError | null>(null);
-  const [registrationErrors, setRegistrationErrors] = useState<ErrorType[]>([]);
+  const [userLoginErrors, setUserLoginErrors] = useState<string[]>([]);
+
+  const [registrationWarnings, setRegistrationWarnings] = useState<RegistrationErrorType[]>([{
+        id: "username-condition",
+        message: "Username can't contain symbols or spaces."
+      },{
+        id: "password-condition",
+        message: "Password must be at least 8 characters long."
+      }]);
     
   const [newUsername, setNewUsername] = useState<string>("");
   const [newUserEmail, setNewUserEmail] = useState<string>("");
@@ -99,45 +102,51 @@ const useAuth = () => {
   const submitRegisterForm = async (e: React.FormEvent): Promise<void> => {
 
     e.preventDefault();
-    
-    const validationErrors: ErrorType[] = []
-    setRegistrationErrors([]);
 
-    try {
+    setRegistrationWarnings([{
+        id: "username-condition",
+        message: "Username can't contain symbols or spaces."
+      },{
+        id: "password-condition",
+        message: "Password must be at least 8 characters long."
+      }]);
 
-      if(newUsername.trim() === "") validationErrors.push({
-        input: "Username",
+    setRegistrationWarnings(prevErrors => {
+      let actualErrors: RegistrationErrorType[] = prevErrors;
+      if (isUsernameFormatValid(newUsername)) {
+        actualErrors = actualErrors.filter(err => err.id !== "username-condition");
+      };
+      if (newUserPassword.length >= 8 || newPasswordConfirmation.length >= 8) {
+        actualErrors = actualErrors.filter(err => err.id !== "password-condition");
+      };
+      if(newUsername.trim() === "") actualErrors.push({
+        id: "username-error",
         message: "Username can't be empty."
       });
-      if(!isUsernameFormatValid(newUsername)) validationErrors.push({
-        input: "Username",
-        message: "Username can't contain symbols or spaces."
-      });
-      if(!isEmailFormatValid(newUserEmail)) validationErrors.push({
-        input: "Email",
+      if(!isEmailFormatValid(newUserEmail)) actualErrors.push({
+        id: "email-error",
         message: "Invalid email address."
       });
-      if(newUserPassword.length < 8 || newPasswordConfirmation.length < 8) validationErrors.push({
-        input: "Password",
-        message: "Password must be at least 8 characters long."
-      });
-      if(newPasswordConfirmation !== newUserPassword) validationErrors.push({
-        input: "Password",
+      if(newPasswordConfirmation !== newUserPassword) actualErrors.push({
+        id: "password-error",
         message: "Confirmation password doesn't match."
       });
+      return actualErrors;
+    });
 
+    try {
       const isAvailable: boolean = await checkAvailableUsername(newUsername);
 
-      if(!isAvailable) validationErrors.push({
-        input: "Username",
-        message: "Username not available."
-      });
-
-      if(validationErrors.length > 0) { 
-          throw new ValidationError(validationErrors); 
-      };
-      
-      if(registrationErrors.length > 0) setRegistrationErrors([]);
+      if(!isAvailable){
+        setRegistrationWarnings(prevErrors => {
+          let actualErrors: RegistrationErrorType[] = prevErrors;
+          actualErrors.push({
+            id: "unavailable-username",
+            message: "Username not available."
+          });
+          return actualErrors;
+        });
+      }
 
       setLoadingLogin(true);
 
@@ -148,15 +157,8 @@ const useAuth = () => {
 
     }catch(error){
       Sentry.captureException(error);
-      if (import.meta.env.DEV) console.error("Error submitting register form:", error);
-      if (error instanceof ValidationError) {
-        setRegistrationErrors([{message: error.message}, ...validationErrors]);
-      } else if (error instanceof LoginError) {
-        setRegistrationErrors([{message: error.userMessage}]);
-      } else if (error instanceof Error && 'code' in error) {
-        setRegistrationErrors([{message: (error as {code: string}).code}]);
-      } else {
-        setRegistrationErrors([{message: `Unexpected: ${error}`}]);
+      if (import.meta.env.DEV){
+        console.error("Error submitting register form:", error);
       }
     }
   }
@@ -190,9 +192,8 @@ const useAuth = () => {
       
     } catch(error){
       if (import.meta.env.DEV) console.error("Error registering new user:", error);
-      Sentry.captureException(error);   
+      Sentry.captureException(error);
     }
-  
   }
 
   const premiumRegister = (checked: boolean): void => {
@@ -206,11 +207,14 @@ const useAuth = () => {
 
   const loginWithEmailAndPassword = async (email: string, password: string): Promise<void> => {
     setLoadingLogin(true);
+    setUserLoginErrors([]);
     setLoginError(null);
-
+    const userErrors: string[] = [];
     try {
-      if(!email) throw new LoginWithEmailAndPasswordError("No user email, unable to login.");
-      if(!password) throw new LoginWithEmailAndPasswordError("No user password, unable to login.");
+      if(!email || email.trim() === "") userErrors.push("No user email, unable to login.");
+      if(!password || password.trim() === "") userErrors.push("No user password, unable to login.");
+
+      if(userErrors.length > 0) setUserLoginErrors(userErrors)
   
       const result: UserCredential = await signInWithEmailAndPassword(auth, email, password);
 
@@ -258,7 +262,8 @@ const useAuth = () => {
     setLoginPassword,
     loadingLogin,
     loginError,
-    registrationErrors,
+    userLoginErrors,
+    registrationWarnings,
     newUsername,
     newUserEmail,
     newUserPassword,

@@ -10,7 +10,7 @@ const RegisterPage = () => {
   const { isMobile } = useResponsive();
 
   const { 
-    registrationErrors,
+    registrationWarnings,
     newUsername,
     newUserEmail,
     newUserPassword,
@@ -129,17 +129,19 @@ const RegisterPage = () => {
                     </label>
                   </div>
                   <div className={`
-                      ${showHideAnything(registrationErrors.length)} 
+                      ${showHideAnything(registrationWarnings.length)} 
                       text-xs
                       flex
                       flex-col
-                      items-start
+                      items-center
                       gap-0.5
                     `}>
-                    {registrationErrors.map((error, index) => 
-                      index === 0
-                      ? <div key={index} className="text-white">{error.message}</div>
-                      : <div key={index} className="text-main-color">{error.message}</div>
+                    {registrationWarnings.map(warning => 
+                      <div 
+                        key={warning.id} 
+                        className="text-main-color">
+                          {warning.message}
+                        </div>
                     )}
                   </div>
                   <button
