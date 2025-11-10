@@ -3,14 +3,14 @@ import type { FieldValue } from 'firebase/firestore';
 
 export class ChatMessage {
     
-    #text: string;
-    #username: string | null | undefined;
-    #userUid: string | undefined;
-    #room: string |null;
-    #bookTitle: string | null;
-    #bookAuthors: string[];
-    #seenBy: (string | undefined)[];
-    #createdAt: FieldValue;
+    readonly #text: string;
+    readonly #username: string | null | undefined;
+    readonly #userUid: string | undefined;
+    readonly #room: string |null;
+    readonly #bookTitle: string | null;
+    readonly #bookAuthors: string[];
+    readonly #seenBy: (string | undefined)[];
+    readonly #createdAt: FieldValue;
 
     constructor(
         messageText: string,
