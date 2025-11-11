@@ -73,7 +73,7 @@ const useAuth = () => {
   }
 
   const isUsernameFormatValid = (username: string): boolean => {
-    const regex: RegExp = /^[\w]+$/;
+    const regex: RegExp = /^\w+$/;
     return regex.test(username);
   };
 
