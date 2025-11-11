@@ -2,14 +2,14 @@ import { serverTimestamp } from 'firebase/firestore';
 import type { FieldValue } from 'firebase/firestore';
 
 export class RegisterUser {
-	#userUsername: string;
-    #userEmail: string;
-    #userPassword: string;
-	#isPremiumUser: boolean;
-	#createdAt: FieldValue;
-	#uid: string | null;
+	readonly #userUsername: string;
+    readonly #userEmail: string;
+    readonly #userPassword: string;
+	readonly #isPremiumUser: boolean;
+	readonly #createdAt: FieldValue;
+	readonly #uid: string | null;
 
-	static defaultBooks: string[] = [];
+	static readonly defaultBooks: string[] = [];
 
 	constructor(
 		userUsername: string,

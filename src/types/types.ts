@@ -17,7 +17,7 @@ export interface CookieOptions {
     maxAge: number;
 }
 
-export type RegistrationErrorType = {
+export type ErrorType = {
     id?: string,
     message: string 
 }

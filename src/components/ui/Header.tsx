@@ -6,7 +6,7 @@ const Header = () => {
 
   const location = useLocation();
 
-  const { isOpenSidebar, showSidebar } = useSidebar();
+  const { showSidebar } = useSidebar();
 
   return (
     <header className="bg-main-color p-2 lg:p-4 sticky top-0 z-10 shrink-0">
@@ -19,7 +19,7 @@ const Header = () => {
           ONLINE BOOK CLUB
         </h1>
         <button      
-          onClick={() => showSidebar(!isOpenSidebar)}   
+          onClick={showSidebar}   
           className={`
             ${hideHeaderButton(location.pathname)}
             p-2

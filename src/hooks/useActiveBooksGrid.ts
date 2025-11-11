@@ -15,7 +15,7 @@ const useActiveBooksGrid = () => {
     const [search, setSearch] = useState<string>("");
 
     const showResults = (): BookItem[] => {
-        if(!resultsActiveBooks || !resultsActiveBooks.length){
+        if(!resultsActiveBooks?.length){
             return allActiveBooks;
         }else{
             return resultsActiveBooks;

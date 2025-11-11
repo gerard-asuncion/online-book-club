@@ -109,9 +109,10 @@ const BooksGrid = () => {
             <ul className="grid grid-cols-2 md:grid-cols-5">
               {booksStatus === "loading" && <li className="text-white">Loading...</li>}
               {booksError && <li className="text-white">{booksError}</li>}
-              {booksVolumes.map((book: BookItem) => (
-                <GridBookCard currentBook={book} isChatHistorial={false} />
-              ))}
+              {booksVolumes.map((book: BookItem) => {
+                const bookId: string = book.id
+                return <GridBookCard key={bookId} currentBook={book} isChatHistorial={true} /> 
+              })}
             </ul>
             {booksStatus === 'succeeded' && booksVolumes.length > 0 && (
               <div className="flex justify-center col-span-full w-full mb-15">

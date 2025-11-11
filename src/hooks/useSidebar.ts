@@ -38,10 +38,10 @@ const useSidebar = () => {
     const [removeMode, setRemoveMode] = useState<boolean>(false);
     const [resultsActiveBooks, setResultsActiveBooks] = useState<BookItem[]>();
 
-    const showSidebar = (open: boolean): void => {
-        if(open){
+    const showSidebar = (): void => {
+        if(isOpenSidebar){
             dispatch(setOpenSidebar());
-        }else if(!open){
+        }else if(!isOpenSidebar){
             dispatch(setCloseSidebar());
         }
     }
@@ -78,10 +78,16 @@ const useSidebar = () => {
 
             const roomIds: Set<string> = new Set<string>();
 
-            querySnapshot.forEach((document) => {
+            for(let document of querySnapshot.docs){
                 const message: SentMessage = document.data() as SentMessage;
                 if (message.room) roomIds.add(message.room);
-            });
+            }
+
+            // querySnapshot.forEach((document) => {
+            //     const message: SentMessage = document.data() as SentMessage;
+            //     if (message.room) roomIds.add(message.room);
+            // });
+
             return Array.from(roomIds);
 
         } catch (error) {
@@ -92,8 +98,7 @@ const useSidebar = () => {
     }
 
     
-    const handleBookCardClick = (id: string, title: string, authors: string[], removeMode: boolean) : void => {
-
+    const handleBookCardClick = (id: string, title: string, authors: string[], removeMode: boolean): void => {
         if(removeMode){      
             removeBookFromProfile(id, isPremiumUser);
         } else {
