@@ -22,3 +22,8 @@ export interface ScreenFrameProps {
     children: ReactNode,
     page: string;
 };
+
+export interface GridBookCardProps {
+    currentBook: BookItem,
+    isChatHistorial: boolean;
+}

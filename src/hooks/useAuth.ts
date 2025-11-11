@@ -60,7 +60,7 @@ const useAuth = () => {
   const [loginEmail, setLoginEmail] = useState<string>("");
   const [loginPassword, setLoginPassword] = useState<string>("");
 
-  const [checkboxState, setCheckboxState] = useState<boolean>(false);
+  const [checkboxState, setCheckboxState] = useState<boolean>(true);
 
   const [loadingLogin, setLoadingLogin] = useState<boolean>(false);
 

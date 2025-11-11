@@ -1,8 +1,6 @@
 import * as Sentry from "@sentry/react";
 import { useCallback } from 'react';
-import { clearCurrentBook, setCurrentBook } from "../features/currentBook/currentBookSlice";
 import { selectGoogleBooksVolumes, selectGoogleBooksStatus, selectGoogleBooksError } from "../features/googleBooks/googleBooksSelectors";
-import useMainContentRouter from "./useMainContentRouter";
 import { doc, DocumentReference, DocumentSnapshot, getDoc, type DocumentData } from 'firebase/firestore';
 import { auth, db } from '../firebase-config';
 import { fetchBooksByIds, clearGoogleBooksSearch } from '../features/googleBooks/googleBooksSlice';
@@ -21,17 +19,6 @@ const useChatHistorial = () => {
     const userHistorialBooks: BookItem[] = useAppSelector(selectGoogleBooksVolumes);
     const userHistorialBooksStatus: string = useAppSelector(selectGoogleBooksStatus);
     const userHistorialBooksError: string | null = useAppSelector(selectGoogleBooksError);
-
-    const { isChat, switchContent } = useMainContentRouter();
-
-    const handleBookClick = (id: string, title: string, authors: string[]): void => {
-
-        dispatch(clearCurrentBook());
-        dispatch(setCurrentBook({ bookId: id, bookTitle: title, bookAuthors: authors }));
-        if(!isChat){
-            switchContent("chatRoom");
-        };
-    }
 
     const fetchHistorialBookIds = async (userProfileUid: string): Promise<string[]> => {  
 
@@ -71,8 +58,7 @@ const useChatHistorial = () => {
         userHistorialBooks,
         userHistorialBooksStatus,
         userHistorialBooksError, 
-        getHistorialBooks, 
-        handleBookClick 
+        getHistorialBooks
     };
 }
 
