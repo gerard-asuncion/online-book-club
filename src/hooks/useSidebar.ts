@@ -14,7 +14,7 @@ import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { selectIsMobile, selectOpenSidebar } from "../features/responsive/responsiveSelectors";
 import { selectUserProfilePremium } from '../features/userProfile/userProfileSelectors';
 import { clearCurrentBook, setCurrentBook } from "../features/currentBook/currentBookSlice";
-import { setCloseSidebar, setOpenSidebar } from "../features/responsive/responsiveSlice";
+import { setCloseSidebar } from "../features/responsive/responsiveSlice";
 import { clearGoogleBooksSearch, fetchBooksByIds } from '../features/googleBooks/googleBooksSlice';
 import useUserData from "./useUserData";
 import useMainContentRouter from "./useMainContentRouter";
@@ -37,14 +37,6 @@ const useSidebar = () => {
 
     const [removeMode, setRemoveMode] = useState<boolean>(false);
     const [resultsActiveBooks, setResultsActiveBooks] = useState<BookItem[]>();
-
-    const showSidebar = (): void => {
-        if(isOpenSidebar){
-            dispatch(setOpenSidebar());
-        }else if(!isOpenSidebar){
-            dispatch(setCloseSidebar());
-        }
-    }
 
     const hideSidebarInMobile = (checkPremium: boolean = true): void => {
         if(isMobile && checkPremium){
@@ -82,12 +74,6 @@ const useSidebar = () => {
                 const message: SentMessage = document.data() as SentMessage;
                 if (message.room) roomIds.add(message.room);
             }
-
-            // querySnapshot.forEach((document) => {
-            //     const message: SentMessage = document.data() as SentMessage;
-            //     if (message.room) roomIds.add(message.room);
-            // });
-
             return Array.from(roomIds);
 
         } catch (error) {
@@ -117,7 +103,6 @@ const useSidebar = () => {
         setRemoveMode,
         isMobile,
         isOpenSidebar,
-        showSidebar,
         hideSidebarInMobile,
         resultsActiveBooks,
         setResultsActiveBooks,
