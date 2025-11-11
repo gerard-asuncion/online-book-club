@@ -7,9 +7,9 @@ import useSidebar from "../../hooks/useSidebar";
 import useResponsive from "../../hooks/useResponsive";
 import useUserData from "../../hooks/useUserData";
 import { changeWindowLayout, changeSidebarLayout } from "../../utils/classNameUtils";
-import type { OnlyReactNodeChildrenProps } from '../../types/props';
+import type { AppLayoutProps } from '../../types/props';
 
-function AppLayout({ children }: OnlyReactNodeChildrenProps) {
+function AppLayout({ children }: AppLayoutProps) {
   
   const { updateUserData } = useUserData();
   const { isOpenSidebar } = useSidebar();

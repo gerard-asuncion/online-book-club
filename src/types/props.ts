@@ -1,6 +1,10 @@
 import type { ReactNode } from "react";
 import type { BookItem } from "./booksTypes";
 
+export interface AppLayoutProps {
+    readonly children: ReactNode;
+}
+
 export interface OnlyReactNodeChildrenProps {
     children: ReactNode;
 }
