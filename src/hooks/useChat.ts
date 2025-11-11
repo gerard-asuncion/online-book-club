@@ -13,7 +13,11 @@ import {
   doc,
   arrayUnion,
   writeBatch,
-  type Query
+  type Query,
+  type DocumentData,
+  type DocumentReference,
+  type QuerySnapshot, 
+  type WriteBatch
 } from 'firebase/firestore';
 import { auth, db } from '../firebase-config';
 import { useAppSelector } from '../app/hooks';
@@ -27,7 +31,6 @@ import {
 import { selectUserProfileStoredBooks } from '../features/userProfile/userProfileSelectors';
 import { ChatMessage } from '../classes/ChatMessage';
 import { ChatHistorialError } from '../classes/CustomErrors';
-import type { DocumentData, DocumentReference, QuerySnapshot, WriteBatch } from 'firebase/firestore';
 import type { SentMessage, MessageToFirestore, ChatMessageData } from '../types/messageTypes';
 import type { BookItem } from '../types/booksTypes';
 import type { CurrentBookInitialState } from '../types/redux';
@@ -69,9 +72,12 @@ export const useChat = () => {
 
     const unsubscribe = onSnapshot(queryMessages, (snapshot) => {
       const arrMessages: SentMessage[] = [];
-      snapshot.forEach((doc) => {
+      for(let doc of snapshot.docs){
         arrMessages.push({ ...doc.data() as Omit<SentMessage, 'id'>, id: doc.id });
-      });
+      }
+      // snapshot.forEach((doc) => {
+      //   arrMessages.push({ ...doc.data() as Omit<SentMessage, 'id'>, id: doc.id });
+      // });
       setMessages(arrMessages);
     });
     
@@ -152,13 +158,22 @@ export const useChat = () => {
     try {
       const querySnapshot: QuerySnapshot<DocumentData, DocumentData> = await getDocs(queryRoom);
 
-      querySnapshot.forEach((document) => {
+      for(let document of querySnapshot.docs){
         const messageDocRef: DocumentReference<DocumentData, DocumentData> = 
           doc(db, MESSAGES_COLLECTION, document.id);
         batch.update(messageDocRef, {
           seenBy: arrayUnion(currentUserUid)
         });
-      });   
+      }  
+
+      // querySnapshot.forEach((document) => {
+      //   const messageDocRef: DocumentReference<DocumentData, DocumentData> = 
+      //     doc(db, MESSAGES_COLLECTION, document.id);
+      //   batch.update(messageDocRef, {
+      //     seenBy: arrayUnion(currentUserUid)
+      //   });
+      // });   
+
       await batch.commit();
     } catch (error) {
       if(import.meta.env.DEV) console.error("Error marking messages as 'seen' (batch):", error);

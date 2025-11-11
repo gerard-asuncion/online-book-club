@@ -1,7 +1,6 @@
 import { useCallback, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { mdBreakpoint } from "../features/responsive/responsiveSlice";
-import { setIsMobile, setIsNotMobile } from "../features/responsive/responsiveSlice";
+import { mdBreakpoint, setIsMobile, setIsNotMobile } from "../features/responsive/responsiveSlice";
 import { selectIsMobile } from "../features/responsive/responsiveSelectors";
 
 const useResponsive = () => {

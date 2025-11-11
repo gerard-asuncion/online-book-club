@@ -32,7 +32,11 @@ const useChatHistorial = () => {
 
             if (docSnap.exists()) {
                 const profileData: UserProfileType = docSnap.data() as UserProfileType;
-                profileData.userChatHistorial.forEach(id => historialBookIds.push(id));
+
+                for(let id of profileData.userChatHistorial){
+                    historialBookIds.push(id);
+                }
+                // profileData.userChatHistorial.forEach(id => historialBookIds.push(id));
             } else {
                 console.warn("Settings: No user profile document found.");
                 historialBookIds.length = 0;

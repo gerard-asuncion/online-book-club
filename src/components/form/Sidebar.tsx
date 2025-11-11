@@ -95,13 +95,14 @@ const Sidebar = () => {
                     </li>
                 }
 
-                {isPremiumUser && storedBooks.map((storedBook: BookItem, index: number) =>
-                    <SidebarBookCard 
-                        key={index}
+                {isPremiumUser && storedBooks.map((storedBook: BookItem) => {
+                    const bookId: string = storedBook.id
+                    return <SidebarBookCard 
+                        key={bookId}
                         cardStoredBook={storedBook}
                         removeMode={removeMode}
                     /> 
-                )}
+                })}
 
                 {isPremiumUser && <li className="text-main-color text-xs text-center row-span-1 px-4 py-1 h-6">
                     {!storedBooks.length && 
@@ -110,7 +111,7 @@ const Sidebar = () => {
                     {storedBooks.length > 0 && 
                         <section className="flex flex-col justify-around items-center gap-2">
                             <div>
-                                {`Stored ${storedBooks.length}/3.`}
+                                {`Stored ${storedBooks.length}/5.`}
                             </div>
                             <button
                                 className={`

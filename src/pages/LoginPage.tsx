@@ -36,7 +36,7 @@ const LoginPage = () => {
                             value={loginEmail}
                             onChange={(e) => {setLoginEmail(e.target.value)}}
                             placeholder="example@mail.com"
-                            className="bg-secondary-color border-main-color border-2 text-white placeholder:text-main-color p-1 rounded-md"
+                            className="bg-secondary-color border-main-color border-2 text-white placeholder:text-main-color placeholder:italic p-1 rounded-md"
                         />
                         <label 
                             htmlFor="email"
@@ -51,12 +51,12 @@ const LoginPage = () => {
                             onChange={(e) => {setLoginPassword(e.target.value)}}
                             className="bg-secondary-color border-main-color border-2 text-white p-1 mb-5 rounded-md"
                         />
-                            {userLoginErrors.map((error, index) =>
+                            {userLoginErrors.map((error) =>
                                 <div 
-                                    key={index}
+                                    key={error.id}
                                     className="text-white text-xs text-center"
                                 >
-                                    {error}
+                                    {error.message}
                                 </div>
                             )}
                             {!userLoginErrors && loginError && (

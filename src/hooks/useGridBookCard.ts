@@ -17,7 +17,7 @@ const useGridBookCard = () => {
 
     const handleVolumeSelection = (id: string, title: string, authors: string[]): void => {
         if(!isPremiumUser){
-            const selectionConfirmed: boolean = window.confirm(`Do you want to select the book "${title}"?`);
+            const selectionConfirmed: boolean = globalThis.confirm(`Do you want to select the book "${title}"?`);
             if(!selectionConfirmed) return;
         }
         dispatch(clearCurrentBook());

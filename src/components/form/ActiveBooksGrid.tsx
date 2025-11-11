@@ -79,9 +79,10 @@ const ActiveBooksGrid = () => {
             <ul className="grid grid-cols-2 md:grid-cols-5">
               {allActiveBooksStatus === "loading" && <li>Loading...</li>}
               {allActiveBooksError && <li>{allActiveBooksError}</li>}
-              {results.map((book: BookItem) => (
-                <GridBookCard currentBook={book} isChatHistorial={false} />
-              ))}
+              {results.map((book: BookItem) => {
+                const bookId: string = book.id
+                return <GridBookCard key={bookId} currentBook={book} isChatHistorial={true} />
+              })}
             </ul>
         </article>
       </section>

@@ -29,7 +29,7 @@ import { setOpenSidebar } from '../features/responsive/responsiveSlice';
 import { LoginError } from '../classes/LoginError';
 import { RegisterNewUserError, UserCredentialError } from '../classes/CustomErrors';
 import { RegisterUser } from '../classes/RegisterUser';
-import type { CookieOptions, RegistrationErrorType, UserProfileType } from '../types/types';
+import type { CookieOptions, UserProfileType, ErrorType } from '../types/types';
 
 const USERS_COLLECTION: string = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERS;
 const USERNAMES_COLLECTION: string = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERNAMES;
@@ -42,11 +42,11 @@ const useAuth = () => {
   const dispatch = useAppDispatch();
   
   const [loginError, setLoginError] = useState<LoginError | null>(null);
-  const [userLoginErrors, setUserLoginErrors] = useState<string[]>([]);
+  const [userLoginErrors, setUserLoginErrors] = useState<ErrorType[]>([]);
 
-  const [registrationWarnings, setRegistrationWarnings] = useState<RegistrationErrorType[]>([{
+  const [registrationWarnings, setRegistrationWarnings] = useState<ErrorType[]>([{
         id: "username-condition",
-        message: "Username can't contain symbols or spaces."
+        message: "Username can't contain symbols or spaces, except the underscore: _"
       },{
         id: "password-condition",
         message: "Password must be at least 8 characters long."
@@ -73,7 +73,7 @@ const useAuth = () => {
   }
 
   const isUsernameFormatValid = (username: string): boolean => {
-    const regex: RegExp = /^[a-zA-Z0-9_]+$/;
+    const regex: RegExp = /^[\w]+$/;
     return regex.test(username);
   };
 
@@ -103,16 +103,8 @@ const useAuth = () => {
 
     e.preventDefault();
 
-    setRegistrationWarnings([{
-        id: "username-condition",
-        message: "Username can't contain symbols or spaces, except the underscore: _"
-      },{
-        id: "password-condition",
-        message: "Password must be at least 8 characters long."
-      }]);
-
     setRegistrationWarnings(prevErrors => {
-      let actualErrors: RegistrationErrorType[] = prevErrors;
+      let actualErrors: ErrorType[] = prevErrors;
       if (isUsernameFormatValid(newUsername)) {
         actualErrors = actualErrors.filter(err => err.id !== "username-condition");
       };
@@ -139,7 +131,7 @@ const useAuth = () => {
 
       if(!isAvailable){
         setRegistrationWarnings(prevErrors => {
-          let actualErrors: RegistrationErrorType[] = prevErrors;
+          let actualErrors: ErrorType[] = prevErrors;
           actualErrors.push({
             id: "unavailable-username",
             message: "Username not available."
@@ -211,10 +203,16 @@ const useAuth = () => {
     setLoadingLogin(true);
     setUserLoginErrors([]);
     setLoginError(null);
-    const userErrors: string[] = [];
+    const userErrors: ErrorType[] = [];
     try {
-      if(!email || email.trim() === "") userErrors.push("No user email, unable to login.");
-      if(!password || password.trim() === "") userErrors.push("No user password, unable to login.");
+      if(!email || email.trim() === "") userErrors.push({
+        id: "email-error",
+        message: "No user email, unable to login."
+      });
+      if(!password || password.trim() === "") userErrors.push({
+        id: "password-error",
+        message: "No user password, unable to login."
+      });
 
       if(userErrors.length > 0) setUserLoginErrors(userErrors)
   

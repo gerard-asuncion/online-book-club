@@ -28,9 +28,10 @@ const ChatHistorial = () => {
                 <ul className="grid grid-cols-2 md:grid-cols-5">
                     {userHistorialBooksStatus === "loading" && <li>Loading...</li>}
                     {userHistorialBooksError === "loading" && <li>{userHistorialBooksError}</li>}
-                    {userHistorialBooks.map((book: BookItem) => (
-                        <GridBookCard currentBook={book} isChatHistorial={true} />
-                    ))}
+                    {userHistorialBooks.map((book: BookItem) => {
+                        const bookId: string = book.id
+                        return <GridBookCard key={bookId} currentBook={book} isChatHistorial={true} />
+                    })}
                 </ul>          
             </section>
         </MainContentFrame>
