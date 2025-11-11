@@ -12,8 +12,11 @@ import {
 import { db } from '../firebase-config';
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { selectIsMobile, selectOpenSidebar } from "../features/responsive/responsiveSelectors";
+import { selectUserProfilePremium } from '../features/userProfile/userProfileSelectors';
+import { clearCurrentBook, setCurrentBook } from "../features/currentBook/currentBookSlice";
 import { setCloseSidebar, setOpenSidebar } from "../features/responsive/responsiveSlice";
 import { clearGoogleBooksSearch, fetchBooksByIds } from '../features/googleBooks/googleBooksSlice';
+import useUserData from "./useUserData";
 import useMainContentRouter from "./useMainContentRouter";
 import { addTimeout } from "../utils/utils";
 import type { BookItem } from '../types/booksTypes';
@@ -23,10 +26,12 @@ const MESSAGES_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION_MESSAGES
 
 const useSidebar = () => {
 
+    const { removeBookFromProfile } = useUserData();
     const { isChat, switchContent } = useMainContentRouter();
 
     const dispatch = useAppDispatch();
 
+    const isPremiumUser: boolean = useAppSelector(selectUserProfilePremium);
     const isOpenSidebar: boolean = useAppSelector(selectOpenSidebar);
     const isMobile: boolean = useAppSelector(selectIsMobile);
 
@@ -86,6 +91,21 @@ const useSidebar = () => {
         }
     }
 
+    
+    const handleBookCardClick = (id: string, title: string, authors: string[], removeMode: boolean) : void => {
+
+        if(removeMode){      
+            removeBookFromProfile(id, isPremiumUser);
+        } else {
+            dispatch(clearCurrentBook());
+            dispatch(setCurrentBook({ bookId: id, bookTitle: title, bookAuthors: authors }));
+            if(!isChat){
+                switchContent("chatRoom");
+            };
+            hideSidebarInMobile();
+        }
+    }
+
     return {
         openChat,
         removeMode,
@@ -96,7 +116,8 @@ const useSidebar = () => {
         hideSidebarInMobile,
         resultsActiveBooks,
         setResultsActiveBooks,
-        getActiveBooks
+        getActiveBooks,
+        handleBookCardClick
     }
 }
 

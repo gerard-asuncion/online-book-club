@@ -1,10 +1,11 @@
-import useSidebarBookCard from "../../hooks/useSidebarBookCard";
 import { bookCardTitle, bookCardAuthors } from "../../utils/utils";
 import { showHideAnything, highlightBookRoomCard } from "../../utils/classNameUtils";
 import { useAppSelector } from "../../app/hooks";
 import { selectCurrentBookId } from "../../features/currentBook/currentBookSelectors";
 import { selectUserProfilePremium } from "../../features/userProfile/userProfileSelectors";
 import type { SidebarBookCardProps } from "../../types/props";
+import useUnreadCount from "../../hooks/useUnreadCount";
+import useSidebar from "../../hooks/useSidebar";
 
 const SidebarBookCard = ({ cardStoredBook, removeMode }: SidebarBookCardProps) => {
 
@@ -15,7 +16,8 @@ const SidebarBookCard = ({ cardStoredBook, removeMode }: SidebarBookCardProps) =
   const cardStoredBookTitle: string = cardStoredBook.volumeInfo.title;
   const cardStoredBookAuthors: string[] = cardStoredBook.volumeInfo.authors;
 
-  const { unreadCount, setUnreadCount, handleBookCardClick } = useSidebarBookCard(currentBookId);
+  const { unreadCount, setUnreadCount } = useUnreadCount(cardStoredBookId);
+  const { handleBookCardClick } = useSidebar();
 
   if(!isPremiumUser){
     return null;

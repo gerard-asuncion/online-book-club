@@ -1,6 +1,6 @@
 import useSidebar from "../../hooks/useSidebar";
 import useMainContentRouter from "../../hooks/useMainContentRouter";
-import SidebarBookCard from "./SidebarBookCard";
+import SidebarBookCard from "../ui/SidebarBookCard";
 import { defaultButtonLayout, setCursorPointer } from "../../utils/classNameUtils";
 import { useAppSelector } from "../../app/hooks";
 import { selectCurrentBookTitle } from "../../features/currentBook/currentBookSelectors";

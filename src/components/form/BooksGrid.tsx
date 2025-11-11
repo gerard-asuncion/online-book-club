@@ -1,4 +1,5 @@
 import MainContentFrame from "../ui/MainContentFrame";
+import GridBookCard from "../ui/GridBookCard";
 import { 
   defaultButtonLayout, 
   justifyBooksSection,
@@ -23,7 +24,6 @@ const BooksGrid = () => {
     autoSaveBook,
     handleBooksSearch,
     handleLoadMoreBooks,
-    handleVolumeSelection,
   } = useBooksGrid();
 
   const isPremiumUser: boolean = useAppSelector(selectUserProfilePremium);
@@ -110,31 +110,7 @@ const BooksGrid = () => {
               {booksStatus === "loading" && <li className="text-white">Loading...</li>}
               {booksError && <li className="text-white">{booksError}</li>}
               {booksVolumes.map((book: BookItem) => (
-                <li 
-                  className="col-span-1 mb-10 flex flex-col items-center"
-                  key={book.id}
-                >
-                    <button 
-                      onClick={() => {
-                        handleVolumeSelection(book.id, book.volumeInfo.title, book.volumeInfo.authors);
-                      }} 
-                      className="cursor-pointer flex flex-col justify-center items-start gap-1 w-70/100 aspect-2/3"
-                    >
-                      <img
-                      className="w-full h-full object-cover"
-                      src={book.volumeInfo.imageLinks?.thumbnail} 
-                      alt={book.volumeInfo.title} 
-                      />
-                    <div className="text-left">
-                      <strong>{book.volumeInfo.title}</strong>
-                      <p
-                        className="text-main-color"
-                      >
-                        {book.volumeInfo.authors?.join(', ')}
-                      </p>
-                    </div>
-                  </button>
-                </li>
+                <GridBookCard currentBook={book} isChatHistorial={false} />
               ))}
             </ul>
             {booksStatus === 'succeeded' && booksVolumes.length > 0 && (
