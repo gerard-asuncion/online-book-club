@@ -9,4 +9,4 @@ const ChatHistorialPage = () => {
   )
 }
 
-export default ChatHistorialPage
+export default ChatHistorialPage;

@@ -15,7 +15,7 @@ const Settings = () => {
       <section className="h-full w-full text-white flex flex-col items-center justify-center gap-3">
         <button
           className={`${defaultButtonLayout()} max-w-50`}
-          onClick={() => navigateToHistorial}
+          onClick={navigateToHistorial}
         >
           Chat Historial
         </button>
