@@ -75,9 +75,6 @@ export const useChat = () => {
       for(let doc of snapshot.docs){
         arrMessages.push({ ...doc.data() as Omit<SentMessage, 'id'>, id: doc.id });
       }
-      // snapshot.forEach((doc) => {
-      //   arrMessages.push({ ...doc.data() as Omit<SentMessage, 'id'>, id: doc.id });
-      // });
       setMessages(arrMessages);
     });
     
@@ -164,16 +161,7 @@ export const useChat = () => {
         batch.update(messageDocRef, {
           seenBy: arrayUnion(currentUserUid)
         });
-      }  
-
-      // querySnapshot.forEach((document) => {
-      //   const messageDocRef: DocumentReference<DocumentData, DocumentData> = 
-      //     doc(db, MESSAGES_COLLECTION, document.id);
-      //   batch.update(messageDocRef, {
-      //     seenBy: arrayUnion(currentUserUid)
-      //   });
-      // });   
-
+      }
       await batch.commit();
     } catch (error) {
       if(import.meta.env.DEV) console.error("Error marking messages as 'seen' (batch):", error);

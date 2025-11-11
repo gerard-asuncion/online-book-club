@@ -47,15 +47,15 @@ export const hideHeaderButton = (locationPathname: string): string =>
     ? ""
     : "hidden"
 
-export const highlightBookRoomCard = (openBookRoom: string | null, bookRoomName: string, removeMode: boolean): string => {
-    if(removeMode){
-        return "bg-default-bg border-2 border-red-500 text-white"
-    } else {
-        return openBookRoom === bookRoomName
-        ? "bg-default-bg border-2 border-white text-white"
-        : "bg-default-bg border-2 border-main-color text-main-color transition-colors duration-300 md:duration-100 ease-in-out md:hover:bg-main-color md:hover:text-white cursor-pointer"
-    }
-}
+const highlightBookRoomCard = (openBookRoom: string | null, bookRoomName: string): string =>
+    openBookRoom === bookRoomName
+    ? "bg-default-bg border-2 border-white text-white"
+    : "bg-default-bg border-2 border-main-color text-main-color transition-colors duration-300 md:duration-100 ease-in-out md:hover:bg-main-color md:hover:text-white cursor-pointer"
+
+export const bookRoomCardStyle = (openBookRoom: string | null, bookRoomName: string, removeMode: boolean): string =>
+    removeMode 
+    ? "bg-default-bg border-2 border-red-500 text-white"
+    : highlightBookRoomCard(openBookRoom, bookRoomName)
 
 export const setCursorPointer = (active: string | null): string =>
     active ? "cursor-pointer" : ""

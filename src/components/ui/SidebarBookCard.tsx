@@ -1,11 +1,12 @@
 import { bookCardTitle, bookCardAuthors } from "../../utils/utils";
-import { showHideAnything, highlightBookRoomCard } from "../../utils/classNameUtils";
+import { showHideAnything, bookRoomCardStyle } from "../../utils/classNameUtils";
 import { useAppSelector } from "../../app/hooks";
 import { selectCurrentBookId } from "../../features/currentBook/currentBookSelectors";
 import { selectUserProfilePremium } from "../../features/userProfile/userProfileSelectors";
 import type { SidebarBookCardProps } from "../../types/props";
 import useUnreadCount from "../../hooks/useUnreadCount";
 import useSidebar from "../../hooks/useSidebar";
+import useUserData from "../../hooks/useUserData";
 
 const SidebarBookCard = ({ cardStoredBook, removeMode }: SidebarBookCardProps) => {
 
@@ -17,7 +18,16 @@ const SidebarBookCard = ({ cardStoredBook, removeMode }: SidebarBookCardProps) =
   const cardStoredBookAuthors: string[] = cardStoredBook.volumeInfo.authors;
 
   const { unreadCount, setUnreadCount } = useUnreadCount(cardStoredBookId);
-  const { handleBookCardClick } = useSidebar();
+  const { removeBookFromProfile } = useUserData();
+  const { selectBookFromSidebar } = useSidebar();
+
+  const handleBookCardClick = (id: string, title: string, authors: string[], removeMode: boolean): void => {
+    if(removeMode){      
+      removeBookFromProfile(id, isPremiumUser);
+    } else {
+      selectBookFromSidebar(id, title, authors)
+    }
+  }
 
   if(!isPremiumUser){
     return null;
@@ -31,7 +41,7 @@ const SidebarBookCard = ({ cardStoredBook, removeMode }: SidebarBookCardProps) =
             setUnreadCount(0);
           }}
           className={`
-            ${highlightBookRoomCard(currentBookId, cardStoredBookId, removeMode)}
+            ${bookRoomCardStyle(currentBookId, cardStoredBookId, removeMode)}
             h-full
             w-full
             flex 
