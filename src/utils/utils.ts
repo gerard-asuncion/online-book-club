@@ -3,9 +3,7 @@ export const addTimeout = (callback: () => void, time: number): void => {
 };
 
 export const detectDeletedUser = (username: string | null | undefined): string =>
-    username
-    ? username
-    : "deleted user"
+    username || "deleted user";
 
 export const bookCardTitle = (title : string | undefined): string => {
     if(!title) return "Unknown Title";
