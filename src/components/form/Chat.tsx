@@ -132,7 +132,7 @@ const Chat = () => {
             py-5 
             bg-default-bg">
           <TextareaAutosize
-            className="flex-1 p-2 rounded-lg resize-none bg-white" 
+            className="flex-1 p-2 rounded-lg resize-none bg-secondary-color border-main-color border-2 text-white placeholder:text-gray-400 placeholder:italic" 
             placeholder="Type your message here..."
             onChange={(e) => setNewMessage(e.target.value)}
             value={newMessage} 
