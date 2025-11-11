@@ -98,7 +98,7 @@ const useUserData = () => {
 
     const addBookToProfile = async (bookIdToAdd: string): Promise<void> => {     
         if (!userProfileUid) throw new ProfileDataError("No user is logged in to perform this action.");
-        if(userStoredBooks.length >= 3) return alert("You can't store more than 3 books. Please, remove some. In 'settings' you can recover any chat where you have written.");
+        if(userStoredBooks.length >= 5) return alert("You can't store more than 5 books. Please, remove some. In 'settings' you can recover any chat where you have written.");
         if(!isPremiumUser) return alert("Only premium users can store books. Please, upgrade your account.");
         try {
             const userDocRef: DocumentReference<DocumentData, DocumentData> = doc(db, USERS_COLLECTION, userProfileUid);

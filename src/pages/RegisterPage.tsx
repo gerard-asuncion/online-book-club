@@ -56,8 +56,8 @@ const RegisterPage = () => {
                         name="username" 
                         value={newUsername}
                         onChange={(e) => setNewUsername(e.target.value)}
-                        className="bg-white py-1 px-2 rounded-md" 
-                        placeholder="enter username..." 
+                        className="bg-secondary-color border-2 border-main-color placeholder:text-main-color py-1 px-2 rounded-md" 
+                        placeholder="your_username_here" 
                       />
                     </div>
                     <div className="flex flex-col gap-1">
@@ -72,8 +72,8 @@ const RegisterPage = () => {
                         name="email" 
                         value={newUserEmail}
                         onChange={(e) => setNewUserEmail(e.target.value)}
-                        className="bg-white py-1 px-2 rounded-md" 
-                        placeholder="enter email..." 
+                        className="bg-secondary-color border-2 border-main-color placeholder:text-main-color py-1 px-2 rounded-md" 
+                        placeholder="example@mail.com" 
                       />
                     </div>
                     <div className="flex flex-col gap-1">
@@ -88,8 +88,7 @@ const RegisterPage = () => {
                         name="password" 
                         value={newUserPassword}
                         onChange={(e) => setNewUserPassword(e.target.value)}
-                        className="bg-white py-1 px-2 rounded-md" 
-                        placeholder="enter password..." 
+                        className="bg-secondary-color border-2 border-main-color py-1 px-2 rounded-md" 
                       />
                     </div>
                     <div className="flex flex-col gap-1">
@@ -104,8 +103,7 @@ const RegisterPage = () => {
                         name="passwordRepeat" 
                         value={newPasswordConfirmation}
                         onChange={(e) => setNewPasswordConfirmation(e.target.value)}
-                        className="bg-white py-1 px-2 rounded-md" 
-                        placeholder="repeat password..."
+                        className="bg-secondary-color border-2 border-main-color py-1 px-2 rounded-md" 
                       />
                     </div>
                     
