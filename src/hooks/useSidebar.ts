@@ -1,5 +1,6 @@
 import * as Sentry from "@sentry/react";
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import { 
     collection, 
     CollectionReference, 
@@ -15,7 +16,7 @@ import { selectIsMobile, selectOpenSidebar } from "../features/responsive/respon
 import { clearCurrentBook, setCurrentBook } from "../features/currentBook/currentBookSlice";
 import { setCloseSidebar } from "../features/responsive/responsiveSlice";
 import { clearGoogleBooksSearch, fetchBooksByIds } from '../features/googleBooks/googleBooksSlice';
-import useMainContentRouter from "./useMainContentRouter";
+import usePageNavigation from "./usePageNavigation";
 import { addTimeout } from "../utils/utils";
 import type { BookItem } from '../types/booksTypes';
 import type { SentMessage } from '../types/messageTypes';
@@ -24,7 +25,9 @@ const MESSAGES_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION_MESSAGES
 
 const useSidebar = () => {
 
-    const { isChat, switchContent } = useMainContentRouter();
+    const { navigateToChat } = usePageNavigation();
+
+    const location = useLocation();
 
     const dispatch = useAppDispatch();
 
@@ -42,8 +45,8 @@ const useSidebar = () => {
     }
 
     const openChat = (currentBookTitle: string | null): void => {
-        if(!isChat && currentBookTitle){
-            switchContent("chatRoom");
+        if(location.pathname !== "/chat" && currentBookTitle){
+            navigateToChat();
         };
     }
 
@@ -83,8 +86,8 @@ const useSidebar = () => {
     const selectBookFromSidebar = (id: string, title: string, authors: string[]): void => {
         dispatch(clearCurrentBook());
         dispatch(setCurrentBook({ bookId: id, bookTitle: title, bookAuthors: authors }));
-        if(!isChat){
-            switchContent("chatRoom");
+        if(location.pathname !== "/chat"){
+            navigateToChat();
         };
         hideSidebarInMobile();
     }

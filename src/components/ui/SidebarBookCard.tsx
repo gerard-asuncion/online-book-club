@@ -25,7 +25,7 @@ const SidebarBookCard = ({ cardStoredBook, removeMode }: SidebarBookCardProps) =
     if(removeMode){      
       removeBookFromProfile(id, isPremiumUser);
     } else {
-      selectBookFromSidebar(id, title, authors)
+      selectBookFromSidebar(id, title, authors);
     }
   }
 

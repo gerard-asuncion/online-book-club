@@ -1,5 +1,5 @@
 import useSidebar from "../../hooks/useSidebar";
-import useMainContentRouter from "../../hooks/useMainContentRouter";
+import usePageNavigation from "../../hooks/usePageNavigation";
 import SidebarBookCard from "../ui/SidebarBookCard";
 import { defaultButtonLayout, setCursorPointer } from "../../utils/classNameUtils";
 import { useAppSelector } from "../../app/hooks";
@@ -19,7 +19,7 @@ const Sidebar = () => {
     const isPremiumUser: boolean = useAppSelector(selectUserProfilePremium);
 
     const { openChat, hideSidebarInMobile, removeMode, setRemoveMode, getActiveBooks } = useSidebar();
-    const { switchContent } = useMainContentRouter();
+    const { navigateToSearch, navigateToActive, navigateToSettings, navigateToAbout } = usePageNavigation();
 
     return(
         <section className="h-full grid grid-cols-1 grid-rows-[auto_1fr_auto] px-2 py-5 gap-6">
@@ -55,7 +55,7 @@ const Sidebar = () => {
                     <button
                         onClick={() => {
                             hideSidebarInMobile();
-                            switchContent("bookSearch");
+                            navigateToSearch();
                         }}
                         className={`${defaultButtonLayout()}`}>
                         All
@@ -64,7 +64,7 @@ const Sidebar = () => {
                         onClick={() => {
                             getActiveBooks(isPremiumUser);
                             hideSidebarInMobile(isPremiumUser);
-                            switchContent("activeBookSearch");
+                            navigateToActive();
                         }}
                         className={`${defaultButtonLayout(isPremiumUser)}`}>
                         Active
@@ -136,7 +136,7 @@ const Sidebar = () => {
                         className={`${defaultButtonLayout()}`}
                         onClick={() => {
                             hideSidebarInMobile();
-                            switchContent("userSettings");
+                            navigateToSettings();
                         }}>
                         User settings
                     </button>
@@ -146,7 +146,7 @@ const Sidebar = () => {
                         className={`${defaultButtonLayout()}`}
                         onClick={() => {
                             hideSidebarInMobile();
-                            switchContent("aboutSection");
+                            navigateToAbout();
                         }}>
                         About
                     </button>

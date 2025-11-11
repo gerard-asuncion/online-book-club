@@ -14,7 +14,6 @@ import storage from 'redux-persist/lib/storage';
 
 import authReducer from '../features/auth/authSlice';
 import userProfileReducer from '../features/userProfile/userProfileSlice';
-import mainContentRouteReducer from '../features/mainContentRoute/mainContentRouteSlice';
 import currentBookReducer from '../features/currentBook/currentBookSlice';
 import responsiveReducer from '../features/responsive/responsiveSlice';
 import googleBooksReducer from '../features/googleBooks/googleBooksSlice';
@@ -25,7 +24,6 @@ const sentryReduxEnhancer = Sentry.createReduxEnhancer({
 const rootReducer = combineReducers({
     auth: authReducer,
     userProfile: userProfileReducer,
-    mainContentRoute: mainContentRouteReducer,
     currentBook: currentBookReducer,
     responsive: responsiveReducer,
     googleBooks: googleBooksReducer,
@@ -34,7 +32,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['userProfile', 'mainContentRoute', 'currentBook', 'responsive'] 
+  whitelist: [ 'userProfile', 'currentBook', 'responsive' ] 
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

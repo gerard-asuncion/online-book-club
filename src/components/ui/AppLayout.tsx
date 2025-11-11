@@ -1,24 +1,24 @@
 import * as Sentry from '@sentry/react';
 import { useEffect } from "react";
-import Header from "../components/ui/Header";
-import Sidebar from "../components/form/Sidebar";
-import MainContentRouter from "../components/ui/MainConentRouter";
-import ScreenFrame from "../components/ui/ScreenFrame";
-import useSidebar from "../hooks/useSidebar";
-import useResponsive from "../hooks/useResponsive";
-import useUserData from "../hooks/useUserData";
-import { changeWindowLayout, changeSidebarLayout } from "../utils/classNameUtils";
+import Header from "../../components/ui/Header";
+import Sidebar from "../../components/form/Sidebar";
+import ScreenFrame from "../../components/ui/ScreenFrame";
+import useSidebar from "../../hooks/useSidebar";
+import useResponsive from "../../hooks/useResponsive";
+import useUserData from "../../hooks/useUserData";
+import { changeWindowLayout, changeSidebarLayout } from "../../utils/classNameUtils";
+import type { OnlyReactNodeChildrenProps } from '../../types/props';
 
-function AppPage() {
-
+function AppLayout({ children }: OnlyReactNodeChildrenProps) {
+  
+  const { updateUserData } = useUserData();
   const { isOpenSidebar } = useSidebar();
-  const { autoUpdateUserData } = useUserData();
-
-  useResponsive();
 
   useEffect(() => {
-    autoUpdateUserData();
-  }, []);
+    updateUserData();
+  }, [])
+
+  useResponsive();
 
   return (
     <Sentry.ErrorBoundary fallback={<p>An error has occurred</p>}>
@@ -28,7 +28,7 @@ function AppPage() {
               <div className={`
                 ${changeWindowLayout(isOpenSidebar)}
                 overflow-hidden`}>
-                  <MainContentRouter />
+                  {children}
               </div>
               <div className={`
                 ${changeSidebarLayout(isOpenSidebar)}
@@ -44,4 +44,4 @@ function AppPage() {
   )
 }
 
-export default AppPage;
+export default AppLayout;
