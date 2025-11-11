@@ -38,14 +38,14 @@ export const changeSidebarLayout = (openSidebar: boolean): string =>
     : "hidden";
 
 export const centerHeaderTitle = (locationPathname: string): string =>
-    locationPathname === "/"
-    ? "justify-between"
-    : "justify-center"
+    locationPathname === "/register" || locationPathname === "/login"
+    ? "justify-center"
+    : "justify-between"
 
 export const hideHeaderButton = (locationPathname: string): string =>
-    locationPathname === "/"
-    ? ""
-    : "hidden"
+    locationPathname === "/register" || locationPathname === "/login"
+    ? "hidden"
+    : ""
 
 const highlightBookRoomCard = (openBookRoom: string | null, bookRoomName: string): string =>
     openBookRoom === bookRoomName

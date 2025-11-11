@@ -14,7 +14,7 @@ import { db } from '../firebase-config';
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { selectIsMobile, selectOpenSidebar } from "../features/responsive/responsiveSelectors";
 import { clearCurrentBook, setCurrentBook } from "../features/currentBook/currentBookSlice";
-import { setCloseSidebar } from "../features/responsive/responsiveSlice";
+import { setOpenSidebar, setCloseSidebar } from "../features/responsive/responsiveSlice";
 import { clearGoogleBooksSearch, fetchBooksByIds } from '../features/googleBooks/googleBooksSlice';
 import usePageNavigation from "./usePageNavigation";
 import { addTimeout } from "../utils/utils";
@@ -36,6 +36,14 @@ const useSidebar = () => {
 
     const [removeMode, setRemoveMode] = useState<boolean>(false);
     const [resultsActiveBooks, setResultsActiveBooks] = useState<BookItem[]>();
+
+    const handleHeaderButton = (): void => {
+        if(isOpenSidebar){
+            dispatch(setCloseSidebar());
+        }else{
+            dispatch(setOpenSidebar());
+        }
+    }
 
     const hideSidebarInMobile = (checkPremium: boolean = true): void => {
         if(isMobile && checkPremium){
@@ -98,6 +106,7 @@ const useSidebar = () => {
         setRemoveMode,
         isMobile,
         isOpenSidebar,
+        handleHeaderButton,
         hideSidebarInMobile,
         resultsActiveBooks,
         setResultsActiveBooks,
