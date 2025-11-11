@@ -19,6 +19,7 @@ import {
   type WriteBatch
 } from 'firebase/firestore';
 import { auth, db } from '../firebase-config';
+import { deleteUser, type User } from 'firebase/auth';
 import Cookies from 'universal-cookie';
 import { useAppDispatch } from '../app/hooks';
 import { setIsAuth, clearAuth } from '../features/auth/authSlice';
@@ -29,6 +30,7 @@ import { LoginError } from '../classes/LoginError';
 import { RegisterNewUserError, UserCredentialError } from '../classes/CustomErrors';
 import { RegisterUser } from '../classes/RegisterUser';
 import type { CookieOptions, UserProfileType, ErrorType } from '../types/types';
+import useUserData from "./useUserData";
 
 const USERS_COLLECTION: string = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERS;
 const USERNAMES_COLLECTION: string = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERNAMES;
@@ -62,6 +64,7 @@ const useAuth = () => {
 
   const [loadingLogin, setLoadingLogin] = useState<boolean>(false);
 
+  const { markDeletedProfile } = useUserData();
   const { navigateToLogin, navigateToRegister, navigateToEmptyBar } = usePageNavigation();
 
 
@@ -246,6 +249,25 @@ const useAuth = () => {
     dispatch(setOpenSidebar());
   }
 
+  const deleteUserFromFirebase = async (): Promise<void> => {
+    try {
+      const user: User | null = auth.currentUser;
+      if (user) {
+        const confirmDelete: boolean = globalThis.confirm("Are you sure you want to delete your profile? This action can't be undone.");
+        if(confirmDelete) {
+          const updateDeleted: boolean = await markDeletedProfile();
+          if(updateDeleted){
+            await deleteUser(user);
+            logout();
+          }
+        }
+      } 
+    } catch (error) {
+      Sentry.captureException(error);
+      if (import.meta.env.DEV) console.error("Error deleting user:", error);
+    }
+  };
+
   return {
     loginEmail,
     setLoginEmail,
@@ -269,7 +291,8 @@ const useAuth = () => {
     submitLoginForm,
     checkboxState,
     premiumRegister,
-    logout
+    logout,
+    deleteUserFromFirebase
   };
 
 };

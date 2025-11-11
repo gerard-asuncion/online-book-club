@@ -7,7 +7,7 @@ import { defaultButtonLayout } from "../../utils/classNameUtils";
 const Settings = () => {
 
   const { changePremiumStatus } = useSettings();
-  const { logout } = useAuth();
+  const { logout, deleteUserFromFirebase } = useAuth();
   const { navigateToHistorial } = usePageNavigation();
 
   return (
@@ -29,6 +29,11 @@ const Settings = () => {
           className={`${defaultButtonLayout()} max-w-50`}
           onClick={logout}>
           Log Out
+        </button> 
+        <button 
+          className={`${defaultButtonLayout()} max-w-50`}
+          onClick={deleteUserFromFirebase}>
+          Delete profile
         </button> 
       </section>
     </MainContentFrame>

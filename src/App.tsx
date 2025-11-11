@@ -11,7 +11,6 @@ import ErrorPage from "./pages/ErrorPage";
 import RegisterPage from "./pages/RegisterPage";
 
 function App() {
-
   return (
     <Routes>
       <Route element={<RedirectIfAuth />}>
