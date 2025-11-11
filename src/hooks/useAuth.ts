@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/react";
 import { useState } from 'react';
-import { useNavigate, type NavigateFunction } from 'react-router-dom';
+import usePageNavigation from "./usePageNavigation";
 import { 
   createUserWithEmailAndPassword, 
   signInWithEmailAndPassword,
@@ -24,7 +24,6 @@ import { useAppDispatch } from '../app/hooks';
 import { setIsAuth, clearAuth } from '../features/auth/authSlice';
 import { clearUserProfile } from '../features/userProfile/userProfileSlice';
 import { clearCurrentBook } from '../features/currentBook/currentBookSlice';
-import { setIsSearch } from '../features/mainContentRoute/mainContentRouteSlice';
 import { setOpenSidebar } from '../features/responsive/responsiveSlice';
 import { LoginError } from '../classes/LoginError';
 import { RegisterNewUserError, UserCredentialError } from '../classes/CustomErrors';
@@ -38,7 +37,6 @@ const cookies: Cookies = new Cookies();
 
 const useAuth = () => {
 
-  const navigate: NavigateFunction = useNavigate();
   const dispatch = useAppDispatch();
   
   const [loginError, setLoginError] = useState<LoginError | null>(null);
@@ -64,13 +62,8 @@ const useAuth = () => {
 
   const [loadingLogin, setLoadingLogin] = useState<boolean>(false);
 
-  const navigateToRegister = (): void => {
-    navigate("/register", { replace: true });
-  }
+  const { navigateToLogin, navigateToRegister, navigateToEmptyBar } = usePageNavigation();
 
-  const navigateToLogin = (): void => {
-    navigate("/login", { replace: true });
-  }
 
   const isUsernameFormatValid = (username: string): boolean => {
     const regex: RegExp = /^\w+$/;
@@ -228,10 +221,9 @@ const useAuth = () => {
       cookies.set("auth-token", result.user.refreshToken, cookieOptions);
 
       dispatch(setIsAuth());
-      dispatch(setIsSearch());
       dispatch(setOpenSidebar());
 
-      navigate("/", { replace: true });
+      navigateToEmptyBar();
 
     } catch (error) {
       Sentry.captureException(error);
@@ -251,7 +243,6 @@ const useAuth = () => {
     dispatch(clearCurrentBook());
     dispatch(clearAuth());
     dispatch(clearUserProfile());
-    dispatch(setIsSearch());
     dispatch(setOpenSidebar());
   }
 

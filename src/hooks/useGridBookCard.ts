@@ -1,5 +1,6 @@
+import { useLocation } from "react-router-dom";
 import useUserData from "./useUserData";
-import useMainContentRouter from "./useMainContentRouter";
+import usePageNavigation from "./usePageNavigation";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { setCurrentBook, clearCurrentBook } from '../features/currentBook/currentBookSlice';
 import { selectUserProfilePremium } from "../features/userProfile/userProfileSelectors";
@@ -7,9 +8,11 @@ import useBooksGrid from "./useBooksGrid";
 
 const useGridBookCard = () => {
 
-    const { isChat, switchContent } = useMainContentRouter();
+    const { navigateToChat } = usePageNavigation();
     const { addBookToProfile } = useUserData();
     const { storeCheckboxState } = useBooksGrid();
+
+    const location = useLocation();
 
     const dispatch = useAppDispatch();
     
@@ -25,22 +28,21 @@ const useGridBookCard = () => {
         if(storeCheckboxState){
             addBookToProfile(id);
         };
-        if(!isChat){
-            switchContent("chatRoom");
+        if(location.pathname !== "/chat"){
+            navigateToChat();
         };
         if(import.meta.env.DEV){
-            console.log('Selected volume title:', title);
-            console.log('Selected volume ID:', id);
+            console.log("Selected volume title: ", title);
+            console.log("Selected volume ID :", id);
         }
     }
 
     
     const handleHistorialVolumeSelection = (id: string, title: string, authors: string[]): void => {
-
         dispatch(clearCurrentBook());
         dispatch(setCurrentBook({ bookId: id, bookTitle: title, bookAuthors: authors }));
-        if(!isChat){
-            switchContent("chatRoom");
+        if(location.pathname !== "/chat"){
+            navigateToChat();
         };
     }
 

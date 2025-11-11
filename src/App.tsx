@@ -1,6 +1,10 @@
 import { Routes, Route } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
-import AppPage from "./pages/AppPage";
+import ActiveBooksGridPage from "./pages/ActiveBooksGridPage";
+import BooksGridPage from "./pages/BooksGridPage";
+import ChatPage from "./pages/ChatPage";
+import ChatHistorialPage from "./pages/ChatHistorialPage";
+import SettingsPage from "./pages/SettingsPage";
 import RequireAuth from "./components/form/RequireAuth";
 import RedirectIfAuth from "./components/form/RedirectIfAuth";
 import ErrorPage from "./pages/ErrorPage";
@@ -15,7 +19,11 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
       </Route>
       <Route element={<RequireAuth />}>
-        <Route path="/" element={<AppPage />} />
+        <Route path="/" element={<BooksGridPage />} />
+        <Route path="/active" element={<ActiveBooksGridPage />} />
+        <Route path="/chat" element={<ChatPage />} />
+        <Route path="/historial" element={<ChatHistorialPage />} />
+        <Route path="/settings" element={<SettingsPage />} />
       </Route>
       <Route path="*" element={<ErrorPage />} />
     </Routes>

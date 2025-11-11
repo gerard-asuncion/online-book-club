@@ -34,7 +34,6 @@ const useUnreadCount = (displayedBookId: string | null) => {
                 return !seenBy.includes(userProfileUid);
             });
             setUnreadCount(unreadMessages.length);
-            console.log("unread count: ", unreadCount)
         });
         return () => unsubscribe();
 
