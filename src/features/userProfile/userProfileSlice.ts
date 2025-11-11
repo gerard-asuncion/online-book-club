@@ -31,11 +31,8 @@ export const fetchStoredBooks = createAsyncThunk<
         const fetchPromises = bookIds.map(bookId => 
             axios.get(`${BOOKS_API_URL}/${bookId}`)
         );
-
-      const responses = await Promise.all(fetchPromises);
-      
-      const booksData = responses.map(response => response.data as BookItem);
-      
+      const responses = await Promise.all(fetchPromises);    
+      const booksData = responses.map(response => response.data as BookItem);     
       return booksData;
 
     } catch (error) {
