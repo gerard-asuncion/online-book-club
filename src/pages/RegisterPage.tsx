@@ -56,7 +56,7 @@ const RegisterPage = () => {
                         name="username" 
                         value={newUsername}
                         onChange={(e) => setNewUsername(e.target.value)}
-                        className="bg-secondary-color border-2 border-main-color placeholder:text-main-color py-1 px-2 rounded-md" 
+                        className="text-white bg-secondary-color border-2 border-main-color placeholder:text-main-color placeholder:italic py-1 px-2 rounded-md" 
                         placeholder="your_username_here" 
                       />
                     </div>
@@ -72,7 +72,7 @@ const RegisterPage = () => {
                         name="email" 
                         value={newUserEmail}
                         onChange={(e) => setNewUserEmail(e.target.value)}
-                        className="bg-secondary-color border-2 border-main-color placeholder:text-main-color py-1 px-2 rounded-md" 
+                        className="text-white bg-secondary-color border-2 border-main-color placeholder:text-main-color placeholder:italic py-1 px-2 rounded-md" 
                         placeholder="example@mail.com" 
                       />
                     </div>
@@ -88,7 +88,7 @@ const RegisterPage = () => {
                         name="password" 
                         value={newUserPassword}
                         onChange={(e) => setNewUserPassword(e.target.value)}
-                        className="bg-secondary-color border-2 border-main-color py-1 px-2 rounded-md" 
+                        className="text-white bg-secondary-color border-2 border-main-color py-1 px-2 rounded-md" 
                       />
                     </div>
                     <div className="flex flex-col gap-1">
@@ -103,7 +103,7 @@ const RegisterPage = () => {
                         name="passwordRepeat" 
                         value={newPasswordConfirmation}
                         onChange={(e) => setNewPasswordConfirmation(e.target.value)}
-                        className="bg-secondary-color border-2 border-main-color py-1 px-2 rounded-md" 
+                        className="text-white bg-secondary-color border-2 border-main-color py-1 px-2 rounded-md" 
                       />
                     </div>
                     
@@ -123,7 +123,7 @@ const RegisterPage = () => {
                       htmlFor="registerAdminCheckbox"
                       className="text-white text-sm"
                     >
-                      Premium user
+                      Premium user (free & recomended)
                     </label>
                   </div>
                   <div className={`

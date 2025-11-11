@@ -111,7 +111,7 @@ const Sidebar = () => {
                     {storedBooks.length > 0 && 
                         <section className="flex flex-col justify-around items-center gap-2">
                             <div>
-                                {`Stored ${storedBooks.length}/3.`}
+                                {`Stored ${storedBooks.length}/5.`}
                             </div>
                             <button
                                 className={`

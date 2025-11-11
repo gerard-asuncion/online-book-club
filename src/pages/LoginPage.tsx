@@ -36,7 +36,7 @@ const LoginPage = () => {
                             value={loginEmail}
                             onChange={(e) => {setLoginEmail(e.target.value)}}
                             placeholder="example@mail.com"
-                            className="bg-secondary-color border-main-color border-2 text-white placeholder:text-main-color p-1 rounded-md"
+                            className="bg-secondary-color border-main-color border-2 text-white placeholder:text-main-color placeholder:italic p-1 rounded-md"
                         />
                         <label 
                             htmlFor="email"

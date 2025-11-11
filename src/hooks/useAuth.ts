@@ -46,7 +46,7 @@ const useAuth = () => {
 
   const [registrationWarnings, setRegistrationWarnings] = useState<ErrorType[]>([{
         id: "username-condition",
-        message: "Username can't contain symbols or spaces."
+        message: "Username can't contain symbols or spaces, except the underscore: _"
       },{
         id: "password-condition",
         message: "Password must be at least 8 characters long."
@@ -102,14 +102,6 @@ const useAuth = () => {
   const submitRegisterForm = async (e: React.FormEvent): Promise<void> => {
 
     e.preventDefault();
-
-    setRegistrationWarnings([{
-        id: "username-condition",
-        message: "Username can't contain symbols or spaces, except the underscore: _"
-      },{
-        id: "password-condition",
-        message: "Password must be at least 8 characters long."
-      }]);
 
     setRegistrationWarnings(prevErrors => {
       let actualErrors: ErrorType[] = prevErrors;
