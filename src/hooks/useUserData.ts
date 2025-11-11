@@ -186,19 +186,15 @@ const useUserData = () => {
             const compareBookIds: boolean = compareArrayItems(userProfileBookIds, storedBooksIds);
 
             if(userProfileDataUid && userProfileDataUid !== userStoredUid){
-                console.log("store uid")
                 storeUidUser(userProfileDataUid);
             }
             if(userProfileDataUsername && userProfileDataUsername !== userStoredUsername){
-                console.log("store username")
                 storeUsernameUser(userProfileDataUsername);
             }
             if(isPremiumUserDB && isPremiumUserDB !== isPremiumUser){
-                console.log("store premium")
                 storeIsPremiumUser(isPremiumUserDB); 
             }    
             if(userProfileBookIds && !compareBookIds){
-                console.log("store book ids")
                 storeBooksById(profileData);   
             } 
     
@@ -208,6 +204,32 @@ const useUserData = () => {
         }
     }, []);
 
+    const markDeletedProfile = async (): Promise<boolean> => {
+        let status = false;
+        try {
+            if(userAuthUid){
+                const userDocRef: DocumentReference<DocumentData, DocumentData> = doc(db, USERS_COLLECTION, userAuthUid);
+                const docSnap: DocumentSnapshot<DocumentData, DocumentData> = await getDoc(userDocRef);
+                if(!docSnap.exists()) throw new ProfileDataError("Unable to find user in database in order to mark it as deleted.");
+                await updateDoc(userDocRef, {
+                    isDeleted: true
+                });
+                const docSnapConfirm: DocumentSnapshot<DocumentData, DocumentData> = await getDoc(userDocRef);
+                const profileData: UserProfileType = docSnapConfirm.data() as UserProfileType;
+                if(profileData.isDeleted){
+                    status = true;
+                }
+            }   
+            if(status) alert("Deleted.");
+        } catch(error){
+            Sentry.captureException(error);
+            if(import.meta.env.DEV) console.error("Error actualizing user's profile to mark it as deleted:", error);     
+        } finally {
+            console.log("markdeletedprofile")
+        }    
+        return status;
+    }
+
     return { 
         addBookToProfile, 
         removeBookFromProfile,
@@ -216,7 +238,8 @@ const useUserData = () => {
         storeIsPremiumUser,
         activatePremiumMode,
         disablePremiumMode,
-        updateUserData
+        updateUserData,
+        markDeletedProfile
     };
 };
 

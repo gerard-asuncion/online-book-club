@@ -9,7 +9,8 @@ export interface UserProfileType {
     storedBookIds: string[],
     userChatHistorial: string[],
     createdAt: FieldValue | Timestamp,
-    isPremiumUser: boolean;
+    isPremiumUser: boolean,
+    isDeleted?: boolean;
 }
 
 export interface CookieOptions {

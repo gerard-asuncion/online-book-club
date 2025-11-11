@@ -1,6 +1,6 @@
 import { initializeApp, type FirebaseApp } from "firebase/app";
 import { Firestore, getFirestore } from "firebase/firestore";
-import { getAuth, GoogleAuthProvider, type Auth } from "firebase/auth";
+import { getAuth, type Auth } from "firebase/auth";
 
 type firebaseConfigType = {
   apiKey: string;
@@ -25,4 +25,3 @@ const firebaseConfig: firebaseConfigType = {
 const app: FirebaseApp = initializeApp(firebaseConfig);
 export const db: Firestore = getFirestore(app);
 export const auth: Auth = getAuth();
-export const provider: GoogleAuthProvider = new GoogleAuthProvider();
