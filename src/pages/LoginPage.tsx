@@ -59,8 +59,8 @@ const LoginPage = () => {
                                     {error.message}
                                 </div>
                             )}
-                            {!userLoginErrors && loginError && (
-                                <div className="text-main-color text-xs text-center p-2">
+                            {loginError && (
+                                <div className="text-main-color text-xs text-center">
                                     {loginError.userMessage}
                                 </div>
                             )}                            

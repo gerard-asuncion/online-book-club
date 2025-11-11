@@ -214,7 +214,7 @@ const useAuth = () => {
         message: "No user password, unable to login."
       });
 
-      if(userErrors.length > 0) setUserLoginErrors(userErrors)
+      setUserLoginErrors(userErrors);
   
       const result: UserCredential = await signInWithEmailAndPassword(auth, email, password);
 
