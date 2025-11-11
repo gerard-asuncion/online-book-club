@@ -7,6 +7,8 @@ import {
   sendEmailVerification,
   updateProfile,
   signOut,
+  deleteUser,
+  type User,
   type UserCredential
 } from 'firebase/auth';
 import { 
@@ -19,7 +21,6 @@ import {
   type WriteBatch
 } from 'firebase/firestore';
 import { auth, db } from '../firebase-config';
-import { deleteUser, type User } from 'firebase/auth';
 import Cookies from 'universal-cookie';
 import { useAppDispatch } from '../app/hooks';
 import { setIsAuth, clearAuth } from '../features/auth/authSlice';

@@ -19,8 +19,8 @@ export const compareArrayItems = (arrayA: string[], arrayB: string[]): boolean =
 
   if (arrayA.length !== arrayB.length) return false;
 
-  const sortedArrayA = [...arrayA].sort();
-  const sortedArrayB = [...arrayB].sort();
+  const sortedArrayA = [...arrayA].sort((a, b) => a.localeCompare(b));
+  const sortedArrayB = [...arrayB].sort((a, b) => a.localeCompare(b));
 
   for (let i = 0; i < sortedArrayA.length; i++) {
     if (sortedArrayA[i] !== sortedArrayB[i]) return false;

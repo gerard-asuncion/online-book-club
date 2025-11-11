@@ -43,7 +43,10 @@ const Sidebar = () => {
                             <p className="text-main-color text-sm text-left">Active room:</p>
                             <button 
                                 className={`${setCursorPointer(currentBookTitle)} text-left text-white hover:text-main-color`} 
-                                onClick={() => openChat(currentBookTitle)}
+                                onClick={() => {
+                                    openChat(currentBookTitle);
+                                    hideSidebarInMobile();
+                                }}
                             >
                                 <div>{currentBookTitle}</div>
                             </button>
