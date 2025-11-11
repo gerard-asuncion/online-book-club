@@ -1,12 +1,23 @@
 import { useLocation } from "react-router-dom";
 import useSidebar from "../../hooks/useSidebar";
+import { useAppDispatch } from "../../app/hooks";
+import { setOpenSidebar, setCloseSidebar } from "../../features/responsive/responsiveSlice";
 import { centerHeaderTitle, hideHeaderButton } from "../../utils/classNameUtils";
 
 const Header = () => {
 
   const location = useLocation();
+  const dispatch = useAppDispatch();
 
-  const { showSidebar } = useSidebar();
+  const { isOpenSidebar } = useSidebar();
+
+  const handleButtonClick = (): void => {
+    if(isOpenSidebar){
+      dispatch(setOpenSidebar());
+    }else{
+      dispatch(setCloseSidebar());
+    }
+  }
 
   return (
     <header className="bg-main-color p-2 lg:p-4 sticky top-0 z-10 shrink-0">
@@ -19,7 +30,7 @@ const Header = () => {
           ONLINE BOOK CLUB
         </h1>
         <button      
-          onClick={showSidebar}   
+          onClick={handleButtonClick}   
           className={`
             ${hideHeaderButton(location.pathname)}
             p-2
