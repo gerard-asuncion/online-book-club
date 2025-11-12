@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
 import type { ResponsiveInitialState } from "../../types/redux";
 
 export const mdBreakpoint: number = 768;
@@ -8,7 +7,6 @@ const getInitialMobileState = (): boolean => {
 };
 
 const initialState: ResponsiveInitialState = {
-    windowWidth: 0,
     isMobile: getInitialMobileState(),
     openSidebar: false,
 }
@@ -18,9 +16,6 @@ const sidebarSlice = createSlice({
   initialState,
   
   reducers: {
-    setWindowWidth: (state, action: PayloadAction<{ windowWidth: number }>) => {
-      state.windowWidth = action.payload.windowWidth;  
-    },
     setIsMobile: (state) => {
       state.isMobile = true;
     },
@@ -36,5 +31,5 @@ const sidebarSlice = createSlice({
   },
 });
 
-export const { setWindowWidth, setIsMobile, setIsNotMobile, setOpenSidebar, setCloseSidebar } = sidebarSlice.actions;
+export const { setIsMobile, setIsNotMobile, setOpenSidebar, setCloseSidebar } = sidebarSlice.actions;
 export default sidebarSlice.reducer;

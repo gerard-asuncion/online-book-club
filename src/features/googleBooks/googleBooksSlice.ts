@@ -26,7 +26,7 @@ export const fetchGoogleBooks = createAsyncThunk<
       const response: AxiosResponse = await axios.get(BOOKS_API_URL, {
         params: {
           q: searchQuery,
-          maxResults: 40
+          maxResults: 20
         }
       });
       return response.data.items as BookItem[] || [];
@@ -60,7 +60,7 @@ export const fetchMoreGoogleBooks = createAsyncThunk<
         params: {
           q: currentQuery,
           startIndex: startIndex,
-          maxResults: 40
+          maxResults: 20
         }
       });
 

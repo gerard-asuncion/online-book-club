@@ -59,7 +59,7 @@ const useAuth = () => {
 
   const [loadingLogin, setLoadingLogin] = useState<boolean>(false);
 
-  const { markDeletedProfile } = useUserData();
+  const { updateUserData, markDeletedProfile } = useUserData();
   const { navigateToLogin, navigateToRegister, navigateToEmptyBar } = usePageNavigation();
 
 
@@ -230,6 +230,8 @@ const useAuth = () => {
 
       dispatch(setIsAuth());
       dispatch(setOpenSidebar());
+
+      updateUserData();
 
       navigateToEmptyBar();
 
