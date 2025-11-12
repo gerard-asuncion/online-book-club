@@ -5,15 +5,15 @@ import { defaultButtonLayout, setCursorPointer } from "../../utils/classNameUtil
 import { useAppSelector } from "../../app/hooks";
 import { selectCurrentBookTitle } from "../../features/currentBook/currentBookSelectors";
 import {
-    selectUserProfileUsername,
     selectUserProfileStoredBooks, 
     selectUserProfilePremium 
 } from "../../features/userProfile/userProfileSelectors";
+import { auth } from "../../firebase-config";
 import type { BookItem } from "../../types/booksTypes";
 
 const Sidebar = () => {
 
-    const userProfileUsername: string | null = useAppSelector(selectUserProfileUsername);
+    const userProfileUsername: string | null | undefined = auth.currentUser?.displayName;
     const currentBookTitle: string | null = useAppSelector(selectCurrentBookTitle);
     const storedBooks: BookItem[] = useAppSelector(selectUserProfileStoredBooks);
     const isPremiumUser: boolean = useAppSelector(selectUserProfilePremium);

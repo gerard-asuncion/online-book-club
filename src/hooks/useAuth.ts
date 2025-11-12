@@ -23,6 +23,7 @@ import {
 import { auth, db } from '../firebase-config';
 import Cookies from 'universal-cookie';
 import { useAppDispatch } from '../app/hooks';
+import { activateDisplayInfo } from "../features/displayInfo/displayInfoSlice";
 import { setIsAuth, clearAuth } from '../features/auth/authSlice';
 import { clearUserProfile } from '../features/userProfile/userProfileSlice';
 import { clearCurrentBook } from '../features/currentBook/currentBookSlice';
@@ -248,6 +249,7 @@ const useAuth = () => {
     dispatch(clearAuth());
     dispatch(clearUserProfile());
     dispatch(setOpenSidebar());
+    dispatch(activateDisplayInfo());
   }
 
   const deleteUserFromFirebase = async (): Promise<void> => {

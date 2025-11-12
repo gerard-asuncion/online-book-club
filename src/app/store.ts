@@ -17,6 +17,7 @@ import userProfileReducer from '../features/userProfile/userProfileSlice';
 import currentBookReducer from '../features/currentBook/currentBookSlice';
 import responsiveReducer from '../features/responsive/responsiveSlice';
 import googleBooksReducer from '../features/googleBooks/googleBooksSlice';
+import displayInfoReducer from '../features/displayInfo/displayInfoSlice';
 
 const sentryReduxEnhancer = Sentry.createReduxEnhancer({
 });
@@ -27,12 +28,13 @@ const rootReducer = combineReducers({
     currentBook: currentBookReducer,
     responsive: responsiveReducer,
     googleBooks: googleBooksReducer,
+    displayInfo: displayInfoReducer
 });
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: [ 'userProfile', 'currentBook', 'responsive' ] 
+  whitelist: [ 'userProfile', 'currentBook', 'responsive', 'displayInfo' ] 
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
