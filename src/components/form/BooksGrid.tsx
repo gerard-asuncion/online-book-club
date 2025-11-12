@@ -1,3 +1,4 @@
+import { useState } from "react";
 import MainContentFrame from "../ui/MainContentFrame";
 import GridBookCard from "../ui/GridBookCard";
 import { 
@@ -28,9 +29,35 @@ const BooksGrid = () => {
 
   const isPremiumUser: boolean = useAppSelector(selectUserProfilePremium);
 
+  const [displayInfo, setDisplayInfo] = useState<boolean>(true);
+  const hideInfo = (): void => setDisplayInfo(false);
+
   return (
     <MainContentFrame>
       <section className={`${justifyBooksSection(!displayBooks)} flex flex-col items-center h-full w-full`}>
+        {!displayBooks && displayInfo &&
+          <div className="flex flex-col justify-center items-center gap-4 px-7 text-center">
+            <p className="text-white font-bold">
+              Aquí pots buscar qualsevol llibre que vulguis i començar a xatejar amb un sol click...
+            </p>
+            <p className="text-main-color font-bold">
+              You can search any book here, select one and start chatting...
+            </p>
+            <p className="text-white">
+              Si ets PREMIUM podràs trobar tots els xats actius a la secció "Acitve". Si no ho ets, entra a 
+              "User settings" fes-te'n, és gratis!
+            </p>
+            <p className="text-main-color">
+              If you are PREMIUM, you can find all active chats in "Active" section. If you're not, go to "User settings"
+              and change plan, it's free!
+            </p>
+            <button onClick={hideInfo}>
+              <p className={`${defaultButtonLayout()} max-w-50`}>
+                Ok
+              </p>
+            </button>   
+          </div>    
+        }
         <article className="flex flex-col justify-center items-center p-10 w-full">
           <form 
             onSubmit={(e) => {handleBooksSearch(e, query);}}
