@@ -36,7 +36,9 @@
           "changePlan": "Change plan (canviar entre usuari premium i regular)",
           "changePlanText": "Aquest botó permet a l'usuari canviar automàticament entre premium i normal. No hi ha pagament, simplement canvia el pla, ja que la implementació d'aquesta característica és només per a complir amb els requisits del projecte final de la IT Academy.",
           "logout": "Log Out (tancar sessió)",
-          "logoutText": "Aquest botó tanca la sessió."
+          "logoutText": "Aquest botó tanca la sessió.",
+          "deleteProfile": "Delete profile (eliminar compte)",
+          "deleteProfileText": "'Delete profile' elimina el compte d'usuari, aquesta acció no es pot desfer."
         }
       }
     },
@@ -79,7 +81,9 @@
           "changePlan": "Change plan (cambiar entre usuario premium y regular)",
           "changePlanText": "Este botón permite al usuario cambiar automáticamente entre premium y normal. No hay pago, simplemente cambia el plan, ya que la implementación de esta característica es solo para cumplir con los requisitos del proyecto final de la IT Academy.",
           "logout": "Log Out (cerrar sesión)",
-          "logoutText": "Este botón cierra la sesión."
+          "logoutText": "Este botón cierra la sesión.",
+          "deleteProfile": "Delete profile (eliminar cuenta)",
+          "deleteProfileText": "'Delete profile' elimina la cuenta del usuario, esta acción no se puede deshacer."
         }
       }
     },
@@ -122,7 +126,9 @@
           "changePlan": "Change plan (switch between premium and regular account)",
           "changePlanText": "This button allows the user to automatically switch between premium and normal. There is no payment, it simply changes the plan, as the implementation of this feature is only to meet the requirements of the IT Academy final project.",
           "logout": "Log out",
-          "logoutText": "This button logs out."
+          "logoutText": "This button logs out.",
+          "deleteProfile": "Delete profile",
+          "deleteProfileText": "Deletes user account. This action is permanent and can't be undone."
         }
       }
     },
