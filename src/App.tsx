@@ -5,6 +5,7 @@ import BooksGridPage from "./pages/BooksGridPage";
 import ChatPage from "./pages/ChatPage";
 import ChatHistorialPage from "./pages/ChatHistorialPage";
 import SettingsPage from "./pages/SettingsPage";
+import AboutPage from "./pages/AboutPage";
 import RequireAuth from "./components/form/RequireAuth";
 import RedirectIfAuth from "./components/form/RedirectIfAuth";
 import ErrorPage from "./pages/ErrorPage";
@@ -23,6 +24,7 @@ function App() {
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/historial" element={<ChatHistorialPage />} />
         <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/about" element={<AboutPage />} />
       </Route>
       <Route path="*" element={<ErrorPage />} />
     </Routes>

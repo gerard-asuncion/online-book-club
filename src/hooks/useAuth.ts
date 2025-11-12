@@ -44,15 +44,8 @@ const useAuth = () => {
   const dispatch = useAppDispatch();
   
   const [loginError, setLoginError] = useState<LoginError | null>(null);
-  const [userLoginErrors, setUserLoginErrors] = useState<ErrorType[]>([]);
 
-  const [registrationWarnings, setRegistrationWarnings] = useState<ErrorType[]>([{
-        id: "username-condition",
-        message: "Username can't contain symbols or spaces, except the underscore: _"
-      },{
-        id: "password-condition",
-        message: "Password must be at least 8 characters long."
-      }]);
+  const [registrationWarnings, setRegistrationWarnings] = useState<ErrorType[]>([]);
     
   const [newUsername, setNewUsername] = useState<string>("");
   const [newUserEmail, setNewUserEmail] = useState<string>("");
@@ -72,7 +65,7 @@ const useAuth = () => {
 
   const isUsernameFormatValid = (username: string): boolean => {
     const regex: RegExp = /^\w+$/;
-    return regex.test(username);
+    return regex.test(username.trim());
   };
 
   const isEmailFormatValid = (email: string): boolean => {
@@ -100,45 +93,56 @@ const useAuth = () => {
   const submitRegisterForm = async (e: React.FormEvent): Promise<void> => {
 
     e.preventDefault();
+    setRegistrationWarnings([]);
+    const registrationErrors: ErrorType[] = [];
 
-    setRegistrationWarnings(prevErrors => {
-      let actualErrors: ErrorType[] = prevErrors;
-      if (isUsernameFormatValid(newUsername)) {
-        actualErrors = actualErrors.filter(err => err.id !== "username-condition");
+      if(!isUsernameFormatValid(newUsername)) {
+        registrationErrors.push({
+          id: "username-format-error",
+          message: "Username can't contain symbols or spaces, except the underscore: _"
+        });
       };
-      if (newUserPassword.length >= 8 || newPasswordConfirmation.length >= 8) {
-        actualErrors = actualErrors.filter(err => err.id !== "password-condition");
+      if(newUsername.trim() === "") {
+        registrationErrors.push({
+          id: "username-epmty-error",
+          message: "Username can't be empty"
+        });
       };
-      if(newUsername.trim() === "") actualErrors.push({
-        id: "username-error",
-        message: "Username can't be empty."
-      });
-      if(!isEmailFormatValid(newUserEmail)) actualErrors.push({
-        id: "email-error",
-        message: "Invalid email address."
-      });
-      if(newPasswordConfirmation !== newUserPassword) actualErrors.push({
-        id: "password-error",
-        message: "Confirmation password doesn't match."
-      });
-      return actualErrors;
-    });
+      if(!isEmailFormatValid(newUserEmail)) {
+        registrationErrors.push({
+          id: "email-error",
+          message: "Invalid email address"
+        });
+      };
+      if(newUserPassword.length < 8 || newPasswordConfirmation.length < 8) {
+        registrationErrors.push({
+          id: "password-length-error",
+          message: "Password must be at least 8 characters long"
+        });
+      };
+      if(newPasswordConfirmation !== newUserPassword) {
+        registrationErrors.push({
+          id: "password-match-error",
+          message: "Confirmation password doesn't match"
+        });
+      }
+      setRegistrationWarnings(registrationErrors);
+
+      if(registrationWarnings?.length) return;
 
     try {
+      setRegistrationWarnings([]);
+
       const isAvailable: boolean = await checkAvailableUsername(newUsername);
 
       if(!isAvailable){
-        setRegistrationWarnings(prevErrors => {
-          let actualErrors: ErrorType[] = prevErrors;
-          actualErrors.push({
-            id: "unavailable-username",
-            message: "Username not available."
-          });
-          return actualErrors;
-        });
+        registrationErrors.push({
+          id: "username-unavailable",
+          message: "This username is currently in use and not available."
+        })
       }
-
-      if(registrationWarnings.length > 0) return;
+      setRegistrationWarnings(registrationErrors);
+      if(registrationWarnings?.length) return;
 
       setLoadingLogin(true);
 
@@ -146,6 +150,8 @@ const useAuth = () => {
 
       await registerNewUser(newUser);   
       await loginWithEmailAndPassword(newUser.userEmail, newUser.userPassword);
+
+      setRegistrationWarnings([]);
 
     }catch(error){
       Sentry.captureException(error);
@@ -199,7 +205,6 @@ const useAuth = () => {
 
   const loginWithEmailAndPassword = async (email: string, password: string): Promise<void> => {
     setLoadingLogin(true);
-    setUserLoginErrors([]);
     setLoginError(null);
     const userErrors: ErrorType[] = [];
     try {
@@ -211,8 +216,6 @@ const useAuth = () => {
         id: "password-error",
         message: "No user password, unable to login."
       });
-
-      setUserLoginErrors(userErrors);
   
       const result: UserCredential = await signInWithEmailAndPassword(auth, email, password);
 
@@ -278,7 +281,6 @@ const useAuth = () => {
     setLoginPassword,
     loadingLogin,
     loginError,
-    userLoginErrors,
     registrationWarnings,
     newUsername,
     newUserEmail,
