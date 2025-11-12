@@ -1,12 +1,6 @@
 import type { RootState } from '../../app/store';
 import type { BookItem } from '../../types/booksTypes';
 
-export const selectUserProfileUid = (state: RootState): string | null => 
-    state.userProfile.userProfileUid;
-
-export const selectUserProfileUsername = (state: RootState): string | null => 
-    state.userProfile.userProfileUsername;
-
 export const selectUserProfilePremium = (state: RootState): boolean => 
     state.userProfile.userProfilePremium;
 

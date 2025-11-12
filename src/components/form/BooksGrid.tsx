@@ -1,4 +1,3 @@
-import { useState } from "react";
 import MainContentFrame from "../ui/MainContentFrame";
 import GridBookCard from "../ui/GridBookCard";
 import { 
@@ -10,7 +9,10 @@ import {
 import useBooksGrid from "../../hooks/useBooksGrid";
 import { useAppSelector } from "../../app/hooks";
 import { selectUserProfilePremium } from '../../features/userProfile/userProfileSelectors';
+import { selectDisplayInfoState } from "../../features/displayInfo/displayInfoSelector";
 import type { BookItem } from "../../types/booksTypes";
+import { useDispatch } from "react-redux";
+import { hideDisplayInfo } from "../../features/displayInfo/displayInfoSlice";
 
 const BooksGrid = () => {
 
@@ -27,10 +29,14 @@ const BooksGrid = () => {
     handleLoadMoreBooks,
   } = useBooksGrid();
 
-  const isPremiumUser: boolean = useAppSelector(selectUserProfilePremium);
+  const dispatch = useDispatch();
 
-  const [displayInfo, setDisplayInfo] = useState<boolean>(true);
-  const hideInfo = (): void => setDisplayInfo(false);
+  const isPremiumUser: boolean = useAppSelector(selectUserProfilePremium);
+  const displayInfo: boolean = useAppSelector(selectDisplayInfoState);
+
+  const hideInfo = (): void => {
+    dispatch(hideDisplayInfo());
+  }
 
   return (
     <MainContentFrame>

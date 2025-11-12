@@ -12,16 +12,12 @@ import { auth, db } from '../firebase-config';
 import type { UserProfileType } from '../types/types';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { 
-    setUserProfileUid,
-    setUserProfileUsername,
     setUserProfilePremium,
     fetchStoredBooks,
     clearAllStoredBooks
 } from '../features/userProfile/userProfileSlice';
 import type { BookItem } from '../types/booksTypes';
 import { 
-    selectUserProfileUid,
-    selectUserProfileUsername,
     selectUserProfileStoredBooks, 
     selectUserProfilePremium 
 } from '../features/userProfile/userProfileSelectors';
@@ -37,8 +33,6 @@ const useUserData = () => {
 
     const userAuthUid: string | undefined = auth.currentUser?.uid
 
-    const userStoredUid: string | null = useAppSelector(selectUserProfileUid); 
-    const userStoredUsername: string | null = useAppSelector(selectUserProfileUsername);
     const userStoredBooks: BookItem[] = useAppSelector(selectUserProfileStoredBooks);
     const isPremiumUser: boolean = useAppSelector(selectUserProfilePremium);
 
@@ -61,17 +55,6 @@ const useUserData = () => {
         }
     }
 
-    const storeUidUser = async (userUid: string | null): Promise<void> => { 
-        try {
-            if(!userUid) throw new ProfileDataError(`User Uid is ${userUid}. It wasn't found in ProfileData (user's document in DB). If there are more errors about user's Uid, consider auth.currentUser or redux as the source of the problem.`);
-            dispatch(setUserProfileUid({ userProfileUid: userUid }));
-
-        } catch (error) {
-            Sentry.captureException(error);
-            if(import.meta.env.DEV) console.error("Error dispatching user uid info from db:", error);
-        }
-    };
-
     const storeBooksById = async (profileData: UserProfileType | null): Promise<void> => {    
         try {
             if(!profileData) throw new ProfileDataError("Profile data could not be retrieved in storeBooksById.");
@@ -84,17 +67,6 @@ const useUserData = () => {
         } catch (error) {
             Sentry.captureException(error);
             if(import.meta.env.DEV) console.error("Error fetching user stored books:", error);
-        }
-    }
-
-    const storeUsernameUser = async (userUsername: string | null): Promise<void> => { 
-        try {
-            if(!userUsername) throw new ProfileDataError("Error fetching username from DB.");
-            dispatch(setUserProfileUsername({ userProfileUsername: userUsername }));
-
-        } catch (error) {
-            Sentry.captureException(error);
-            if(import.meta.env.DEV) console.error("Error dispatching user username info from db:", error);
         }
     }
 
@@ -176,8 +148,6 @@ const useUserData = () => {
             
             if(!profileData) return;
 
-            const userProfileDataUid: string | null = profileData.uid;
-            const userProfileDataUsername: string | null = profileData.displayName;
             const isPremiumUserDB: boolean = profileData.isPremiumUser || false;
             const userProfileBookIds: string[] = profileData.storedBookIds || [];
             
@@ -185,12 +155,6 @@ const useUserData = () => {
 
             const compareBookIds: boolean = compareArrayItems(userProfileBookIds, storedBooksIds);
 
-            if(userProfileDataUid && userProfileDataUid !== userStoredUid){
-                storeUidUser(userProfileDataUid);
-            }
-            if(userProfileDataUsername && userProfileDataUsername !== userStoredUsername){
-                storeUsernameUser(userProfileDataUsername);
-            }
             if(isPremiumUserDB && isPremiumUserDB !== isPremiumUser){
                 storeIsPremiumUser(isPremiumUserDB); 
             }    
