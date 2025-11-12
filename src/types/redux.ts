@@ -20,7 +20,6 @@ export interface CurrentBookInitialState {
 }
 
 export interface ResponsiveInitialState {
-    windowWidth: number,
     isMobile: boolean,
     openSidebar: boolean;
 }
