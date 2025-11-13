@@ -7,11 +7,11 @@
 3. [Tecnologia / Tech Stack](#3-tecnologia--tech-stack)
 4. [Demo en línia / Live Demo](#4-demo-en-línia--live-demo)
 5. [Repositori / Front](#5-repositori--repository)
-6. [Instal·lació / Installation](#6-instal·lació--installation)
+6. [Instal·lació / Installation](#6-installacio--installation)
 7. [Testing](#7-testing)
 8. [Estructura / Structure](#8-estructura--structure)
 9. [Captures / Screenshots](#9-captures--screenshots)
-10. [Estat del Projecte i Continuïtat / Project Status and Future Plans](#10-estat-del-projecte-i-pontinuïtat--project-status-and-future-plans)
+10. [Estat del Projecte i Continuïtat / Project Status and Future Plans](#10-estat-del-projecte-i-continuitat--project-status-and-future-plans)
 
 ## 1. Sobre el projecte / About
 
