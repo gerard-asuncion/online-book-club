@@ -6,12 +6,12 @@
 2. [Funcionalitats / Features](#2-funcionalitats--features)
 3. [Tecnologia / Tech Stack](#3-tecnologia--tech-stack)
 4. [Demo en línia / Live Demo](#4-demo-en-línia--live-demo)
-5. [Repositori front / Front repository](#5-repositori-front--front-repository)
-6. [Repositori backend / Backend repository](#6-repositori-backend--backend-repository)
-7. [Instal·lació / Installation](#7-instal·lació--installation)
-8. [Testing](#8-testing)
-9. [Estructura / Structure](#9-estructura--structure)
-10. [Captures / Screenshots](#10-captures--screenshots)
+5. [Repositori / Front](#5-repositori--repository)
+6. [Instal·lació / Installation](#6-instal·lació--installation)
+7. [Testing](#7-testing)
+8. [Estructura / Structure](#8-estructura--structure)
+9. [Captures / Screenshots](#9-captures--screenshots)
+10. [Estat del Projecte i Continuïtat / Project Status and Future Plans](#10-estat-del-projecte-i-pontinuïtat--project-status-and-future-plans)
 
 ## 1. Sobre el projecte / About
 
@@ -80,7 +80,7 @@ Check out the live demo to see the application in action.
 **Github:** 👉 https://github.com/gerard-asuncion/online-book-club.git ---
 
 
-## 7. Instal·lació / Installation
+## 6. Instal·lació / Installation
 
 **CAT:**
 
@@ -131,7 +131,7 @@ npm run dev
 
 http://localhost:5173
 
-## 8. Testing
+## 7. Testing
 
 **CAT:**
 
@@ -141,7 +141,7 @@ El projecte encara no inclou testing, però aviat en tindrà.
 
 There is no testing yet, 
 
-## 9. Estructura / Structure
+## 8. Estructura / Structure
 
 ```
 online-book-club/
@@ -254,7 +254,7 @@ online-book-club/
 
 ```
 
-## 10. Captures / Screenshots
+## 9. Captures / Screenshots
 
 * **Search (initial page):**
 ![Search](public/readme-search.jpg)
@@ -275,7 +275,7 @@ online-book-club/
 ![About](public/readme-about.jpg)
 
 
-## Estat del Projecte i Continuïtat / Project Status & Future Plans
+## 10. Estat del Projecte i Continuïtat / Project Status & Future Plans
 
 **CAT:**
 
