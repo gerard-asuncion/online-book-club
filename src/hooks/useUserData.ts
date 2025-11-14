@@ -1,4 +1,5 @@
 import * as Sentry from "@sentry/react";
+import usePageNavigation from "./usePageNavigation";
 import { 
     doc, 
     getDoc, 
@@ -21,13 +22,13 @@ import {
     selectUserProfileStoredBooks, 
     selectUserProfilePremium 
 } from '../features/userProfile/userProfileSelectors';
-import { useCallback } from 'react';
 import { ProfileDataError } from '../classes/CustomErrors';
-import { compareArrayItems } from "../utils/utils";
 
-const USERS_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERS;
+const USERS_COLLECTION: string = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERS;
 
 const useUserData = () => {
+
+    const { navigateToUserDataError } = usePageNavigation();
 
     const dispatch = useAppDispatch();
 
@@ -42,7 +43,10 @@ const useUserData = () => {
             const userDocRef: DocumentReference<DocumentData, DocumentData> = doc(db, USERS_COLLECTION, userAuthUid);
             const docSnap: DocumentSnapshot<DocumentData, DocumentData> = await getDoc(userDocRef);
 
-            if(!docSnap.exists()) throw new ProfileDataError("Unable to find user in database.");
+            if(!docSnap.exists()){
+                navigateToUserDataError();
+                throw new ProfileDataError(`User with uid: ${userAuthUid} is not in database, please check in Firebase.`);
+            }
 
             const profileData: UserProfileType = docSnap.data() as UserProfileType;
 
@@ -142,32 +146,6 @@ const useUserData = () => {
         alert("Premium mode deactivated.");
     }
 
-    const updateUserData = useCallback(async (): Promise<void> => {
-        try {
-            const profileData: UserProfileType | null = await getProfileData();
-            
-            if(!profileData) return;
-
-            const isPremiumUserDB: boolean = profileData.isPremiumUser || false;
-            const userProfileBookIds: string[] = profileData.storedBookIds || [];
-            
-            const storedBooksIds: string[] = userStoredBooks.map(book => book.id);
-
-            const compareBookIds: boolean = compareArrayItems(userProfileBookIds, storedBooksIds);
-
-            if(isPremiumUserDB && isPremiumUserDB !== isPremiumUser){
-                storeIsPremiumUser(isPremiumUserDB); 
-            }    
-            if(userProfileBookIds && !compareBookIds){
-                storeBooksById(profileData);   
-            } 
-    
-        }catch(error){
-            Sentry.captureException(error);
-            if(import.meta.env.DEV) console.error("Error in autoUpdateUserData:", error);
-        }
-    }, []);
-
     const markDeletedProfile = async (): Promise<boolean> => {
         let status = false;
         try {
@@ -202,7 +180,6 @@ const useUserData = () => {
         storeIsPremiumUser,
         activatePremiumMode,
         disablePremiumMode,
-        updateUserData,
         markDeletedProfile
     };
 };
