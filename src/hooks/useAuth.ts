@@ -230,8 +230,6 @@ const useAuth = () => {
       dispatch(setIsAuth());
       dispatch(setOpenSidebar());
 
-      // updateUserData();
-
       navigateToEmptyBar();
 
     } catch (error) {

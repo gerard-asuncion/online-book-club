@@ -146,33 +146,6 @@ const useUserData = () => {
         alert("Premium mode deactivated.");
     }
 
-    // const updateUserData = async (): Promise<void> => {
-    //     try {
-    //         const profileData: UserProfileType | null = await getProfileData();
-            
-    //         if(!profileData) return;
-
-    //         const isPremiumUserDB: boolean = profileData.isPremiumUser || false;
-    //         const userProfileBookIds: string[] = profileData.storedBookIds || [];
-            
-    //         const storedBooksIds: string[] = userStoredBooks.map(book => book.id);
-
-    //         const compareBookIds: boolean = compareArrayItems(userProfileBookIds, storedBooksIds);
-
-    //         if(isPremiumUserDB && isPremiumUserDB !== isPremiumUser){
-    //             storeIsPremiumUser(isPremiumUserDB); 
-    //         }    
-    //         if(userProfileBookIds && !compareBookIds){
-    //             storeBooksById(profileData);   
-    //         } 
-    
-    //     }catch(error){
-    //         Sentry.captureException(error);
-    //         if(import.meta.env.DEV) console.error("Error in updateUserData:", error);
-    //     }
-
-    // };
-
     const markDeletedProfile = async (): Promise<boolean> => {
         let status = false;
         try {
