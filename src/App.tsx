@@ -10,6 +10,7 @@ import RequireAuth from "./components/form/RequireAuth";
 import RedirectIfAuth from "./components/form/RedirectIfAuth";
 import ErrorPage from "./pages/ErrorPage";
 import RegisterPage from "./pages/RegisterPage";
+import UserDataErrorPage from "./pages/UserDataErrorPage";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/about" element={<AboutPage />} />
       </Route>
+      <Route path="/userdataerror" element={<UserDataErrorPage />}/>
       <Route path="*" element={<ErrorPage />} />
     </Routes>
   )

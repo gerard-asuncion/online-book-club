@@ -31,6 +31,9 @@ const usePageNavigation = () => {
     const navigateToAbout = (): void => {
         navigate("/about", { replace: true });
     }
+    const navigateToUserDataError = (): void => {
+        navigate("/userdataerror", { replace: true });
+    }
 
     return { 
         navigateToEmptyBar,
@@ -41,7 +44,8 @@ const usePageNavigation = () => {
         navigateToHistorial, 
         navigateToSettings, 
         navigateToActive, 
-        navigateToAbout 
+        navigateToAbout,
+        navigateToUserDataError
     }
 }
 

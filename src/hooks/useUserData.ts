@@ -1,4 +1,5 @@
 import * as Sentry from "@sentry/react";
+import usePageNavigation from "./usePageNavigation";
 import { 
     doc, 
     getDoc, 
@@ -29,6 +30,8 @@ const USERS_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERS;
 
 const useUserData = () => {
 
+    const { navigateToUserDataError } = usePageNavigation();
+
     const dispatch = useAppDispatch();
 
     const userAuthUid: string | undefined = auth.currentUser?.uid
@@ -42,7 +45,10 @@ const useUserData = () => {
             const userDocRef: DocumentReference<DocumentData, DocumentData> = doc(db, USERS_COLLECTION, userAuthUid);
             const docSnap: DocumentSnapshot<DocumentData, DocumentData> = await getDoc(userDocRef);
 
-            if(!docSnap.exists()) throw new ProfileDataError("Unable to find user in database.");
+            if(!docSnap.exists()){
+                navigateToUserDataError();
+                throw new ProfileDataError(`User with uid: ${userAuthUid} is not in database, please check in Firebase.`);
+            }
 
             const profileData: UserProfileType = docSnap.data() as UserProfileType;
 
@@ -164,8 +170,9 @@ const useUserData = () => {
     
         }catch(error){
             Sentry.captureException(error);
-            if(import.meta.env.DEV) console.error("Error in autoUpdateUserData:", error);
+            if(import.meta.env.DEV) console.error("Error in updateUserData:", error);
         }
+
     }, []);
 
     const markDeletedProfile = async (): Promise<boolean> => {

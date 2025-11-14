@@ -62,7 +62,6 @@ const useAuth = () => {
   const { updateUserData, markDeletedProfile } = useUserData();
   const { navigateToLogin, navigateToRegister, navigateToEmptyBar } = usePageNavigation();
 
-
   const isUsernameFormatValid = (username: string): boolean => {
     const regex: RegExp = /^\w+$/;
     return regex.test(username.trim());
