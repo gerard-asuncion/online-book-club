@@ -11,8 +11,12 @@ import RedirectIfAuth from "./components/form/RedirectIfAuth";
 import ErrorPage from "./pages/ErrorPage";
 import RegisterPage from "./pages/RegisterPage";
 import UserDataErrorPage from "./pages/UserDataErrorPage";
+import useRealtimeProfileSync from "./hooks/useRealTimeProfileSync";
 
 function App() {
+
+  useRealtimeProfileSync();
+
   return (
     <Routes>
       <Route element={<RedirectIfAuth />}>

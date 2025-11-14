@@ -22,11 +22,9 @@ import {
     selectUserProfileStoredBooks, 
     selectUserProfilePremium 
 } from '../features/userProfile/userProfileSelectors';
-import { useCallback } from 'react';
 import { ProfileDataError } from '../classes/CustomErrors';
-import { compareArrayItems } from "../utils/utils";
 
-const USERS_COLLECTION = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERS;
+const USERS_COLLECTION: string = import.meta.env.VITE_FIREBASE_DB_COLLECTION_USERS;
 
 const useUserData = () => {
 
@@ -148,32 +146,32 @@ const useUserData = () => {
         alert("Premium mode deactivated.");
     }
 
-    const updateUserData = useCallback(async (): Promise<void> => {
-        try {
-            const profileData: UserProfileType | null = await getProfileData();
+    // const updateUserData = async (): Promise<void> => {
+    //     try {
+    //         const profileData: UserProfileType | null = await getProfileData();
             
-            if(!profileData) return;
+    //         if(!profileData) return;
 
-            const isPremiumUserDB: boolean = profileData.isPremiumUser || false;
-            const userProfileBookIds: string[] = profileData.storedBookIds || [];
+    //         const isPremiumUserDB: boolean = profileData.isPremiumUser || false;
+    //         const userProfileBookIds: string[] = profileData.storedBookIds || [];
             
-            const storedBooksIds: string[] = userStoredBooks.map(book => book.id);
+    //         const storedBooksIds: string[] = userStoredBooks.map(book => book.id);
 
-            const compareBookIds: boolean = compareArrayItems(userProfileBookIds, storedBooksIds);
+    //         const compareBookIds: boolean = compareArrayItems(userProfileBookIds, storedBooksIds);
 
-            if(isPremiumUserDB && isPremiumUserDB !== isPremiumUser){
-                storeIsPremiumUser(isPremiumUserDB); 
-            }    
-            if(userProfileBookIds && !compareBookIds){
-                storeBooksById(profileData);   
-            } 
+    //         if(isPremiumUserDB && isPremiumUserDB !== isPremiumUser){
+    //             storeIsPremiumUser(isPremiumUserDB); 
+    //         }    
+    //         if(userProfileBookIds && !compareBookIds){
+    //             storeBooksById(profileData);   
+    //         } 
     
-        }catch(error){
-            Sentry.captureException(error);
-            if(import.meta.env.DEV) console.error("Error in updateUserData:", error);
-        }
+    //     }catch(error){
+    //         Sentry.captureException(error);
+    //         if(import.meta.env.DEV) console.error("Error in updateUserData:", error);
+    //     }
 
-    }, []);
+    // };
 
     const markDeletedProfile = async (): Promise<boolean> => {
         let status = false;
@@ -209,7 +207,6 @@ const useUserData = () => {
         storeIsPremiumUser,
         activatePremiumMode,
         disablePremiumMode,
-        updateUserData,
         markDeletedProfile
     };
 };

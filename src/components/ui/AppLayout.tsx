@@ -1,22 +1,15 @@
 import * as Sentry from '@sentry/react';
-import { useEffect } from "react";
 import Header from "../../components/ui/Header";
 import Sidebar from "../../components/form/Sidebar";
 import ScreenFrame from "../../components/ui/ScreenFrame";
 import useSidebar from "../../hooks/useSidebar";
 import useResponsive from "../../hooks/useResponsive";
-import useUserData from "../../hooks/useUserData";
 import { changeWindowLayout, changeSidebarLayout } from "../../utils/classNameUtils";
 import type { AppLayoutProps } from '../../types/props';
 
 function AppLayout({ children }: AppLayoutProps) {
   
-  const { updateUserData } = useUserData();
   const { isOpenSidebar } = useSidebar();
-
-  useEffect(() => {
-    updateUserData();
-  }, [])
 
   useResponsive();
 

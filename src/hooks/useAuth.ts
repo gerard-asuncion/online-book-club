@@ -59,7 +59,7 @@ const useAuth = () => {
 
   const [loadingLogin, setLoadingLogin] = useState<boolean>(false);
 
-  const { updateUserData, markDeletedProfile } = useUserData();
+  const { markDeletedProfile } = useUserData();
   const { navigateToLogin, navigateToRegister, navigateToEmptyBar } = usePageNavigation();
 
   const isUsernameFormatValid = (username: string): boolean => {
@@ -230,7 +230,7 @@ const useAuth = () => {
       dispatch(setIsAuth());
       dispatch(setOpenSidebar());
 
-      updateUserData();
+      // updateUserData();
 
       navigateToEmptyBar();
 

@@ -26,7 +26,11 @@ const Sidebar = () => {
             <article className="flex flex-col gap-3">
                 <div className="">
                     <p className="text-main-color text-sm">Username:</p>
-                    {!userProfileUsername && <p className="text-white">Username not found</p>}
+                    {!userProfileUsername && 
+                        <p className="text-white hover:text-main-color cursor pointer">
+                            Failed loading username, please refresh
+                        </p>
+                    }
                     {<p className="text-white font-semibold">{userProfileUsername}</p>}
                 </div>
                     {!currentBookTitle && 
